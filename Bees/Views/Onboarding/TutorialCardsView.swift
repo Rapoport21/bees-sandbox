@@ -8,29 +8,29 @@ enum TutorialItem {
         switch variant {
         case .carouselFirst:
             return [
-                .card(
-                    icon: "hexagon.fill",
+                .video(
+                    name: "beekeeper-working",
                     title: "What is a hive?",
-                    body: "Your hive is a real beehive on a partner farm. Thousands of bees, a queen, and honey through the year — all yours to watch and care about."
+                    subtitle: "Your hive is a real beehive on a partner farm — thousands of bees, a queen, and honey through the year."
                 ),
                 .video(
-                    name: "onboarding-bee",
-                    title: "Watch in real time.",
-                    subtitle: "Live cameras at your hive, day and night."
+                    name: "hive-lookup-slot",
+                    title: "Watch it in real time.",
+                    subtitle: "Live cameras at the entrance, inside, and on top of your hive."
                 ),
                 .video(
                     name: "onboarding-beekeeper",
-                    title: "Tended by a real beekeeper.",
+                    title: "Tended by a beekeeper.",
                     subtitle: "Your hive sits on a small partner farm. We work with people who know what they're doing."
                 ),
-                .card(
-                    icon: "drop.fill",
+                .video(
+                    name: "tea-pour",
                     title: "Honey & stickers",
-                    body: "Every shipment, you customize a sticker for your jar. We print it, fill it, and ship it to your door."
+                    subtitle: "Every shipment, you customize a sticker for your jar. We print, fill, and ship."
                 ),
             ]
         case .videosFirst:
-            // Videos already shown pre-auth; tutorial here is text-only.
+            // Variant B: videos shown pre-auth; tutorial here is text-only.
             return [
                 .card(
                     icon: "hexagon.fill",

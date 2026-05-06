@@ -61,6 +61,9 @@
 		BEEF200000000000000000E5 /* LoopingVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */; };
 		BEEF200000000000000000E6 /* OnboardingVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E6 /* OnboardingVideoView.swift */; };
 		BEEF200000000000000000E7 /* VideoIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E7 /* VideoIntroView.swift */; };
+		BEEF200000000000000000E8 /* SegmentedProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E8 /* SegmentedProgressBar.swift */; };
+		BEEF200000000000000000E9 /* IntroFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E9 /* IntroFlow.swift */; };
+		BEEF200000000000000000EA /* TutorialFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000EA /* TutorialFlow.swift */; };
 		BEEF200000000000000000F2 /* Videos in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F2 /* Videos */; };
 		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
 		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
@@ -121,6 +124,9 @@
 		BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopingVideoPlayer.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000E6 /* OnboardingVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVideoView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000E7 /* VideoIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoIntroView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E8 /* SegmentedProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedProgressBar.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E9 /* IntroFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFlow.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000EA /* TutorialFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFlow.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000F2 /* Videos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Videos; sourceTree = "<group>"; };
 		BEEF100000000000000000C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEEF100000000000000000C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -242,6 +248,7 @@
 				BEEF100000000000000000B8 /* JarPreview.swift */,
 				BEEF100000000000000000B9 /* SectionHeader.swift */,
 				BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */,
+				BEEF100000000000000000E8 /* SegmentedProgressBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -277,6 +284,7 @@
 			children = (
 				BEEF100000000000000000BD /* OnboardingFlow.swift */,
 				BEEF100000000000000000BE /* TierComparisonView.swift */,
+				BEEF100000000000000000EA /* TutorialFlow.swift */,
 				BEEF100000000000000000BF /* TutorialCardsView.swift */,
 				BEEF100000000000000000E6 /* OnboardingVideoView.swift */,
 				BEEF100000000000000000D1 /* HiveRevealView.swift */,
@@ -290,6 +298,7 @@
 			isa = PBXGroup;
 			children = (
 				BEEF100000000000000000D7 /* AuthFlowView.swift */,
+				BEEF100000000000000000E9 /* IntroFlow.swift */,
 				BEEF100000000000000000D8 /* ValueCarouselView.swift */,
 				BEEF100000000000000000E7 /* VideoIntroView.swift */,
 				BEEF100000000000000000D9 /* AuthPickerView.swift */,
@@ -471,6 +480,9 @@
 				BEEF200000000000000000E5 /* LoopingVideoPlayer.swift in Sources */,
 				BEEF200000000000000000E6 /* OnboardingVideoView.swift in Sources */,
 				BEEF200000000000000000E7 /* VideoIntroView.swift in Sources */,
+				BEEF200000000000000000E8 /* SegmentedProgressBar.swift in Sources */,
+				BEEF200000000000000000E9 /* IntroFlow.swift in Sources */,
+				BEEF200000000000000000EA /* TutorialFlow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

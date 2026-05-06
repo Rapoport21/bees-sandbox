@@ -16,7 +16,7 @@ struct AuthFlowView: View {
             Group {
                 switch services.onboardingVariant {
                 case .carouselFirst:
-                    ValueCarouselView(
+                    IntroFlow(
                         onAdopt: { path.append(.picker(returningSignIn: false)) },
                         onDemo:  { path.append(.demo) },
                         onSignIn: { path.append(.picker(returningSignIn: true)) }
