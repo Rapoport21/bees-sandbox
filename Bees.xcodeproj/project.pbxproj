@@ -59,6 +59,7 @@
 		BEEF200000000000000000E3 /* SettingsHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E3 /* SettingsHomeView.swift */; };
 		BEEF200000000000000000E4 /* SettingsSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E4 /* SettingsSubViews.swift */; };
 		BEEF200000000000000000E5 /* LoopingVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */; };
+		BEEF200000000000000000E6 /* OnboardingVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E6 /* OnboardingVideoView.swift */; };
 		BEEF200000000000000000F2 /* Videos in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F2 /* Videos */; };
 		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
 		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
@@ -117,6 +118,7 @@
 		BEEF100000000000000000E3 /* SettingsHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHomeView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000E4 /* SettingsSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSubViews.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopingVideoPlayer.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E6 /* OnboardingVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVideoView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000F2 /* Videos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Videos; sourceTree = "<group>"; };
 		BEEF100000000000000000C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEEF100000000000000000C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				BEEF100000000000000000BD /* OnboardingFlow.swift */,
 				BEEF100000000000000000BE /* TierComparisonView.swift */,
 				BEEF100000000000000000BF /* TutorialCardsView.swift */,
+				BEEF100000000000000000E6 /* OnboardingVideoView.swift */,
 				BEEF100000000000000000D1 /* HiveRevealView.swift */,
 				BEEF100000000000000000D2 /* HiveNamingView.swift */,
 				BEEF100000000000000000D3 /* WelcomeView.swift */,
@@ -463,6 +466,7 @@
 				BEEF200000000000000000E3 /* SettingsHomeView.swift in Sources */,
 				BEEF200000000000000000E4 /* SettingsSubViews.swift in Sources */,
 				BEEF200000000000000000E5 /* LoopingVideoPlayer.swift in Sources */,
+				BEEF200000000000000000E6 /* OnboardingVideoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

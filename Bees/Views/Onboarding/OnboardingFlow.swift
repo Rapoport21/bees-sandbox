@@ -14,6 +14,8 @@ struct OnboardingFlow: View {
     @State private var pickedTier: Tier = .forager
     @State private var hiveName: String = ""
 
+    private var totalTutorialItems: Int { TutorialItem.sequence.count }
+
     var body: some View {
         NavigationStack(path: $path) {
             TierComparisonView(
@@ -25,15 +27,7 @@ struct OnboardingFlow: View {
                 case .tierComparison:
                     EmptyView()
                 case .tutorial(let index):
-                    TutorialCardsView(index: index, total: 4) {
-                        if index < 3 {
-                            path.append(.tutorial(index + 1))
-                        } else {
-                            path.append(.reveal)
-                        }
-                    } onSkip: {
-                        path.append(.reveal)
-                    }
+                    tutorialView(at: index)
                 case .reveal:
                     HiveRevealView { path.append(.naming) }
                 case .naming:
@@ -46,6 +40,41 @@ struct OnboardingFlow: View {
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func tutorialView(at index: Int) -> some View {
+        let total = totalTutorialItems
+        let item = TutorialItem.sequence[index]
+        let goNext: () -> Void = {
+            if index < total - 1 {
+                path.append(.tutorial(index + 1))
+            } else {
+                path.append(.reveal)
+            }
+        }
+        let skipAll: () -> Void = { path.append(.reveal) }
+
+        switch item {
+        case .card(let icon, let title, let body):
+            TutorialCardsView(
+                index: index,
+                total: total,
+                onNext: goNext,
+                onSkip: skipAll,
+                card: (icon, title, body)
+            )
+        case .video(let name, let title, let subtitle):
+            OnboardingVideoView(
+                videoName: name,
+                title: title,
+                subtitle: subtitle,
+                pageIndex: index,
+                totalPages: total,
+                onNext: goNext,
+                onSkip: skipAll
+            )
         }
     }
 }

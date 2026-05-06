@@ -49,3 +49,9 @@ secrets/
 
 # Misc
 *.log
+
+# Local-only video assets (too large for git; bundled at build time from disk)
+Bees/Videos/*.mp4
+Bees/Videos/*.mov
+Bees/Videos/*.m4v
+!Bees/Videos/README.md
