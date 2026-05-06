@@ -26,9 +26,11 @@ struct ContentView: View {
                 }
             }
             .id(currentScreen.rawValue)
-            .transition(.opacity)
         }
-        .animation(.easeInOut(duration: 0.55), value: currentScreen)
+        // No animation between screens — the morph in HiveRevealView
+        // ends with a layout that exactly matches HiveTabView, so a
+        // hard cut is invisible (and avoids the cross-fade overlap
+        // where two copies of the hive content used to ghost together).
     }
 
     private var mainTabs: some View {

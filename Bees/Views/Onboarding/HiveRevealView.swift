@@ -46,8 +46,9 @@ struct HiveRevealView: View {
                     Spacer()
                 }
 
-                // Below-video region holds BOTH reveal and hive-tab content
-                // overlaid in a ZStack so layout never reflows.
+                // Below-video region. Reveal content and hive content
+                // sequence — reveal fades all the way out BEFORE hive
+                // fades in — so they never visually overlap.
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: BeesSpacing.s + videoHeight + BeesSpacing.l)
@@ -55,11 +56,13 @@ struct HiveRevealView: View {
                     ZStack(alignment: .top) {
                         revealContent
                             .opacity(isMorphing ? 0 : 1)
+                            .animation(.easeOut(duration: 0.3), value: isMorphing)
                             .allowsHitTesting(!isMorphing)
 
                         hiveTabContent
                             .padding(.horizontal, BeesSpacing.m)
                             .opacity(hiveContentVisible ? 1 : 0)
+                            .animation(.easeIn(duration: 0.45), value: hiveContentVisible)
                             .allowsHitTesting(false)
                     }
 
@@ -97,13 +100,23 @@ struct HiveRevealView: View {
 
     // MARK: - Background
 
+    /// Warm gradient during the reveal moment, cross-fading to the
+    /// neutral hive-tab cream during the morph so the swap to
+    /// HiveTabView is invisible (same color underneath).
     private var background: some View {
-        LinearGradient(
-            colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .ignoresSafeArea()
+        ZStack {
+            LinearGradient(
+                colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .opacity(isMorphing ? 0 : 1)
+            .ignoresSafeArea()
+
+            BeesColors.surfacePage
+                .opacity(isMorphing ? 1 : 0)
+                .ignoresSafeArea()
+        }
     }
 
     // MARK: - Video
@@ -379,18 +392,30 @@ struct HiveRevealView: View {
         nameFocused = false
         if hiveName.isEmpty { hiveName = "Hive #47" }
 
-        // One smooth motion — circle expands to rounded rect, hive UI
-        // appears below in the same animation tick. No spring (no shake).
+        // Stage 1 (0–~600ms): video morph runs — circle widens into
+        // rounded rect via cornerRadius interpolation; reveal content
+        // below fades out (.easeOut(0.3) attached to revealContent).
+        // Background also cross-fades from warm gradient to surfacePage.
         withAnimation(.easeInOut(duration: 0.55)) {
             isMorphing = true
-            hiveContentVisible = true
         }
 
-        // Hand off to the real Hive tab AFTER the morph + UI fade-in
-        // have completely settled. ContentView cross-fades the tree
-        // swap so the LoopingVideoPlayer instance change is masked.
+        // Stage 2 (~400ms after start): hive-tab content fades in
+        // (.easeIn(0.45) attached to hiveTabContent). Reveal content
+        // is already invisible by now, so no overlap.
         Task {
-            try? await Task.sleep(for: .milliseconds(950))
+            try? await Task.sleep(for: .milliseconds(400))
+            await MainActor.run {
+                hiveContentVisible = true
+            }
+        }
+
+        // Stage 3 (~1.0s in): hand off to the real HiveTabView. Tree
+        // swap is now an instant cut (ContentView's currentScreen
+        // animation removed) — both views look identical at swap
+        // time so the cut is invisible.
+        Task {
+            try? await Task.sleep(for: .milliseconds(1000))
             await MainActor.run { onContinue() }
         }
     }
