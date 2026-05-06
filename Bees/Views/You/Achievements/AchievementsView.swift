@@ -34,7 +34,7 @@ struct AchievementsView: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Achievements")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: Achievement.self) { achievement in
@@ -73,7 +73,7 @@ struct AchievementBadge: View {
         }
         .padding(BeesSpacing.s)
         .frame(maxWidth: .infinity)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         .opacity(achievement.isEarned ? 1.0 : 0.7)
     }
 }

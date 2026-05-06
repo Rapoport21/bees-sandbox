@@ -16,7 +16,7 @@ struct HiveTabView: View {
                 .padding(.horizontal, BeesSpacing.m)
                 .padding(.bottom, BeesSpacing.xl)
             }
-            .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+            .background(BeesColors.surfacePage.ignoresSafeArea())
             .navigationTitle("Hive")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: StatType.self) { stat in

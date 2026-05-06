@@ -30,7 +30,7 @@ struct HoneyHomeView: View {
                 .padding(.horizontal, BeesSpacing.m)
                 .padding(.bottom, BeesSpacing.xl)
             }
-            .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+            .background(BeesColors.surfacePage.ignoresSafeArea())
             .navigationTitle("Honey")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -80,7 +80,7 @@ struct HoneyHomeView: View {
             .buttonStyle(.beesPrimary)
         }
         .padding(BeesSpacing.m)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
         .shadow(color: .black.opacity(0.04), radius: 4, x: 0, y: 2)
     }
 
@@ -179,7 +179,7 @@ struct HoneyHomeView: View {
                     .foregroundStyle(BeesColors.charcoal300)
             }
             .padding(BeesSpacing.m)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
         .buttonStyle(.plain)
     }
@@ -217,7 +217,7 @@ struct HoneyHomeView: View {
                     .foregroundStyle(BeesColors.charcoal300)
             }
             .padding(BeesSpacing.m)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
         .buttonStyle(.plain)
     }
@@ -236,7 +236,7 @@ struct HoneyHomeView: View {
         }
         .padding(BeesSpacing.l)
         .frame(maxWidth: .infinity)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
     }
 
     private func sideCard(icon: String, title: String, subtitle: String) -> some View {
@@ -259,7 +259,7 @@ struct HoneyHomeView: View {
                     .foregroundStyle(BeesColors.charcoal300)
             }
             .padding(BeesSpacing.m)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
         .buttonStyle(.plain)
     }

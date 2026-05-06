@@ -36,7 +36,7 @@ struct EmailAuthFormView: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xxl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             Button(isSignup ? "Create account" : "Sign in") {
                 Task { await submit() }

@@ -100,7 +100,7 @@ struct TutorialCardsView: View {
         }
         .padding(.horizontal, BeesSpacing.m)
         .padding(.vertical, BeesSpacing.l)
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             Button(index < total - 1 ? "Next" : "Got it") { onNext() }
                 .buttonStyle(.beesPrimary)

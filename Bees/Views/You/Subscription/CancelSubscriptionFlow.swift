@@ -76,7 +76,7 @@ struct CancelSubscriptionFlow: View {
                                 Spacer()
                             }
                             .padding(BeesSpacing.m)
-                            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+                            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
                         }
                         .buttonStyle(.plain)
                     }
@@ -84,7 +84,7 @@ struct CancelSubscriptionFlow: View {
             }
             .padding(BeesSpacing.m)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: BeesSpacing.s) {
                 Button("Continue") { advanceFromReason() }
@@ -168,7 +168,7 @@ struct CancelSubscriptionFlow: View {
             }
             .padding(BeesSpacing.m)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: BeesSpacing.s) {
                 Button("Continue to cancel") { advanceTo(.holdToCancel) }
@@ -205,7 +205,7 @@ struct CancelSubscriptionFlow: View {
             Spacer()
         }
         .padding(BeesSpacing.m)
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
     }
 
     private var resultStep: some View {
@@ -229,7 +229,7 @@ struct CancelSubscriptionFlow: View {
                 .padding(.horizontal, BeesSpacing.m)
         }
         .padding(BeesSpacing.m)
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
     }
 
     // MARK: - Helpers
@@ -262,7 +262,7 @@ struct CancelSubscriptionFlow: View {
                 .buttonStyle(.beesGhost)
         }
         .padding(BeesSpacing.m)
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
     }
 
     private func disclosureRow(icon: String, color: Color, title: String, body: String) -> some View {

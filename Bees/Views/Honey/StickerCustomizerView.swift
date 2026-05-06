@@ -37,7 +37,7 @@ struct StickerCustomizerView: View {
                 }
                 .padding(.horizontal, BeesSpacing.m)
             }
-            .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+            .background(BeesColors.surfacePage.ignoresSafeArea())
             .safeAreaInset(edge: .bottom) {
                 footerBar
             }

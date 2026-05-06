@@ -52,7 +52,7 @@ struct TutorialFlow: View {
         case .video(let name, _, _):
             videoView(name: name)
         case .card:
-            BeesColors.honey100.opacity(0.4)
+            BeesColors.surfacePage
                 .ignoresSafeArea()
         }
     }

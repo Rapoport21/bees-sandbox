@@ -295,7 +295,7 @@ struct FAQArticleView: View {
             .padding(BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Help")
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -18,7 +18,7 @@ struct StatDetailView: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle(stat.displayName)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -112,7 +112,7 @@ struct StatDetailView: View {
             }
         }
         .padding(BeesSpacing.m)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
     }
 
     private var currentValueText: String {

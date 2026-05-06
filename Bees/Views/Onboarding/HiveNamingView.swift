@@ -40,7 +40,7 @@ struct HiveNamingView: View {
                                     .foregroundStyle(BeesColors.charcoal900)
                                     .frame(maxWidth: .infinity)
                                     .padding(.vertical, BeesSpacing.s)
-                                    .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+                                    .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
                             }
                             .buttonStyle(.plain)
                         }
@@ -54,7 +54,7 @@ struct HiveNamingView: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             Button("Continue") {
                 if hiveName.isEmpty { hiveName = "Hive #47" }

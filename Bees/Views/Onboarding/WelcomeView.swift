@@ -40,7 +40,7 @@ struct WelcomeView: View {
                 }
                 .padding(BeesSpacing.m)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+                .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
 
                 Spacer()
 

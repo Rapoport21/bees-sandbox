@@ -64,7 +64,7 @@ struct AuthPickerView: View {
             .padding(.bottom, BeesSpacing.xxl)
             .frame(maxWidth: .infinity)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .overlay {

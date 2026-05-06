@@ -32,7 +32,7 @@ struct TierComparisonView: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xxl + BeesSpacing.l)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: BeesSpacing.xs) {
                 Button("Start 7-day free trial of \(pickedTier.displayName)") { onContinue() }
@@ -67,7 +67,7 @@ struct TierComparisonView: View {
         }
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
     }
 
     private func tierCard(_ tier: Tier) -> some View {
@@ -113,7 +113,7 @@ struct TierComparisonView: View {
             }
             .padding(BeesSpacing.m)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
             .overlay(
                 RoundedRectangle(cornerRadius: BeesRadius.lg)
                     .stroke(isSelected ? BeesColors.honey500 : Color.clear, lineWidth: 2)

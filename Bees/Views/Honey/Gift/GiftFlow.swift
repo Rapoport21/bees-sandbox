@@ -142,7 +142,7 @@ struct GiftFlow: View {
             .padding(.horizontal, BeesSpacing.m)
             Spacer()
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
     }
 
     private func giftOption(type: GiftType, title: String, body: String, icon: String, available: Bool) -> some View {
@@ -176,7 +176,7 @@ struct GiftFlow: View {
                     .foregroundStyle(BeesColors.charcoal300)
             }
             .padding(BeesSpacing.m)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
             .opacity(available ? 1.0 : 0.6)
         }
         .buttonStyle(.plain)
@@ -252,12 +252,12 @@ struct GiftFlow: View {
                 }
                 .padding(BeesSpacing.m)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+                .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
             }
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Pick a plan")
         .safeAreaInset(edge: .bottom) {
             Button("Continue") { advance(to: .sticker) }
@@ -282,7 +282,7 @@ struct GiftFlow: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, BeesSpacing.m)
-            .background(selected ? BeesColors.honey300 : .white,
+            .background(selected ? BeesColors.honey300 : BeesColors.surfaceCard,
                         in: RoundedRectangle(cornerRadius: BeesRadius.md))
             .overlay(
                 RoundedRectangle(cornerRadius: BeesRadius.md)
@@ -307,7 +307,7 @@ struct GiftFlow: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, BeesSpacing.m)
-            .background(selected ? BeesColors.honey300 : .white,
+            .background(selected ? BeesColors.honey300 : BeesColors.surfaceCard,
                         in: RoundedRectangle(cornerRadius: BeesRadius.md))
             .overlay(
                 RoundedRectangle(cornerRadius: BeesRadius.md)
@@ -365,7 +365,7 @@ struct GiftFlow: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Customize sticker")
         .safeAreaInset(edge: .bottom) {
             Button("Continue") { advance(to: .message) }
@@ -419,7 +419,7 @@ struct GiftFlow: View {
                     SectionHeader(title: "Your message")
                     TextEditor(text: $message)
                         .scrollContentBackground(.hidden)
-                        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+                        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
                         .frame(minHeight: 120)
                         .padding(BeesSpacing.xs)
                         .overlay(
@@ -439,7 +439,7 @@ struct GiftFlow: View {
             }
             .padding(BeesSpacing.m)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Add a card")
         .safeAreaInset(edge: .bottom) {
             Button("Continue") { advance(to: .packaging) }
@@ -459,7 +459,7 @@ struct GiftFlow: View {
             }
             .padding(BeesSpacing.m)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Make it special?")
         .safeAreaInset(edge: .bottom) {
             Button("Continue") { advance(to: .review) }
@@ -494,7 +494,7 @@ struct GiftFlow: View {
             }
             .padding(BeesSpacing.m)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
             .overlay(
                 RoundedRectangle(cornerRadius: BeesRadius.md)
                     .stroke(selected ? BeesColors.honey500 : .clear, lineWidth: 2)
@@ -541,7 +541,7 @@ struct GiftFlow: View {
             }
             .padding(BeesSpacing.m)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Review")
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: BeesSpacing.s) {
@@ -587,7 +587,7 @@ struct GiftFlow: View {
                 .padding(.horizontal, BeesSpacing.m)
         }
         .padding(BeesSpacing.m)
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
     }
 
     // MARK: - Helpers
@@ -606,7 +606,7 @@ struct GiftFlow: View {
         }
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
     }
 
     private func cardColor(_ style: CardStyle) -> Color {

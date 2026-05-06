@@ -22,7 +22,7 @@ struct DemoHiveViewerView: View {
                 .padding(.horizontal, BeesSpacing.m)
                 .padding(.bottom, BeesSpacing.xxl + BeesSpacing.l)
             }
-            .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+            .background(BeesColors.surfacePage.ignoresSafeArea())
 
             if bannerVisible {
                 bannerView
@@ -215,7 +215,7 @@ struct DemoHiveViewerView: View {
             }
         }
         .padding(BeesSpacing.m)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
         .onTapGesture { showSoftSignup = true }
     }
 

@@ -41,7 +41,7 @@ struct AchievementDetailView: View {
                 }
                 .padding(BeesSpacing.m)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+                .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
 
                 if let earnedAt = achievement.earnedAt {
                     VStack(alignment: .leading, spacing: BeesSpacing.s) {
@@ -52,7 +52,7 @@ struct AchievementDetailView: View {
                     }
                     .padding(BeesSpacing.m)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+                    .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
 
                     Button {
                     } label: {
@@ -64,7 +64,7 @@ struct AchievementDetailView: View {
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xl)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
     }

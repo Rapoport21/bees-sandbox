@@ -31,7 +31,7 @@ struct SwitchTierView: View {
                 }
                 .padding(BeesSpacing.m)
             }
-            .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+            .background(BeesColors.surfacePage.ignoresSafeArea())
             .navigationTitle("Switch tier")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -97,7 +97,7 @@ struct SwitchTierView: View {
             }
             .padding(BeesSpacing.m)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
             .overlay(
                 RoundedRectangle(cornerRadius: BeesRadius.lg)
                     .stroke(isSelected ? BeesColors.honey500 : .clear, lineWidth: 2)

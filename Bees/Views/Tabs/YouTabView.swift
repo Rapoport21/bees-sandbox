@@ -111,7 +111,7 @@ struct HiveHistoryView: View {
             }
             .padding(BeesSpacing.m)
         }
-        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("Hive history")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -128,7 +128,7 @@ struct HiveHistoryView: View {
         }
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity)
-        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
     }
 }
 
