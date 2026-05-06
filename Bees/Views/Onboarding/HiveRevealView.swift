@@ -49,10 +49,11 @@ struct HiveRevealView: View {
                     Spacer()
                 }
 
-                // Reveal text + naming + Continue. Fades out as the
-                // morph runs. The actual hive UI (identity pill, stats,
-                // activity card) lives in HiveTabView underneath — we
-                // don't render it here.
+                // Reveal text + naming + Continue. Snaps out fast at
+                // the start of the morph (0.18s) so the typed hive
+                // name doesn't ghost over HiveTabView's identity pill
+                // when the overlay fades. The actual hive UI (pill,
+                // stats, activity card) lives in HiveTabView underneath.
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: BeesSpacing.s + videoHeight + BeesSpacing.l)
@@ -60,6 +61,7 @@ struct HiveRevealView: View {
                     revealContent
                         .opacity(isMorphing ? 0 : 1)
                         .allowsHitTesting(!isMorphing)
+                        .animation(.easeOut(duration: 0.18), value: isMorphing)
 
                     Spacer()
                 }
@@ -291,25 +293,24 @@ struct HiveRevealView: View {
         nameFocused = false
         if hiveName.isEmpty { hiveName = "Hive #47" }
 
-        // Phase 1 — morph: video circle widens to a rounded rect at
-        // the exact position of HiveTabView's video. The reveal
-        // content (text, name field, CTA), halo, stroke, and shadow
-        // all fade out. Gradient background stays fully opaque.
-        withAnimation(.easeInOut(duration: 0.6)) {
+        // Phase 1 — morph: reveal content (text + naming) snaps out
+        // in 0.18s via its own animation override. Video circle widens
+        // to a rounded rect; halo, stroke, shadow fade. Gradient stays
+        // fully opaque the whole time. Total morph: 0.45s.
+        withAnimation(.easeInOut(duration: 0.45)) {
             isMorphing = true
         }
 
-        // Phase 2 — soft hand-off: after the morph settles, flip
+        // Phase 2 — soft hand-off: as soon as the morph settles, flip
         // hasCompletedOnboarding inside withAnimation so OnboardingFlow's
         // opacity transition fades the whole overlay (gradient + video +
-        // LIVE chip) out as a single unit. HiveTabView underneath
-        // naturally cross-fades in — same SharedHiveVideoPlayer, same
-        // surface color, but the chrome (tab bar, stat grid) appears
-        // smoothly instead of snapping in.
+        // LIVE chip) out as a unit. HiveTabView underneath cross-fades
+        // in through it — same SharedHiveVideoPlayer means the video
+        // doesn't blink.
         Task {
-            try? await Task.sleep(for: .milliseconds(620))
+            try? await Task.sleep(for: .milliseconds(450))
             await MainActor.run {
-                withAnimation(.easeOut(duration: 0.55)) {
+                withAnimation(.easeOut(duration: 0.32)) {
                     onContinue()
                 }
             }
