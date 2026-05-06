@@ -109,6 +109,8 @@ struct HiveRevealView: View {
 
     @ViewBuilder
     private var hiveVideo: some View {
+        let radius: CGFloat = isMorphing ? BeesRadius.lg : videoHeight / 2
+
         ZStack {
             if !isMorphing {
                 Circle()
@@ -121,19 +123,13 @@ struct HiveRevealView: View {
             }
 
             videoContent
-                .mask(
-                    ZStack {
-                        Circle()
-                            .opacity(isMorphing ? 0 : 1)
-                        RoundedRectangle(cornerRadius: BeesRadius.lg)
-                            .opacity(isMorphing ? 1 : 0)
-                    }
-                )
-                .overlay(
-                    Circle()
-                        .stroke(.white.opacity(0.55), lineWidth: 3)
-                        .opacity(isMorphing ? 0 : 1)
-                )
+                .mask {
+                    RoundedRectangle(cornerRadius: radius)
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: radius)
+                        .stroke(.white.opacity(isMorphing ? 0 : 0.55), lineWidth: 3)
+                }
                 .overlay(alignment: .topLeading) {
                     HStack(spacing: BeesSpacing.xxs) {
                         Circle()
