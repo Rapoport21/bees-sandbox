@@ -12,12 +12,12 @@ struct YouTabView: View {
                             .fill(BeesColors.honey300)
                             .frame(width: 56, height: 56)
                             .overlay(
-                                Text("N")
+                                Text(services.authService.displayName.prefix(1).uppercased())
                                     .font(BeesType.headingM)
                                     .foregroundStyle(.white)
                             )
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("Nick")
+                            Text(services.authService.displayName)
                                 .font(BeesType.headingM)
                             Text(services.hiveService.hive.name)
                                 .font(BeesType.captionM)
@@ -34,16 +34,30 @@ struct YouTabView: View {
                 }
 
                 Section {
-                    label("Achievements", icon: "trophy.fill")
-                    label("Hive history", icon: "calendar")
-                    label("Subscription", icon: "creditcard.fill")
-                    label("Gifts sent", icon: "gift.fill")
-                    label("Referral program", icon: "person.2.fill")
+                    NavigationLink { AchievementsView() } label: {
+                        Label("Achievements", systemImage: "trophy.fill")
+                    }
+                    NavigationLink { HiveHistoryView() } label: {
+                        Label("Hive history", systemImage: "calendar")
+                    }
+                    NavigationLink { SubscriptionHomeView() } label: {
+                        Label("Subscription", systemImage: "creditcard.fill")
+                    }
+                    NavigationLink { GiftsSentView() } label: {
+                        Label("Gifts sent", systemImage: "gift.fill")
+                    }
+                    NavigationLink { PromoCodeView() } label: {
+                        Label("Referral program", systemImage: "person.2.fill")
+                    }
                 }
 
                 Section {
-                    label("Settings", icon: "gearshape.fill")
-                    label("Help & Support", icon: "questionmark.circle.fill")
+                    NavigationLink { SettingsHomeView() } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
+                    NavigationLink { HelpSupportView() } label: {
+                        Label("Help & Support", systemImage: "questionmark.circle.fill")
+                    }
                 }
 
                 Section("Developer") {
@@ -53,15 +67,64 @@ struct YouTabView: View {
                         Label("Replay onboarding", systemImage: "arrow.clockwise")
                             .foregroundStyle(BeesColors.charcoal900)
                     }
+                    Button {
+                        services.authService.signOut()
+                    } label: {
+                        Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
+                            .foregroundStyle(BeesColors.charcoal900)
+                    }
                 }
             }
             .navigationTitle("You")
         }
     }
+}
 
-    private func label(_ title: String, icon: String) -> some View {
-        Label(title, systemImage: icon)
-            .foregroundStyle(BeesColors.charcoal900)
+struct HiveHistoryView: View {
+    @Environment(ServiceContainer.self) private var services
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: BeesSpacing.l) {
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: BeesSpacing.s) {
+                    statCard(value: "92", label: "Days as adopter")
+                    statCard(value: "47.2 lb", label: "Total weight")
+                    statCard(value: "12k+", label: "Bees observed")
+                    statCard(value: "3", label: "Jars received")
+                }
+            }
+            .padding(BeesSpacing.m)
+        }
+        .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
+        .navigationTitle("Hive history")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func statCard(value: String, label: String) -> some View {
+        VStack(spacing: BeesSpacing.xs) {
+            Text(value)
+                .font(BeesType.displayL)
+                .foregroundStyle(BeesColors.honey500)
+            Text(label)
+                .font(BeesType.captionM)
+                .foregroundStyle(BeesColors.charcoal600)
+                .multilineTextAlignment(.center)
+        }
+        .padding(BeesSpacing.m)
+        .frame(maxWidth: .infinity)
+        .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+    }
+}
+
+struct GiftsSentView: View {
+    var body: some View {
+        ContentUnavailableView {
+            Label("No gifts yet", systemImage: "gift")
+        } description: {
+            Text("Gifts you send appear here.")
+        }
+        .navigationTitle("Gifts sent")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

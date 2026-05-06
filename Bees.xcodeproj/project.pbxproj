@@ -41,6 +41,23 @@
 		BEEF200000000000000000D1 /* HiveRevealView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D1 /* HiveRevealView.swift */; };
 		BEEF200000000000000000D2 /* HiveNamingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D2 /* HiveNamingView.swift */; };
 		BEEF200000000000000000D3 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D3 /* WelcomeView.swift */; };
+		BEEF200000000000000000D4 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D4 /* Achievement.swift */; };
+		BEEF200000000000000000D5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D5 /* AuthService.swift */; };
+		BEEF200000000000000000D6 /* AchievementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D6 /* AchievementService.swift */; };
+		BEEF200000000000000000D7 /* AuthFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D7 /* AuthFlowView.swift */; };
+		BEEF200000000000000000D8 /* ValueCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D8 /* ValueCarouselView.swift */; };
+		BEEF200000000000000000D9 /* AuthPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000D9 /* AuthPickerView.swift */; };
+		BEEF200000000000000000DA /* EmailAuthFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000DA /* EmailAuthFormView.swift */; };
+		BEEF200000000000000000DB /* DemoHiveViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000DB /* DemoHiveViewerView.swift */; };
+		BEEF200000000000000000DC /* GiftFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000DC /* GiftFlow.swift */; };
+		BEEF200000000000000000DD /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000DD /* AchievementsView.swift */; };
+		BEEF200000000000000000DE /* AchievementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000DE /* AchievementDetailView.swift */; };
+		BEEF200000000000000000DF /* SubscriptionHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000DF /* SubscriptionHomeView.swift */; };
+		BEEF200000000000000000E0 /* SwitchTierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E0 /* SwitchTierView.swift */; };
+		BEEF200000000000000000E1 /* BillingHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E1 /* BillingHistoryView.swift */; };
+		BEEF200000000000000000E2 /* CancelSubscriptionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E2 /* CancelSubscriptionFlow.swift */; };
+		BEEF200000000000000000E3 /* SettingsHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E3 /* SettingsHomeView.swift */; };
+		BEEF200000000000000000E4 /* SettingsSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E4 /* SettingsSubViews.swift */; };
 		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
 		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -80,6 +97,23 @@
 		BEEF100000000000000000D1 /* HiveRevealView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveRevealView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000D2 /* HiveNamingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveNamingView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000D3 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000D4 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000D5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000D6 /* AchievementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementService.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000D7 /* AuthFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFlowView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000D8 /* ValueCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueCarouselView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000D9 /* AuthPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthPickerView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000DA /* EmailAuthFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthFormView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000DB /* DemoHiveViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoHiveViewerView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000DC /* GiftFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftFlow.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000DD /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000DE /* AchievementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementDetailView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000DF /* SubscriptionHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionHomeView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E0 /* SwitchTierView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTierView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E1 /* BillingHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingHistoryView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E2 /* CancelSubscriptionFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubscriptionFlow.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E3 /* SettingsHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHomeView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E4 /* SettingsSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSubViews.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEEF100000000000000000C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BEEF100000000000000000F1 /* Bees.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bees.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,6 +180,7 @@
 				BEEF100000000000000000B2 /* Shipment.swift */,
 				BEEF100000000000000000B3 /* StickerDesign.swift */,
 				BEEF100000000000000000B4 /* StatType.swift */,
+				BEEF100000000000000000D4 /* Achievement.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -153,9 +188,11 @@
 		BEEF300000000000000000A5 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				BEEF100000000000000000D5 /* AuthService.swift */,
 				BEEF100000000000000000A9 /* HiveService.swift */,
 				BEEF100000000000000000B5 /* ShipmentService.swift */,
 				BEEF100000000000000000B6 /* StickerService.swift */,
+				BEEF100000000000000000D6 /* AchievementService.swift */,
 				BEEF100000000000000000AA /* ServiceContainer.swift */,
 				BEEF100000000000000000AB /* Fixtures.swift */,
 			);
@@ -170,21 +207,10 @@
 				BEEF300000000000000000AA /* Hive */,
 				BEEF300000000000000000AB /* Honey */,
 				BEEF300000000000000000AC /* Onboarding */,
+				BEEF300000000000000000AD /* Auth */,
+				BEEF300000000000000000AF /* You */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		BEEF300000000000000000AC /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				BEEF100000000000000000BD /* OnboardingFlow.swift */,
-				BEEF100000000000000000BE /* TierComparisonView.swift */,
-				BEEF100000000000000000BF /* TutorialCardsView.swift */,
-				BEEF100000000000000000D1 /* HiveRevealView.swift */,
-				BEEF100000000000000000D2 /* HiveNamingView.swift */,
-				BEEF100000000000000000D3 /* WelcomeView.swift */,
-			);
-			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		BEEF300000000000000000A7 /* Tabs */ = {
@@ -231,8 +257,81 @@
 			children = (
 				BEEF100000000000000000BB /* HoneyHomeView.swift */,
 				BEEF100000000000000000BC /* StickerCustomizerView.swift */,
+				BEEF300000000000000000AE /* Gift */,
 			);
 			path = Honey;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000AC /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000BD /* OnboardingFlow.swift */,
+				BEEF100000000000000000BE /* TierComparisonView.swift */,
+				BEEF100000000000000000BF /* TutorialCardsView.swift */,
+				BEEF100000000000000000D1 /* HiveRevealView.swift */,
+				BEEF100000000000000000D2 /* HiveNamingView.swift */,
+				BEEF100000000000000000D3 /* WelcomeView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000AD /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000D7 /* AuthFlowView.swift */,
+				BEEF100000000000000000D8 /* ValueCarouselView.swift */,
+				BEEF100000000000000000D9 /* AuthPickerView.swift */,
+				BEEF100000000000000000DA /* EmailAuthFormView.swift */,
+				BEEF100000000000000000DB /* DemoHiveViewerView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000AE /* Gift */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000DC /* GiftFlow.swift */,
+			);
+			path = Gift;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000AF /* You */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF300000000000000000B0 /* Achievements */,
+				BEEF300000000000000000B1 /* Subscription */,
+				BEEF300000000000000000B2 /* Settings */,
+			);
+			path = You;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000B0 /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000DD /* AchievementsView.swift */,
+				BEEF100000000000000000DE /* AchievementDetailView.swift */,
+			);
+			path = Achievements;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000B1 /* Subscription */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000DF /* SubscriptionHomeView.swift */,
+				BEEF100000000000000000E0 /* SwitchTierView.swift */,
+				BEEF100000000000000000E1 /* BillingHistoryView.swift */,
+				BEEF100000000000000000E2 /* CancelSubscriptionFlow.swift */,
+			);
+			path = Subscription;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000B2 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000E3 /* SettingsHomeView.swift */,
+				BEEF100000000000000000E4 /* SettingsSubViews.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,9 +415,12 @@
 				BEEF200000000000000000B2 /* Shipment.swift in Sources */,
 				BEEF200000000000000000B3 /* StickerDesign.swift in Sources */,
 				BEEF200000000000000000B4 /* StatType.swift in Sources */,
+				BEEF200000000000000000D4 /* Achievement.swift in Sources */,
+				BEEF200000000000000000D5 /* AuthService.swift in Sources */,
 				BEEF200000000000000000A9 /* HiveService.swift in Sources */,
 				BEEF200000000000000000B5 /* ShipmentService.swift in Sources */,
 				BEEF200000000000000000B6 /* StickerService.swift in Sources */,
+				BEEF200000000000000000D6 /* AchievementService.swift in Sources */,
 				BEEF200000000000000000AA /* ServiceContainer.swift in Sources */,
 				BEEF200000000000000000AB /* Fixtures.swift in Sources */,
 				BEEF200000000000000000AC /* HiveTabView.swift in Sources */,
@@ -339,6 +441,20 @@
 				BEEF200000000000000000D1 /* HiveRevealView.swift in Sources */,
 				BEEF200000000000000000D2 /* HiveNamingView.swift in Sources */,
 				BEEF200000000000000000D3 /* WelcomeView.swift in Sources */,
+				BEEF200000000000000000D7 /* AuthFlowView.swift in Sources */,
+				BEEF200000000000000000D8 /* ValueCarouselView.swift in Sources */,
+				BEEF200000000000000000D9 /* AuthPickerView.swift in Sources */,
+				BEEF200000000000000000DA /* EmailAuthFormView.swift in Sources */,
+				BEEF200000000000000000DB /* DemoHiveViewerView.swift in Sources */,
+				BEEF200000000000000000DC /* GiftFlow.swift in Sources */,
+				BEEF200000000000000000DD /* AchievementsView.swift in Sources */,
+				BEEF200000000000000000DE /* AchievementDetailView.swift in Sources */,
+				BEEF200000000000000000DF /* SubscriptionHomeView.swift in Sources */,
+				BEEF200000000000000000E0 /* SwitchTierView.swift in Sources */,
+				BEEF200000000000000000E1 /* BillingHistoryView.swift in Sources */,
+				BEEF200000000000000000E2 /* CancelSubscriptionFlow.swift in Sources */,
+				BEEF200000000000000000E3 /* SettingsHomeView.swift in Sources */,
+				BEEF200000000000000000E4 /* SettingsSubViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

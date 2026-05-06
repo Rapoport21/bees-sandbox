@@ -3,6 +3,7 @@ import SwiftUI
 struct HoneyHomeView: View {
     @Environment(ServiceContainer.self) private var services
     @State private var customizerOpen = false
+    @State private var giftFlowOpen = false
 
     var body: some View {
         NavigationStack {
@@ -41,6 +42,10 @@ struct HoneyHomeView: View {
             }
             .fullScreenCover(isPresented: $customizerOpen) {
                 StickerCustomizerView()
+                    .environment(services)
+            }
+            .fullScreenCover(isPresented: $giftFlowOpen) {
+                GiftFlow()
                     .environment(services)
             }
         }
@@ -153,11 +158,30 @@ struct HoneyHomeView: View {
     }
 
     private var giftCard: some View {
-        sideCard(
-            icon: "gift.fill",
-            title: "Send a gift",
-            subtitle: "Send honey to someone you love"
-        )
+        Button {
+            giftFlowOpen = true
+        } label: {
+            HStack(spacing: BeesSpacing.m) {
+                Image(systemName: "gift.fill")
+                    .font(.system(size: 22))
+                    .foregroundStyle(BeesColors.honey500)
+                    .frame(width: 32)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Send a gift")
+                        .font(BeesType.headingM)
+                        .foregroundStyle(BeesColors.charcoal900)
+                    Text("Send honey to someone you love")
+                        .font(BeesType.captionM)
+                        .foregroundStyle(BeesColors.charcoal600)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(BeesColors.charcoal300)
+            }
+            .padding(BeesSpacing.m)
+            .background(.white, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+        }
+        .buttonStyle(.plain)
     }
 
     private var historyRow: some View {

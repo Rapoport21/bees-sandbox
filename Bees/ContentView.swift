@@ -9,7 +9,9 @@ struct ContentView: View {
     }
 
     var body: some View {
-        if !services.hasCompletedOnboarding {
+        if !services.authService.isAuthenticated {
+            AuthFlowView()
+        } else if !services.hasCompletedOnboarding {
             OnboardingFlow()
         } else {
             TabView(selection: $selection) {

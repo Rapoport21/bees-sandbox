@@ -105,6 +105,24 @@ enum Fixtures {
                      design: StickerDesign(id: UUID(), baseDesignId: "vintage", line1: "For Mom", line2: "with love", line3: "", fontId: "handwritten", colorId: "amber")),
     ]
 
+    static let demoAchievements: [Achievement] = [
+        Achievement(id: "first-week",  title: "First week",     description: "You made it through your first 7 days.", criteria: "Subscribe and watch your hive for a week.",                     icon: "star.fill",          rarity: .common,    earnedAt: Calendar.current.date(byAdding: .day, value: -78, to: Date())),
+        Achievement(id: "first-jar",   title: "First jar",      description: "Your first honey jar arrived.",          criteria: "Receive your first delivered shipment.",                       icon: "drop.fill",          rarity: .common,    earnedAt: Calendar.current.date(byAdding: .day, value: -78, to: Date())),
+        Achievement(id: "spring-wake", title: "Spring wake",    description: "Watched your hive wake from winter.",    criteria: "Be a member through a winter-to-spring transition.",            icon: "leaf.fill",          rarity: .rare,      earnedAt: Calendar.current.date(byAdding: .day, value: -32, to: Date())),
+        Achievement(id: "sweet-spot",  title: "Sweet spot",     description: "Designed 3 stickers in a row.",          criteria: "Customize 3 consecutive shipments.",                            icon: "heart.fill",         rarity: .common,    earnedAt: Calendar.current.date(byAdding: .day, value: -18, to: Date())),
+        Achievement(id: "swarm-watch", title: "Swarm watcher",  description: "Witnessed a real swarm event.",          criteria: "Be online during a tagged swarm anomaly.",                      icon: "eye.fill",           rarity: .epic,      earnedAt: nil),
+        Achievement(id: "year-one",    title: "Year one",       description: "One year as a Bees member.",             criteria: "Stay subscribed for 365 days.",                                 icon: "rosette",            rarity: .epic,      earnedAt: nil),
+        Achievement(id: "harvest",     title: "Harvest day",    description: "Watched your hive's first harvest.",     criteria: "Be online during a tagged harvest event.",                      icon: "tray.full.fill",     rarity: .rare,      earnedAt: nil),
+        Achievement(id: "queen",       title: "Royal observer", description: "Spotted the queen on camera.",           criteria: "Tag a clip with the queen visible.",                            icon: "crown.fill",         rarity: .legendary, earnedAt: nil),
+    ]
+
+    static let demoBilling: [BillingRecord] = [
+        BillingRecord(id: UUID(), date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,  amount: 24.99, tier: .forager, status: .paid),
+        BillingRecord(id: UUID(), date: Calendar.current.date(byAdding: .day, value: -33, to: Date())!, amount: 24.99, tier: .forager, status: .paid),
+        BillingRecord(id: UUID(), date: Calendar.current.date(byAdding: .day, value: -63, to: Date())!, amount: 24.99, tier: .forager, status: .paid),
+        BillingRecord(id: UUID(), date: Calendar.current.date(byAdding: .day, value: -93, to: Date())!, amount: 24.99, tier: .forager, status: .paid),
+    ]
+
     static func chartSamplePoints(stat: StatType, range: TimeRange) -> [StatChartPoint] {
         let count: Int
         switch range {
