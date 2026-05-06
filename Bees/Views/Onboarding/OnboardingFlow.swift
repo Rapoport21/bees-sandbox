@@ -4,7 +4,6 @@ enum OnboardingStep: Hashable {
     case tierComparison
     case tutorial
     case reveal
-    case naming
     case welcome
 }
 
@@ -30,9 +29,7 @@ struct OnboardingFlow: View {
                         onComplete: { path.append(.reveal) }
                     )
                 case .reveal:
-                    HiveRevealView { path.append(.naming) }
-                case .naming:
-                    HiveNamingView(hiveName: $hiveName) {
+                    HiveRevealView(hiveName: $hiveName) {
                         path.append(.welcome)
                     }
                 case .welcome:

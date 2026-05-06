@@ -1,15 +1,21 @@
 import SwiftUI
 
 struct HiveRevealView: View {
+    @Binding var hiveName: String
     var onContinue: () -> Void
+
     @State private var phase: Phase = .hush
     @State private var isMorphing = false
+    @FocusState private var nameFocused: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     enum Phase: Int, Comparable {
         case hush, beesEnter, swarmCoalesce, hiveCrystallize, nameReveal, ctaAppear
         static func < (lhs: Phase, rhs: Phase) -> Bool { lhs.rawValue < rhs.rawValue }
     }
+
+    private let nameLimit = 24
+    private let suggestions = ["Buzzy McHive", "Honeycomb HQ", "The Hive Mind", "Bee Yoncé"]
 
     var body: some View {
         GeometryReader { geo in
@@ -27,32 +33,26 @@ struct HiveRevealView: View {
                         .transition(.opacity)
                 }
 
-                if phase >= .hiveCrystallize {
-                    hiveVideo
-                        .frame(
-                            width: videoWidth(in: geo),
-                            height: videoHeight
-                        )
-                        .position(
-                            x: geo.size.width / 2,
-                            y: videoCenterY(in: geo)
-                        )
-                        .transition(.scale(scale: 0.5).combined(with: .opacity))
-                }
+                VStack(spacing: BeesSpacing.l) {
+                    Spacer().frame(height: BeesSpacing.s)
 
-                if !isMorphing {
-                    VStack {
-                        Spacer().frame(
-                            height: max(0, videoCenterY(in: geo) + videoHeight / 2 + BeesSpacing.l)
-                        )
+                    if phase >= .hiveCrystallize {
+                        hiveVideo
+                            .frame(
+                                width: videoWidth(in: geo),
+                                height: videoHeight
+                            )
+                            .transition(.scale(scale: 0.4).combined(with: .opacity))
+                    }
 
+                    if !isMorphing {
                         if phase >= .nameReveal {
-                            VStack(spacing: BeesSpacing.s) {
+                            VStack(spacing: BeesSpacing.xxs) {
                                 Text("Meet your hive.")
-                                    .font(BeesType.displayXL)
+                                    .font(BeesType.displayL)
                                     .foregroundStyle(BeesColors.charcoal900)
                                 Text("Hive #47 at Sunny Acre Farm")
-                                    .font(BeesType.headingM)
+                                    .font(BeesType.bodyL)
                                     .foregroundStyle(BeesColors.charcoal900)
                                 Text("Sonoma County, California")
                                     .font(BeesType.bodyM)
@@ -62,7 +62,12 @@ struct HiveRevealView: View {
                             .transition(.opacity.combined(with: .move(edge: .bottom)))
                         }
 
-                        Spacer()
+                        if phase >= .ctaAppear {
+                            namingSection
+                                .transition(.opacity.combined(with: .move(edge: .bottom)))
+                        }
+
+                        Spacer(minLength: BeesSpacing.s)
 
                         if phase >= .ctaAppear {
                             Button("Continue") { triggerMorph() }
@@ -71,10 +76,9 @@ struct HiveRevealView: View {
                                 .padding(.bottom, BeesSpacing.l)
                                 .transition(.opacity)
                         }
+                    } else {
+                        Spacer()
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding(.horizontal, BeesSpacing.m)
-                    .transition(.opacity)
                 }
 
                 if !isMorphing && phase >= .beesEnter && phase < .ctaAppear {
@@ -97,7 +101,7 @@ struct HiveRevealView: View {
         .task { await runSequence() }
     }
 
-    // MARK: - Hive video
+    // MARK: - Sub-views
 
     @ViewBuilder
     private var hiveVideo: some View {
@@ -108,22 +112,22 @@ struct HiveRevealView: View {
                         colors: [BeesColors.honey300.opacity(0.55), .clear],
                         center: .center, startRadius: 20, endRadius: 220))
                     .scaleEffect(1.6)
-                    .blur(radius: 24)
+                    .blur(radius: 26)
                     .transition(.opacity)
             }
 
             videoContent
                 .mask(
                     ZStack {
-                        HexagonShape()
+                        Circle()
                             .opacity(isMorphing ? 0 : 1)
                         RoundedRectangle(cornerRadius: BeesRadius.lg)
                             .opacity(isMorphing ? 1 : 0)
                     }
                 )
                 .overlay(
-                    HexagonShape()
-                        .stroke(.white.opacity(0.5), lineWidth: 3)
+                    Circle()
+                        .stroke(.white.opacity(0.55), lineWidth: 3)
                         .opacity(isMorphing ? 0 : 1)
                 )
                 .shadow(color: BeesColors.honey500.opacity(isMorphing ? 0 : 0.45),
@@ -143,20 +147,56 @@ struct HiveRevealView: View {
         }
     }
 
-    // MARK: - Layout
+    private var namingSection: some View {
+        VStack(spacing: BeesSpacing.xs) {
+            Text("NAME IT")
+                .font(BeesType.captionS)
+                .tracking(1.2)
+                .foregroundStyle(BeesColors.charcoal600)
 
-    private var videoHeight: CGFloat { isMorphing ? 220 : 280 }
+            TextField("Buzzy McHive", text: $hiveName)
+                .focused($nameFocused)
+                .textFieldStyle(.roundedBorder)
+                .multilineTextAlignment(.center)
+                .submitLabel(.done)
+                .onChange(of: hiveName) { _, newValue in
+                    if newValue.count > nameLimit {
+                        hiveName = String(newValue.prefix(nameLimit))
+                    }
+                }
+                .onSubmit { nameFocused = false }
 
-    private func videoWidth(in geo: GeometryProxy) -> CGFloat {
-        isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 260
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: BeesSpacing.xs) {
+                    ForEach(suggestions, id: \.self) { suggestion in
+                        Button(suggestion) {
+                            hiveName = suggestion
+                            nameFocused = false
+                        }
+                        .font(BeesType.captionM)
+                        .foregroundStyle(BeesColors.charcoal900)
+                        .padding(.horizontal, BeesSpacing.s + 2)
+                        .padding(.vertical, BeesSpacing.xxs + 2)
+                        .background(BeesColors.surfaceCard, in: Capsule())
+                        .overlay(
+                            Capsule()
+                                .stroke(BeesColors.charcoal300.opacity(0.4), lineWidth: 0.5)
+                        )
+                    }
+                }
+                .padding(.horizontal, BeesSpacing.s)
+            }
+            .scrollClipDisabled()
+        }
+        .padding(.horizontal, BeesSpacing.m)
     }
 
-    private func videoCenterY(in geo: GeometryProxy) -> CGFloat {
-        if isMorphing {
-            return geo.safeAreaInsets.top + videoHeight / 2 + BeesSpacing.l
-        } else {
-            return geo.size.height * 0.40
-        }
+    // MARK: - Layout
+
+    private var videoHeight: CGFloat { 220 }
+
+    private func videoWidth(in geo: GeometryProxy) -> CGFloat {
+        isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 220
     }
 
     // MARK: - Sequence
@@ -172,7 +212,7 @@ struct HiveRevealView: View {
         await advance(to: .swarmCoalesce, after: 1.2, duration: 0.5)
         await advance(to: .hiveCrystallize, after: 1.0, duration: 0.6)
         await advance(to: .nameReveal, after: 0.4, duration: 0.5)
-        await advance(to: .ctaAppear, after: 0.6, duration: 0.4)
+        await advance(to: .ctaAppear, after: 0.5, duration: 0.4)
     }
 
     private func advance(to next: Phase, after delay: TimeInterval = 0, duration: TimeInterval) async {
@@ -187,6 +227,8 @@ struct HiveRevealView: View {
     }
 
     private func triggerMorph() {
+        nameFocused = false
+        if hiveName.isEmpty { hiveName = "Hive #47" }
         withAnimation(.spring(response: 0.75, dampingFraction: 0.85)) {
             isMorphing = true
         }
@@ -237,6 +279,6 @@ private struct BeeGlyph: View {
 
 #Preview {
     NavigationStack {
-        HiveRevealView { }
+        HiveRevealView(hiveName: .constant(""), onContinue: { })
     }
 }
