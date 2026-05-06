@@ -9,9 +9,8 @@ struct HiveTabView: View {
                 VStack(spacing: BeesSpacing.l) {
                     videoPlaceholder
                     hiveIdentityPill
-                    statStrip
+                    statGrid
                     activityCard
-                    quickActions
                 }
                 .padding(.horizontal, BeesSpacing.m)
                 .padding(.top, BeesSpacing.s)
@@ -69,46 +68,82 @@ struct HiveTabView: View {
         }
     }
 
-    private var statStrip: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: BeesSpacing.s) {
-                NavigationLink(value: StatType.temperature) {
-                    StatTile(icon: StatType.temperature.iconName,
-                             value: String(format: "%.0f", services.hiveService.current.temperatureF),
-                             unit: "°F", trend: .up)
-                }
-                NavigationLink(value: StatType.humidity) {
-                    StatTile(icon: StatType.humidity.iconName,
-                             value: String(format: "%.0f", services.hiveService.current.humidityPct),
-                             unit: "%", trend: .flat)
-                }
-                NavigationLink(value: StatType.weight) {
-                    StatTile(icon: StatType.weight.iconName,
-                             value: String(format: "%.1f", services.hiveService.current.weightLb),
-                             unit: "lb", trend: .up)
-                }
-                NavigationLink(value: StatType.population) {
-                    StatTile(icon: StatType.population.iconName,
-                             value: "\(services.hiveService.current.populationEstimate / 1000)k",
-                             unit: "BEES", trend: .up)
-                }
-                NavigationLink(value: StatType.takeoffs) {
-                    StatTile(icon: StatType.takeoffs.iconName,
-                             value: format(services.hiveService.current.takeoffsLast24h),
-                             unit: "OUT", trend: .up)
-                }
-                NavigationLink(value: StatType.landings) {
-                    StatTile(icon: StatType.landings.iconName,
-                             value: format(services.hiveService.current.landingsLast24h),
-                             unit: "IN", trend: .up)
-                }
-                NavigationLink(value: StatType.sound) {
-                    StatTile(icon: StatType.sound.iconName,
-                             value: services.hiveService.current.soundLevel.displayName.prefix(4).uppercased(),
-                             unit: "SND", trend: .flat)
-                }
+    private var statGrid: some View {
+        let snapshot = services.hiveService.current
+        let columns = [
+            GridItem(.flexible(), spacing: BeesSpacing.s),
+            GridItem(.flexible(), spacing: BeesSpacing.s),
+        ]
+        return LazyVGrid(columns: columns, spacing: BeesSpacing.s) {
+            NavigationLink(value: StatType.temperature) {
+                HiveStatCard(
+                    icon: StatType.temperature.iconName,
+                    title: "TEMPERATURE",
+                    value: String(format: "%.0f", snapshot.temperatureF),
+                    unit: "°F",
+                    delta: "+0.4",
+                    deltaPositive: true,
+                    sparkline: sparkline(for: .temperature, base: snapshot.temperatureF, jitter: 1.4),
+                    accent: BeesColors.amber500
+                )
             }
-            .buttonStyle(.plain)
+            NavigationLink(value: StatType.humidity) {
+                HiveStatCard(
+                    icon: StatType.humidity.iconName,
+                    title: "HUMIDITY",
+                    value: String(format: "%.0f", snapshot.humidityPct),
+                    unit: "%",
+                    delta: "stable",
+                    deltaPositive: false,
+                    sparkline: sparkline(for: .humidity, base: snapshot.humidityPct, jitter: 1.8),
+                    accent: BeesColors.honey500
+                )
+            }
+            NavigationLink(value: StatType.weight) {
+                HiveStatCard(
+                    icon: StatType.weight.iconName,
+                    title: "WEIGHT",
+                    value: String(format: "%.1f", snapshot.weightLb),
+                    unit: "lb",
+                    delta: "+0.3",
+                    deltaPositive: true,
+                    sparkline: sparkline(for: .weight, base: snapshot.weightLb, jitter: 0.6, trend: 0.8),
+                    accent: BeesColors.leaf500
+                )
+            }
+            NavigationLink(value: StatType.population) {
+                HiveStatCard(
+                    icon: StatType.population.iconName,
+                    title: "POPULATION",
+                    value: "\(snapshot.populationEstimate / 1000)k",
+                    unit: "bees",
+                    delta: "+1.2k",
+                    deltaPositive: true,
+                    sparkline: sparkline(for: .population, base: Double(snapshot.populationEstimate), jitter: 1200, trend: 1500),
+                    accent: BeesColors.honey500
+                )
+            }
+
+            NavigationLink(value: StatType.honey) {
+                HoneyProductionCard(
+                    honeyLb: snapshot.honeyEstimateLb,
+                    jarTargetLb: 12,
+                    jarsHarvested: 3,
+                    weeklyDelta: 1.2
+                )
+            }
+            .gridCellColumns(2)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func sparkline(for stat: StatType, base: Double, jitter: Double, trend: Double = 0) -> [Double] {
+        var seed = stat.hashValue
+        return (0..<14).map { i in
+            seed = seed &* 1_103_515_245 &+ 12_345
+            let r = Double((seed >> 16) & 0x7FFF) / Double(0x7FFF) - 0.5
+            let trendOffset = trend * (Double(i) / 13)
+            return base - trend + trendOffset + r * jitter
         }
     }
 
@@ -158,22 +193,6 @@ struct HiveTabView: View {
             Text(label)
                 .font(BeesType.captionM)
                 .foregroundStyle(BeesColors.charcoal600)
-        }
-    }
-
-    private var quickActions: some View {
-        HStack(spacing: BeesSpacing.s) {
-            Button { } label: {
-                Label("Full stats", systemImage: "chart.line.uptrend.xyaxis")
-            }
-            .buttonStyle(.beesSecondary)
-
-            if services.hiveComparisonEnabled {
-                Button { } label: {
-                    Label("Compare", systemImage: "arrow.triangle.2.circlepath")
-                }
-                .buttonStyle(.beesSecondary)
-            }
         }
     }
 

@@ -4,6 +4,7 @@ struct HiveSnapshot: Hashable, Codable {
     var temperatureF: Double
     var humidityPct: Double
     var weightLb: Double
+    var honeyEstimateLb: Double
     var populationEstimate: Int
     var takeoffsLast24h: Int
     var landingsLast24h: Int

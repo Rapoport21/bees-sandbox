@@ -121,6 +121,7 @@ struct StatDetailView: View {
         case .temperature: return String(format: "%.0f", snapshot.temperatureF)
         case .humidity:    return String(format: "%.0f", snapshot.humidityPct)
         case .weight:      return String(format: "%.1f", snapshot.weightLb)
+        case .honey:       return String(format: "%.1f", snapshot.honeyEstimateLb)
         case .population:  return "\(snapshot.populationEstimate / 1000)k"
         case .takeoffs:    return "\(snapshot.takeoffsLast24h)"
         case .landings:    return "\(snapshot.landingsLast24h)"
@@ -133,6 +134,7 @@ struct StatDetailView: View {
         case .temperature: return "Up 2° vs last hour"
         case .humidity:    return "Steady today"
         case .weight:      return "Up 0.3 lb this week"
+        case .honey:       return "Up 0.4 lb this week"
         case .population:  return "Growing"
         case .takeoffs:    return "Active week"
         case .landings:    return "Tracks take-offs closely"

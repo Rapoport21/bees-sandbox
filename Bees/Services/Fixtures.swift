@@ -25,6 +25,7 @@ enum Fixtures {
         temperatureF: 92,
         humidityPct: 64,
         weightLb: 47.2,
+        honeyEstimateLb: 8.4,
         populationEstimate: 58_400,
         takeoffsLast24h: 12_472,
         landingsLast24h: 12_530,
@@ -139,6 +140,7 @@ enum Fixtures {
         case .temperature: baseValue = 91
         case .humidity:    baseValue = 62
         case .weight:      baseValue = 45
+        case .honey:       baseValue = 8
         case .population:  baseValue = 56_000
         case .takeoffs:    baseValue = 1_100
         case .landings:    baseValue = 1_115

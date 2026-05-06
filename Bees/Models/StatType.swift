@@ -1,13 +1,14 @@
 import Foundation
 
 enum StatType: String, CaseIterable, Hashable {
-    case temperature, humidity, weight, population, takeoffs, landings, sound
+    case temperature, humidity, weight, honey, population, takeoffs, landings, sound
 
     var displayName: String {
         switch self {
         case .temperature: return "Temperature"
         case .humidity:    return "Humidity"
         case .weight:      return "Weight"
+        case .honey:       return "Honey production"
         case .population:  return "Population"
         case .takeoffs:    return "Take-offs"
         case .landings:    return "Landings"
@@ -20,6 +21,7 @@ enum StatType: String, CaseIterable, Hashable {
         case .temperature: return "°F"
         case .humidity:    return "%"
         case .weight:      return "lb"
+        case .honey:       return "lb"
         case .population:  return "bees"
         case .takeoffs, .landings: return "/24h"
         case .sound:       return ""
@@ -31,6 +33,7 @@ enum StatType: String, CaseIterable, Hashable {
         case .temperature: return "thermometer"
         case .humidity:    return "humidity"
         case .weight:      return "scalemass"
+        case .honey:       return "drop.fill"
         case .population:  return "ant"
         case .takeoffs:    return "arrow.up.forward"
         case .landings:    return "arrow.down.left"
@@ -46,6 +49,8 @@ enum StatType: String, CaseIterable, Hashable {
             return "Healthy hives stay between 50% and 70% humidity. Too dry and larvae struggle. Too wet and mold becomes a risk."
         case .weight:
             return "Hive weight tracks honey production over time. Big drops are usually harvests — we label these on your chart. Slow gains in summer are normal."
+        case .honey:
+            return "An estimate of honey produced this season, derived from hive weight gain. We subtract hive structure, brood, and pollen so the number reflects only what's harvestable. Each subscription jar takes about 12 lb of honey."
         case .population:
             return "We estimate population from sensor readings — actual count varies. A typical hive runs 30,000–80,000 bees depending on season."
         case .takeoffs:

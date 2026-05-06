@@ -23,6 +23,7 @@
 		BEEF200000000000000000AE /* FarmTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AE /* FarmTabView.swift */; };
 		BEEF200000000000000000AF /* YouTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AF /* YouTabView.swift */; };
 		BEEF200000000000000000B0 /* StatTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B0 /* StatTile.swift */; };
+		BEEF200000000000000000F3 /* HiveStatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F3 /* HiveStatCard.swift */; };
 		BEEF200000000000000000B1 /* HealthPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B1 /* HealthPill.swift */; };
 		BEEF200000000000000000B2 /* Shipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B2 /* Shipment.swift */; };
 		BEEF200000000000000000B3 /* StickerDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B3 /* StickerDesign.swift */; };
@@ -86,6 +87,7 @@
 		BEEF100000000000000000AE /* FarmTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarmTabView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000AF /* YouTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTabView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B0 /* StatTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatTile.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000F3 /* HiveStatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveStatCard.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B1 /* HealthPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPill.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B2 /* Shipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shipment.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B3 /* StickerDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerDesign.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				BEEF100000000000000000B0 /* StatTile.swift */,
+				BEEF100000000000000000F3 /* HiveStatCard.swift */,
 				BEEF100000000000000000B1 /* HealthPill.swift */,
 				BEEF100000000000000000B7 /* BeesButton.swift */,
 				BEEF100000000000000000B8 /* JarPreview.swift */,
@@ -450,6 +453,7 @@
 				BEEF200000000000000000AE /* FarmTabView.swift in Sources */,
 				BEEF200000000000000000AF /* YouTabView.swift in Sources */,
 				BEEF200000000000000000B0 /* StatTile.swift in Sources */,
+				BEEF200000000000000000F3 /* HiveStatCard.swift in Sources */,
 				BEEF200000000000000000B1 /* HealthPill.swift in Sources */,
 				BEEF200000000000000000B7 /* BeesButton.swift in Sources */,
 				BEEF200000000000000000B8 /* JarPreview.swift in Sources */,

@@ -58,6 +58,7 @@ final class MockHiveService: HiveService {
             temperatureF: clamp(current.temperatureF + tempDrift, 80...96),
             humidityPct: clamp(current.humidityPct + humDrift, 50...75),
             weightLb: current.weightLb + Double.random(in: -0.05...0.08),
+            honeyEstimateLb: current.honeyEstimateLb + Double.random(in: 0...0.004),
             populationEstimate: current.populationEstimate,
             takeoffsLast24h: activity.rollingTakeoffs,
             landingsLast24h: activity.rollingLandings,
