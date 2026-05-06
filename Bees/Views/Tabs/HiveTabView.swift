@@ -10,6 +10,7 @@ struct HiveTabView: View {
                     videoPlaceholder
                     hiveIdentityPill
                     statGrid
+                    honeyProductionTile
                     activityCard
                 }
                 .padding(.horizontal, BeesSpacing.m)
@@ -123,16 +124,18 @@ struct HiveTabView: View {
                     accent: BeesColors.honey500
                 )
             }
+        }
+        .buttonStyle(.plain)
+    }
 
-            NavigationLink(value: StatType.honey) {
-                HoneyProductionCard(
-                    honeyLb: snapshot.honeyEstimateLb,
-                    jarTargetLb: 12,
-                    jarsHarvested: 3,
-                    weeklyDelta: 1.2
-                )
-            }
-            .gridCellColumns(2)
+    private var honeyProductionTile: some View {
+        NavigationLink(value: StatType.honey) {
+            HoneyProductionCard(
+                honeyLb: services.hiveService.current.honeyEstimateLb,
+                jarTargetLb: 12,
+                jarsHarvested: 3,
+                weeklyDelta: 1.2
+            )
         }
         .buttonStyle(.plain)
     }

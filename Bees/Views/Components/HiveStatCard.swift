@@ -77,13 +77,15 @@ struct Sparkline: View {
             let minV = values.min() ?? 0
             let maxV = values.max() ?? 1
             let range = max(maxV - minV, 0.0001)
+            let inset: CGFloat = 1
+            let usableHeight = max(geo.size.height - inset * 2, 1)
             let stepX = values.count > 1
                 ? geo.size.width / CGFloat(values.count - 1)
                 : geo.size.width
             let pts: [CGPoint] = values.enumerated().map { idx, v in
                 CGPoint(
                     x: CGFloat(idx) * stepX,
-                    y: geo.size.height - CGFloat((v - minV) / range) * geo.size.height
+                    y: inset + usableHeight - CGFloat((v - minV) / range) * usableHeight
                 )
             }
 
@@ -92,7 +94,7 @@ struct Sparkline: View {
                     guard let first = pts.first else { return }
                     p.move(to: CGPoint(x: first.x, y: geo.size.height))
                     p.addLine(to: first)
-                    for pt in pts.dropFirst() { p.addLine(to: pt) }
+                    Self.addSmoothCurve(to: &p, points: pts)
                     p.addLine(to: CGPoint(x: pts.last?.x ?? 0, y: geo.size.height))
                     p.closeSubpath()
                 }
@@ -103,10 +105,27 @@ struct Sparkline: View {
                 Path { p in
                     guard let first = pts.first else { return }
                     p.move(to: first)
-                    for pt in pts.dropFirst() { p.addLine(to: pt) }
+                    Self.addSmoothCurve(to: &p, points: pts)
                 }
                 .stroke(color, style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
             }
+        }
+    }
+
+    /// Cubic bezier through every pair of consecutive points with
+    /// horizontal-tangent control points at the midpoint X. Produces
+    /// a softly curved monotone spline — no overshoot, no kinks.
+    private static func addSmoothCurve(to path: inout Path, points: [CGPoint]) {
+        guard points.count > 1 else { return }
+        for i in 1..<points.count {
+            let prev = points[i - 1]
+            let curr = points[i]
+            let midX = (prev.x + curr.x) / 2
+            path.addCurve(
+                to: curr,
+                control1: CGPoint(x: midX, y: prev.y),
+                control2: CGPoint(x: midX, y: curr.y)
+            )
         }
     }
 }
