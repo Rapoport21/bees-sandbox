@@ -8,29 +8,22 @@ struct ContentView: View {
         case hive, honey, farm, you
     }
 
-    private enum Screen: String { case auth, onboarding, main }
-
-    private var currentScreen: Screen {
-        if !services.authService.isAuthenticated { return .auth }
-        if !services.hasCompletedOnboarding      { return .onboarding }
-        return .main
-    }
-
     var body: some View {
-        ZStack {
-            Group {
-                switch currentScreen {
-                case .auth:       AuthFlowView()
-                case .onboarding: OnboardingFlow()
-                case .main:       mainTabs
+        if services.authService.isAuthenticated {
+            // Main tabs are always rendered underneath. Onboarding is
+            // an overlay on top. When onboarding finishes, the overlay
+            // disappears — there's no view swap, just a curtain
+            // lifting on the page that was already there.
+            ZStack {
+                mainTabs
+
+                if !services.hasCompletedOnboarding {
+                    OnboardingFlow()
                 }
             }
-            .id(currentScreen.rawValue)
+        } else {
+            AuthFlowView()
         }
-        // No animation between screens — the morph in HiveRevealView
-        // ends with a layout that exactly matches HiveTabView, so a
-        // hard cut is invisible (and avoids the cross-fade overlap
-        // where two copies of the hive content used to ghost together).
     }
 
     private var mainTabs: some View {

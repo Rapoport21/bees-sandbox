@@ -6,10 +6,8 @@ struct HiveRevealView: View {
 
     @State private var phase: Phase = .hush
     @State private var isMorphing = false
-    @State private var hiveContentVisible = false
     @FocusState private var nameFocused: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(ServiceContainer.self) private var services
 
     enum Phase: Int, Comparable {
         case hush, beesEnter, swarmCoalesce, hiveCrystallize, nameReveal, ctaAppear
@@ -30,7 +28,12 @@ struct HiveRevealView: View {
                         .transition(.opacity)
                 }
 
-                // Video — fixed top position, only width + shape morph
+                // Video — only this stays visible through the morph.
+                // It morphs from circle to rounded rect at the same Y
+                // and width as HiveTabView's video, then disappears
+                // when the overlay unmounts. Because both views render
+                // SharedHiveVideoPlayer (same AVQueuePlayer), the
+                // hand-off is invisible.
                 VStack(spacing: 0) {
                     Spacer().frame(height: BeesSpacing.s)
 
@@ -46,25 +49,17 @@ struct HiveRevealView: View {
                     Spacer()
                 }
 
-                // Below-video region. Reveal content and hive content
-                // sequence — reveal fades all the way out BEFORE hive
-                // fades in — so they never visually overlap.
+                // Reveal text + naming + Continue. Fades out as the
+                // morph runs. The actual hive UI (identity pill, stats,
+                // activity card) lives in HiveTabView underneath — we
+                // don't render it here.
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: BeesSpacing.s + videoHeight + BeesSpacing.l)
 
-                    ZStack(alignment: .top) {
-                        revealContent
-                            .opacity(isMorphing ? 0 : 1)
-                            .animation(.easeOut(duration: 0.3), value: isMorphing)
-                            .allowsHitTesting(!isMorphing)
-
-                        hiveTabContent
-                            .padding(.horizontal, BeesSpacing.m)
-                            .opacity(hiveContentVisible ? 1 : 0)
-                            .animation(.easeIn(duration: 0.45), value: hiveContentVisible)
-                            .allowsHitTesting(false)
-                    }
+                    revealContent
+                        .opacity(isMorphing ? 0 : 1)
+                        .allowsHitTesting(!isMorphing)
 
                     Spacer()
                 }
@@ -98,25 +93,17 @@ struct HiveRevealView: View {
         isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 220
     }
 
-    // MARK: - Background
+    // MARK: - Background — fades to transparent during morph so the
+    // hive tab beneath is exposed through the overlay.
 
-    /// Warm gradient during the reveal moment, cross-fading to the
-    /// neutral hive-tab cream during the morph so the swap to
-    /// HiveTabView is invisible (same color underneath).
     private var background: some View {
-        ZStack {
-            LinearGradient(
-                colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .opacity(isMorphing ? 0 : 1)
-            .ignoresSafeArea()
-
-            BeesColors.surfacePage
-                .opacity(isMorphing ? 1 : 0)
-                .ignoresSafeArea()
-        }
+        LinearGradient(
+            colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
+        .opacity(isMorphing ? 0 : 1)
     }
 
     // MARK: - Video
@@ -272,95 +259,6 @@ struct HiveRevealView: View {
         .padding(.horizontal, BeesSpacing.m)
     }
 
-    // MARK: - Hive tab content (below video) — fades in during morph
-
-    private var hiveTabContent: some View {
-        VStack(spacing: BeesSpacing.l) {
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(hiveName.isEmpty ? "Hive #47" : hiveName)
-                        .font(BeesType.displayM)
-                        .foregroundStyle(BeesColors.charcoal900)
-                    Text("\(services.hiveService.hive.farmName) · \(services.hiveService.hive.farmLocation)")
-                        .font(BeesType.captionM)
-                        .foregroundStyle(BeesColors.charcoal600)
-                        .lineLimit(1)
-                }
-                Spacer()
-                HealthPill(health: services.hiveService.current.health)
-            }
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: BeesSpacing.s) {
-                    StatTile(icon: "thermometer",
-                             value: String(format: "%.0f", services.hiveService.current.temperatureF),
-                             unit: "°F", trend: .up)
-                    StatTile(icon: "humidity",
-                             value: String(format: "%.0f", services.hiveService.current.humidityPct),
-                             unit: "%", trend: .flat)
-                    StatTile(icon: "scalemass",
-                             value: String(format: "%.1f", services.hiveService.current.weightLb),
-                             unit: "lb", trend: .up)
-                    StatTile(icon: "ant",
-                             value: "\(services.hiveService.current.populationEstimate / 1000)k",
-                             unit: "BEES", trend: .up)
-                    StatTile(icon: "arrow.up.forward",
-                             value: format(services.hiveService.current.takeoffsLast24h),
-                             unit: "OUT", trend: .up)
-                    StatTile(icon: "arrow.down.left",
-                             value: format(services.hiveService.current.landingsLast24h),
-                             unit: "IN", trend: .up)
-                }
-            }
-            .scrollDisabled(true)
-
-            VStack(alignment: .leading, spacing: BeesSpacing.s) {
-                HStack(spacing: BeesSpacing.xs) {
-                    Text("🐝")
-                    Text("ACTIVITY RIGHT NOW")
-                        .font(BeesType.captionM)
-                        .tracking(1)
-                        .foregroundStyle(BeesColors.charcoal600)
-                }
-
-                HStack(spacing: BeesSpacing.xl) {
-                    counter(label: "Take-offs", value: services.hiveService.activity.rollingTakeoffs, glyph: "↑")
-                    counter(label: "Landings", value: services.hiveService.activity.rollingLandings, glyph: "↓")
-                }
-            }
-            .padding(BeesSpacing.m)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                LinearGradient(colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted],
-                               startPoint: .topLeading, endPoint: .bottomTrailing),
-                in: RoundedRectangle(cornerRadius: BeesRadius.lg)
-            )
-        }
-    }
-
-    private func counter(label: String, value: Int, glyph: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: BeesSpacing.xxs) {
-                Text(glyph)
-                    .font(BeesType.headingM)
-                    .foregroundStyle(BeesColors.honey500)
-                Text(format(value))
-                    .font(BeesType.monoL)
-                    .foregroundStyle(BeesColors.charcoal900)
-                    .contentTransition(.numericText())
-            }
-            Text(label)
-                .font(BeesType.captionM)
-                .foregroundStyle(BeesColors.charcoal600)
-        }
-    }
-
-    private func format(_ value: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
-    }
-
     // MARK: - Sequence
 
     private func runSequence() async {
@@ -392,30 +290,21 @@ struct HiveRevealView: View {
         nameFocused = false
         if hiveName.isEmpty { hiveName = "Hive #47" }
 
-        // Stage 1 (0–~600ms): video morph runs — circle widens into
-        // rounded rect via cornerRadius interpolation; reveal content
-        // below fades out (.easeOut(0.3) attached to revealContent).
-        // Background also cross-fades from warm gradient to surfacePage.
+        // One animation: video circle widens to rounded rect at the
+        // exact position of HiveTabView's video, the warm-gradient
+        // background fades to transparent (revealing HiveTabView
+        // beneath), and the reveal content + halo + stroke all fade
+        // out. By the end of this, the screen looks identical to the
+        // Hive tab — because HiveTabView IS what's underneath.
         withAnimation(.easeInOut(duration: 0.55)) {
             isMorphing = true
         }
 
-        // Stage 2 (~400ms after start): hive-tab content fades in
-        // (.easeIn(0.45) attached to hiveTabContent). Reveal content
-        // is already invisible by now, so no overlap.
+        // After the morph, complete onboarding. The OnboardingFlow
+        // overlay unmounts; HiveTabView (which has been rendered
+        // underneath the whole time) is already there.
         Task {
-            try? await Task.sleep(for: .milliseconds(400))
-            await MainActor.run {
-                hiveContentVisible = true
-            }
-        }
-
-        // Stage 3 (~1.0s in): hand off to the real HiveTabView. Tree
-        // swap is now an instant cut (ContentView's currentScreen
-        // animation removed) — both views look identical at swap
-        // time so the cut is invisible.
-        Task {
-            try? await Task.sleep(for: .milliseconds(1000))
+            try? await Task.sleep(for: .milliseconds(700))
             await MainActor.run { onContinue() }
         }
     }
