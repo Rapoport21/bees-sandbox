@@ -1,6 +1,50 @@
 import SwiftUI
 import AVKit
 
+/// Single shared AVQueuePlayer for the hive entrance video, so the
+/// reveal screen and the Hive tab can render the *same* live stream
+/// without reloading or going out of sync during the morph hand-off.
+@MainActor
+final class HiveVideoCoordinator {
+    static let shared = HiveVideoCoordinator()
+
+    let player: AVQueuePlayer
+    private var looper: AVPlayerLooper?
+
+    private init() {
+        player = AVQueuePlayer()
+        player.isMuted = true
+        load()
+    }
+
+    private func load() {
+        guard let url = BundledVideo.url(named: "hive-entrance") else { return }
+        let asset = AVURLAsset(url: url)
+        let item = AVPlayerItem(asset: asset)
+        looper = AVPlayerLooper(player: player, templateItem: item)
+        player.play()
+    }
+}
+
+/// Renders the shared hive entrance video. Multiple instances share
+/// one underlying AVQueuePlayer — when SwiftUI swaps views, only the
+/// AVPlayerLayer is created/destroyed; the player itself keeps
+/// playing without flicker.
+struct SharedHiveVideoPlayer: UIViewRepresentable {
+    func makeUIView(context: Context) -> PlayerContainerView {
+        let view = PlayerContainerView()
+        view.playerLayer.player = HiveVideoCoordinator.shared.player
+        view.playerLayer.videoGravity = .resizeAspectFill
+        return view
+    }
+
+    func updateUIView(_ view: PlayerContainerView, context: Context) {
+        if view.playerLayer.player !== HiveVideoCoordinator.shared.player {
+            view.playerLayer.player = HiveVideoCoordinator.shared.player
+        }
+    }
+}
+
 struct LoopingVideoPlayer: UIViewRepresentable {
     let url: URL
     var isMuted: Bool = true

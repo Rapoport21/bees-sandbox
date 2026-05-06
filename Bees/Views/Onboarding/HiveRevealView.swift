@@ -150,16 +150,8 @@ struct HiveRevealView: View {
         }
     }
 
-    @ViewBuilder
     private var videoContent: some View {
-        if let url = BundledVideo.url(named: "hive-entrance") {
-            LoopingVideoPlayer(url: url)
-        } else {
-            LinearGradient(
-                colors: [BeesColors.honey500, BeesColors.amber500],
-                startPoint: .top, endPoint: .bottom
-            )
-        }
+        SharedHiveVideoPlayer()
     }
 
     // MARK: - Reveal content

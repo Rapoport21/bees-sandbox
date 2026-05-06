@@ -7,6 +7,7 @@ struct HiveTabView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: BeesSpacing.l) {
+                    Spacer().frame(height: BeesSpacing.s)
                     videoPlaceholder
                     hiveIdentityPill
                     statStrip
@@ -17,8 +18,7 @@ struct HiveTabView: View {
                 .padding(.bottom, BeesSpacing.xl)
             }
             .background(BeesColors.surfacePage.ignoresSafeArea())
-            .navigationTitle("Hive")
-            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: StatType.self) { stat in
                 StatDetailView(stat: stat)
             }
@@ -27,28 +27,9 @@ struct HiveTabView: View {
 
     private var videoPlaceholder: some View {
         ZStack {
-            if let url = BundledVideo.firstAvailable() {
-                LoopingVideoPlayer(url: url)
-                    .frame(height: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: BeesRadius.lg))
-            } else {
-                RoundedRectangle(cornerRadius: BeesRadius.lg)
-                    .fill(BeesColors.charcoal900)
-                    .frame(height: 220)
-                    .overlay(
-                        VStack(spacing: BeesSpacing.s) {
-                            Image(systemName: "video.fill")
-                                .font(.system(size: 36))
-                                .foregroundStyle(BeesColors.honey500)
-                            Text("Live video — entrance cam")
-                                .font(BeesType.bodyM)
-                                .foregroundStyle(.white.opacity(0.8))
-                            Text("Drop a video into Bees/Videos/ to test")
-                                .font(BeesType.captionM)
-                                .foregroundStyle(.white.opacity(0.5))
-                        }
-                    )
-            }
+            SharedHiveVideoPlayer()
+                .frame(height: 220)
+                .clipShape(RoundedRectangle(cornerRadius: BeesRadius.lg))
 
             VStack {
                 HStack {
