@@ -60,7 +60,19 @@ struct YouTabView: View {
                     }
                 }
 
-                Section("Developer") {
+                Section {
+                    Picker(selection: Binding(
+                        get: { services.onboardingVariant },
+                        set: { services.onboardingVariant = $0 }
+                    )) {
+                        ForEach(OnboardingVariant.allCases) { variant in
+                            Text(variant.displayName).tag(variant)
+                        }
+                    } label: {
+                        Label("Onboarding intro", systemImage: "rectangle.stack.fill")
+                            .foregroundStyle(BeesColors.charcoal900)
+                    }
+
                     Button {
                         services.resetOnboarding()
                     } label: {
@@ -70,9 +82,13 @@ struct YouTabView: View {
                     Button {
                         services.authService.signOut()
                     } label: {
-                        Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
+                        Label("Sign out (re-enter intro)", systemImage: "rectangle.portrait.and.arrow.right")
                             .foregroundStyle(BeesColors.charcoal900)
                     }
+                } header: {
+                    Text("Developer · A/B")
+                } footer: {
+                    Text("Switch the intro variant, then sign out to walk through the chosen flow from the top.")
                 }
             }
             .navigationTitle("You")

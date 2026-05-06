@@ -4,28 +4,52 @@ enum TutorialItem {
     case card(icon: String, title: String, body: String)
     case video(name: String, title: String, subtitle: String)
 
-    static let sequence: [TutorialItem] = [
-        .card(
-            icon: "hexagon.fill",
-            title: "What is a hive?",
-            body: "Your hive is a real beehive on a partner farm. Thousands of bees, a queen, and honey through the year — all yours to watch and care about."
-        ),
-        .video(
-            name: "onboarding-bee",
-            title: "Watch in real time.",
-            subtitle: "Live cameras at your hive, day and night."
-        ),
-        .video(
-            name: "onboarding-beekeeper",
-            title: "Tended by a real beekeeper.",
-            subtitle: "Your hive sits on a small partner farm. We work with people who know what they're doing."
-        ),
-        .card(
-            icon: "drop.fill",
-            title: "Honey & stickers",
-            body: "Every shipment, you customize a sticker for your jar. We print it, fill it, and ship it to your door."
-        ),
-    ]
+    static func sequence(for variant: OnboardingVariant) -> [TutorialItem] {
+        switch variant {
+        case .carouselFirst:
+            return [
+                .card(
+                    icon: "hexagon.fill",
+                    title: "What is a hive?",
+                    body: "Your hive is a real beehive on a partner farm. Thousands of bees, a queen, and honey through the year — all yours to watch and care about."
+                ),
+                .video(
+                    name: "onboarding-bee",
+                    title: "Watch in real time.",
+                    subtitle: "Live cameras at your hive, day and night."
+                ),
+                .video(
+                    name: "onboarding-beekeeper",
+                    title: "Tended by a real beekeeper.",
+                    subtitle: "Your hive sits on a small partner farm. We work with people who know what they're doing."
+                ),
+                .card(
+                    icon: "drop.fill",
+                    title: "Honey & stickers",
+                    body: "Every shipment, you customize a sticker for your jar. We print it, fill it, and ship it to your door."
+                ),
+            ]
+        case .videosFirst:
+            // Videos already shown pre-auth; tutorial here is text-only.
+            return [
+                .card(
+                    icon: "hexagon.fill",
+                    title: "What is a hive?",
+                    body: "Your hive is a real beehive on a partner farm. Thousands of bees, a queen, and honey through the year — all yours to watch."
+                ),
+                .card(
+                    icon: "chart.line.uptrend.xyaxis",
+                    title: "Live stats",
+                    body: "Temperature, humidity, weight, and bee activity update in real time so you know how your hive is doing."
+                ),
+                .card(
+                    icon: "drop.fill",
+                    title: "Honey & stickers",
+                    body: "Every shipment, you customize a sticker for your jar. We print it, fill it, and ship it to your door."
+                ),
+            ]
+        }
+    }
 }
 
 struct TutorialCardsView: View {

@@ -1,6 +1,19 @@
 import Foundation
 import Observation
 
+enum OnboardingVariant: String, CaseIterable, Hashable, Identifiable {
+    case carouselFirst
+    case videosFirst
+
+    var id: String { rawValue }
+    var displayName: String {
+        switch self {
+        case .carouselFirst: return "A · Carousel first"
+        case .videosFirst:   return "B · Videos first"
+        }
+    }
+}
+
 @Observable
 final class ServiceContainer {
     let authService: AuthService
@@ -13,6 +26,7 @@ final class ServiceContainer {
     var billingHistory: [BillingRecord]
     var subscriptionStatus: SubscriptionStatus
     var trialEndsAt: Date?
+    var onboardingVariant: OnboardingVariant = .carouselFirst
 
     enum SubscriptionStatus: Hashable {
         case trial, active, paused, pastDue, canceled

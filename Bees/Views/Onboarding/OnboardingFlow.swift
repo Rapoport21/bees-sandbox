@@ -14,7 +14,8 @@ struct OnboardingFlow: View {
     @State private var pickedTier: Tier = .forager
     @State private var hiveName: String = ""
 
-    private var totalTutorialItems: Int { TutorialItem.sequence.count }
+    private var sequence: [TutorialItem] { TutorialItem.sequence(for: services.onboardingVariant) }
+    private var totalTutorialItems: Int { sequence.count }
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -46,7 +47,7 @@ struct OnboardingFlow: View {
     @ViewBuilder
     private func tutorialView(at index: Int) -> some View {
         let total = totalTutorialItems
-        let item = TutorialItem.sequence[index]
+        let item = sequence[index]
         let goNext: () -> Void = {
             if index < total - 1 {
                 path.append(.tutorial(index + 1))

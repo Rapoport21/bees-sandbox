@@ -13,11 +13,22 @@ struct AuthFlowView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            ValueCarouselView(
-                onAdopt: { path.append(.picker(returningSignIn: false)) },
-                onDemo:  { path.append(.demo) },
-                onSignIn: { path.append(.picker(returningSignIn: true)) }
-            )
+            Group {
+                switch services.onboardingVariant {
+                case .carouselFirst:
+                    ValueCarouselView(
+                        onAdopt: { path.append(.picker(returningSignIn: false)) },
+                        onDemo:  { path.append(.demo) },
+                        onSignIn: { path.append(.picker(returningSignIn: true)) }
+                    )
+                case .videosFirst:
+                    VideoIntroView(
+                        onAdopt: { path.append(.picker(returningSignIn: false)) },
+                        onDemo:  { path.append(.demo) },
+                        onSignIn: { path.append(.picker(returningSignIn: true)) }
+                    )
+                }
+            }
             .navigationDestination(for: AuthStep.self) { step in
                 switch step {
                 case .carousel:
