@@ -6,8 +6,10 @@ struct HiveRevealView: View {
 
     @State private var phase: Phase = .hush
     @State private var isMorphing = false
+    @State private var hiveContentVisible = false
     @FocusState private var nameFocused: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(ServiceContainer.self) private var services
 
     enum Phase: Int, Comparable {
         case hush, beesEnter, swarmCoalesce, hiveCrystallize, nameReveal, ctaAppear
@@ -20,12 +22,7 @@ struct HiveRevealView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                LinearGradient(
-                    colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+                background
 
                 if !reduceMotion && phase >= .beesEnter && phase < .hiveCrystallize && !isMorphing {
                     BeeSwarmAnimation()
@@ -34,58 +31,24 @@ struct HiveRevealView: View {
                 }
 
                 VStack(spacing: BeesSpacing.l) {
-                    Spacer().frame(height: BeesSpacing.s)
+                    Spacer()
+                        .frame(height: topPadding(in: geo))
 
                     if phase >= .hiveCrystallize {
                         hiveVideo
-                            .frame(
-                                width: videoWidth(in: geo),
-                                height: videoHeight
-                            )
+                            .frame(width: videoWidth(in: geo), height: videoHeight)
                             .transition(.scale(scale: 0.4).combined(with: .opacity))
                     }
 
-                    if !isMorphing {
-                        if phase >= .nameReveal {
-                            VStack(spacing: BeesSpacing.xxs) {
-                                Text("Meet your hive.")
-                                    .font(BeesType.displayL)
-                                    .foregroundStyle(BeesColors.charcoal900)
-                                Text("Hive #47 at Sunny Acre Farm")
-                                    .font(BeesType.bodyL)
-                                    .foregroundStyle(BeesColors.charcoal900)
-                                Text("Sonoma County, California")
-                                    .font(BeesType.bodyM)
-                                    .foregroundStyle(BeesColors.charcoal600)
-                            }
-                            .multilineTextAlignment(.center)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-                        }
-
-                        if phase >= .ctaAppear {
-                            namingSection
-                                .transition(.opacity.combined(with: .move(edge: .bottom)))
-                        }
-
-                        Spacer(minLength: BeesSpacing.s)
-
-                        if phase >= .ctaAppear {
-                            VStack(spacing: BeesSpacing.xs) {
-                                Button("Continue") { triggerMorph() }
-                                    .buttonStyle(.beesPrimary)
-
-                                Text("Free trial starts today · First jar ships in ~6 weeks")
-                                    .font(BeesType.captionM)
-                                    .foregroundStyle(BeesColors.charcoal600)
-                                    .multilineTextAlignment(.center)
-                            }
-                            .padding(.horizontal, BeesSpacing.l)
-                            .padding(.bottom, BeesSpacing.l)
-                            .transition(.opacity)
-                        }
+                    if isMorphing {
+                        hiveTabContent
+                            .padding(.horizontal, BeesSpacing.m)
+                            .opacity(hiveContentVisible ? 1 : 0)
                     } else {
-                        Spacer()
+                        revealContent
                     }
+
+                    Spacer()
                 }
 
                 if !isMorphing && phase >= .beesEnter && phase < .ctaAppear {
@@ -108,7 +71,30 @@ struct HiveRevealView: View {
         .task { await runSequence() }
     }
 
-    // MARK: - Sub-views
+    // MARK: - Layout
+
+    private func topPadding(in geo: GeometryProxy) -> CGFloat {
+        isMorphing ? geo.safeAreaInsets.top + BeesSpacing.s : BeesSpacing.s
+    }
+
+    private var videoHeight: CGFloat { 220 }
+
+    private func videoWidth(in geo: GeometryProxy) -> CGFloat {
+        isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 220
+    }
+
+    // MARK: - Background
+
+    private var background: some View {
+        LinearGradient(
+            colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
+    }
+
+    // MARK: - Video
 
     @ViewBuilder
     private var hiveVideo: some View {
@@ -137,6 +123,23 @@ struct HiveRevealView: View {
                         .stroke(.white.opacity(0.55), lineWidth: 3)
                         .opacity(isMorphing ? 0 : 1)
                 )
+                .overlay(alignment: .topLeading) {
+                    if isMorphing {
+                        HStack(spacing: BeesSpacing.xxs) {
+                            Circle()
+                                .fill(BeesColors.error500)
+                                .frame(width: 6, height: 6)
+                            Text("LIVE")
+                                .font(BeesType.captionS)
+                                .foregroundStyle(.white)
+                        }
+                        .padding(.horizontal, BeesSpacing.xs)
+                        .padding(.vertical, BeesSpacing.xxs)
+                        .background(.black.opacity(0.5), in: Capsule())
+                        .padding(BeesSpacing.s)
+                        .opacity(hiveContentVisible ? 1 : 0)
+                    }
+                }
                 .shadow(color: BeesColors.honey500.opacity(isMorphing ? 0 : 0.45),
                         radius: 22, x: 0, y: 10)
         }
@@ -151,6 +154,49 @@ struct HiveRevealView: View {
                 colors: [BeesColors.honey500, BeesColors.amber500],
                 startPoint: .top, endPoint: .bottom
             )
+        }
+    }
+
+    // MARK: - Reveal content (visible when not morphing)
+
+    @ViewBuilder
+    private var revealContent: some View {
+        if phase >= .nameReveal {
+            VStack(spacing: BeesSpacing.xxs) {
+                Text("Meet your hive.")
+                    .font(BeesType.displayL)
+                    .foregroundStyle(BeesColors.charcoal900)
+                Text("Hive #47 at Sunny Acre Farm")
+                    .font(BeesType.bodyL)
+                    .foregroundStyle(BeesColors.charcoal900)
+                Text("Sonoma County, California")
+                    .font(BeesType.bodyM)
+                    .foregroundStyle(BeesColors.charcoal600)
+            }
+            .multilineTextAlignment(.center)
+            .transition(.opacity.combined(with: .move(edge: .bottom)))
+        }
+
+        if phase >= .ctaAppear {
+            namingSection
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
+        }
+
+        Spacer(minLength: BeesSpacing.s)
+
+        if phase >= .ctaAppear {
+            VStack(spacing: BeesSpacing.xs) {
+                Button("Continue") { triggerMorph() }
+                    .buttonStyle(.beesPrimary)
+
+                Text("Free trial starts today · First jar ships in ~6 weeks")
+                    .font(BeesType.captionM)
+                    .foregroundStyle(BeesColors.charcoal600)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.horizontal, BeesSpacing.l)
+            .padding(.bottom, BeesSpacing.l)
+            .transition(.opacity)
         }
     }
 
@@ -214,12 +260,96 @@ struct HiveRevealView: View {
         .padding(.horizontal, BeesSpacing.m)
     }
 
-    // MARK: - Layout
+    // MARK: - Hive tab content (visible during morph)
 
-    private var videoHeight: CGFloat { 220 }
+    private var hiveTabContent: some View {
+        VStack(spacing: BeesSpacing.l) {
+            // Hive identity pill
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(hiveName.isEmpty ? "Hive #47" : hiveName)
+                        .font(BeesType.displayM)
+                        .foregroundStyle(BeesColors.charcoal900)
+                    Text("\(services.hiveService.hive.farmName) · \(services.hiveService.hive.farmLocation)")
+                        .font(BeesType.captionM)
+                        .foregroundStyle(BeesColors.charcoal600)
+                        .lineLimit(1)
+                }
+                Spacer()
+                HealthPill(health: services.hiveService.current.health)
+            }
 
-    private func videoWidth(in geo: GeometryProxy) -> CGFloat {
-        isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 220
+            // Stat strip
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: BeesSpacing.s) {
+                    StatTile(icon: "thermometer",
+                             value: String(format: "%.0f", services.hiveService.current.temperatureF),
+                             unit: "°F", trend: .up)
+                    StatTile(icon: "humidity",
+                             value: String(format: "%.0f", services.hiveService.current.humidityPct),
+                             unit: "%", trend: .flat)
+                    StatTile(icon: "scalemass",
+                             value: String(format: "%.1f", services.hiveService.current.weightLb),
+                             unit: "lb", trend: .up)
+                    StatTile(icon: "ant",
+                             value: "\(services.hiveService.current.populationEstimate / 1000)k",
+                             unit: "BEES", trend: .up)
+                    StatTile(icon: "arrow.up.forward",
+                             value: format(services.hiveService.current.takeoffsLast24h),
+                             unit: "OUT", trend: .up)
+                    StatTile(icon: "arrow.down.left",
+                             value: format(services.hiveService.current.landingsLast24h),
+                             unit: "IN", trend: .up)
+                }
+            }
+            .scrollDisabled(true)
+
+            // Activity card
+            VStack(alignment: .leading, spacing: BeesSpacing.s) {
+                HStack(spacing: BeesSpacing.xs) {
+                    Text("🐝")
+                    Text("ACTIVITY RIGHT NOW")
+                        .font(BeesType.captionM)
+                        .tracking(1)
+                        .foregroundStyle(BeesColors.charcoal600)
+                }
+
+                HStack(spacing: BeesSpacing.xl) {
+                    counter(label: "Take-offs", value: services.hiveService.activity.rollingTakeoffs, glyph: "↑")
+                    counter(label: "Landings", value: services.hiveService.activity.rollingLandings, glyph: "↓")
+                }
+            }
+            .padding(BeesSpacing.m)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                LinearGradient(colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted],
+                               startPoint: .topLeading, endPoint: .bottomTrailing),
+                in: RoundedRectangle(cornerRadius: BeesRadius.lg)
+            )
+        }
+    }
+
+    private func counter(label: String, value: Int, glyph: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: BeesSpacing.xxs) {
+                Text(glyph)
+                    .font(BeesType.headingM)
+                    .foregroundStyle(BeesColors.honey500)
+                Text(format(value))
+                    .font(BeesType.monoL)
+                    .foregroundStyle(BeesColors.charcoal900)
+                    .contentTransition(.numericText())
+            }
+            Text(label)
+                .font(BeesType.captionM)
+                .foregroundStyle(BeesColors.charcoal600)
+        }
+    }
+
+    private func format(_ value: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: value)) ?? "\(value)"
     }
 
     // MARK: - Sequence
@@ -252,11 +382,22 @@ struct HiveRevealView: View {
     private func triggerMorph() {
         nameFocused = false
         if hiveName.isEmpty { hiveName = "Hive #47" }
-        withAnimation(.spring(response: 0.75, dampingFraction: 0.85)) {
+
+        withAnimation(.spring(response: 0.7, dampingFraction: 0.85)) {
             isMorphing = true
         }
+
         Task {
-            try? await Task.sleep(for: .seconds(0.9))
+            try? await Task.sleep(for: .milliseconds(220))
+            await MainActor.run {
+                withAnimation(.easeInOut(duration: 0.45)) {
+                    hiveContentVisible = true
+                }
+            }
+        }
+
+        Task {
+            try? await Task.sleep(for: .seconds(1.35))
             await MainActor.run { onContinue() }
         }
     }
@@ -304,4 +445,5 @@ private struct BeeGlyph: View {
     NavigationStack {
         HiveRevealView(hiveName: .constant(""), onContinue: { })
     }
+    .environment(ServiceContainer.preview())
 }

@@ -9,30 +9,41 @@ struct ContentView: View {
     }
 
     var body: some View {
-        if !services.authService.isAuthenticated {
-            AuthFlowView()
-        } else if !services.hasCompletedOnboarding {
-            OnboardingFlow()
-        } else {
-            TabView(selection: $selection) {
-                HiveTabView()
-                    .tabItem { Label("Hive", systemImage: "hexagon.fill") }
-                    .tag(Tab.hive)
-
-                HoneyTabView()
-                    .tabItem { Label("Honey", systemImage: "drop.fill") }
-                    .tag(Tab.honey)
-
-                FarmTabView()
-                    .tabItem { Label("Farm", systemImage: "leaf.fill") }
-                    .tag(Tab.farm)
-
-                YouTabView()
-                    .tabItem { Label("You", systemImage: "person.fill") }
-                    .tag(Tab.you)
+        ZStack {
+            if !services.authService.isAuthenticated {
+                AuthFlowView()
+                    .transition(.opacity)
+            } else if !services.hasCompletedOnboarding {
+                OnboardingFlow()
+                    .transition(.opacity)
+            } else {
+                mainTabs
+                    .transition(.opacity)
             }
-            .tint(BeesColors.honey500)
         }
+        .animation(.easeInOut(duration: 0.5), value: services.hasCompletedOnboarding)
+        .animation(.easeInOut(duration: 0.3), value: services.authService.isAuthenticated)
+    }
+
+    private var mainTabs: some View {
+        TabView(selection: $selection) {
+            HiveTabView()
+                .tabItem { Label("Hive", systemImage: "hexagon.fill") }
+                .tag(Tab.hive)
+
+            HoneyTabView()
+                .tabItem { Label("Honey", systemImage: "drop.fill") }
+                .tag(Tab.honey)
+
+            FarmTabView()
+                .tabItem { Label("Farm", systemImage: "leaf.fill") }
+                .tag(Tab.farm)
+
+            YouTabView()
+                .tabItem { Label("You", systemImage: "person.fill") }
+                .tag(Tab.you)
+        }
+        .tint(BeesColors.honey500)
     }
 }
 
