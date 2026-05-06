@@ -157,7 +157,7 @@ struct HiveTabView: View {
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            LinearGradient(colors: [BeesColors.honey100, BeesColors.comb500],
+            LinearGradient(colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted],
                            startPoint: .topLeading, endPoint: .bottomTrailing),
             in: RoundedRectangle(cornerRadius: BeesRadius.lg)
         )

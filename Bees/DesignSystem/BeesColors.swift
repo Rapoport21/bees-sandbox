@@ -32,6 +32,13 @@ enum BeesColors {
         dark:  UIColor(red: 0.20, green: 0.18, blue: 0.16, alpha: 1.0)
     )
 
+    /// Warm highlight surface — banners, callouts, jar backdrops.
+    /// Light: honey100 cream. Dark: warm dim with subtle honey tint.
+    static let surfaceWarmHighlight = adaptive(
+        light: UIColor(red: 1.00, green: 0.96, blue: 0.86, alpha: 1.0),
+        dark:  UIColor(red: 0.22, green: 0.16, blue: 0.09, alpha: 1.0)
+    )
+
     /// Backwards-compat alias.
     static var comb500: Color { surfaceMuted }
 

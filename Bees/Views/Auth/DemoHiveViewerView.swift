@@ -185,7 +185,7 @@ struct DemoHiveViewerView: View {
         }
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(LinearGradient(colors: [BeesColors.honey100, BeesColors.comb500],
+        .background(LinearGradient(colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted],
                                    startPoint: .topLeading, endPoint: .bottomTrailing),
                     in: RoundedRectangle(cornerRadius: BeesRadius.lg))
         .onTapGesture { showSoftSignup = true }

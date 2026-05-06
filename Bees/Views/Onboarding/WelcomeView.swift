@@ -9,7 +9,7 @@ struct WelcomeView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [BeesColors.honey100, BeesColors.comb500.opacity(0.5)],
+                colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.5)],
                 startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
 

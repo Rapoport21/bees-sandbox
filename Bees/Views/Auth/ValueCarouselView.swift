@@ -48,7 +48,7 @@ struct ValueCarouselView: View {
             .padding(.bottom, BeesSpacing.l)
         }
         .background(
-            LinearGradient(colors: [BeesColors.honey100, BeesColors.comb500.opacity(0.5)],
+            LinearGradient(colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.5)],
                            startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
         )

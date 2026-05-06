@@ -98,7 +98,7 @@ struct StickerCustomizerView: View {
         }
         .padding(.horizontal, BeesSpacing.m)
         .padding(.vertical, BeesSpacing.s)
-        .background(BeesColors.honey100, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+        .background(BeesColors.surfaceWarmHighlight, in: RoundedRectangle(cornerRadius: BeesRadius.md))
     }
 
     private var jarPager: some View {
@@ -255,7 +255,7 @@ struct StickerCustomizerView: View {
         }
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(BeesColors.honey100, in: RoundedRectangle(cornerRadius: BeesRadius.md))
+        .background(BeesColors.surfaceWarmHighlight, in: RoundedRectangle(cornerRadius: BeesRadius.md))
     }
 
     private var footerBar: some View {

@@ -13,7 +13,7 @@ struct HiveRevealView: View {
     var body: some View {
         ZStack {
             LinearGradient(
-                colors: [BeesColors.honey100, BeesColors.comb500.opacity(0.6)],
+                colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
                 startPoint: .top,
                 endPoint: .bottom
             )

@@ -14,7 +14,7 @@ struct JarPreview: View {
 
     private var backdrop: some View {
         RadialGradient(
-            colors: [BeesColors.honey100, BeesColors.comb500],
+            colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted],
             center: .center,
             startRadius: 10,
             endRadius: size
