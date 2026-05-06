@@ -45,50 +45,27 @@ struct NotificationSettingsView: View {
 // MARK: - Display
 
 struct DisplaySettingsView: View {
-    @State private var theme: Theme = .system
-    @State private var temperature: TemperatureUnit = .auto
-    @State private var weight: WeightUnit = .auto
-
-    enum Theme: String, CaseIterable, Identifiable {
-        case system, light, dark
-        var id: String { rawValue }
-        var displayName: String { rawValue.capitalized }
-    }
-    enum TemperatureUnit: String, CaseIterable, Identifiable {
-        case auto, fahrenheit, celsius
-        var id: String { rawValue }
-        var displayName: String {
-            switch self {
-            case .auto: return "Auto"
-            case .fahrenheit: return "°F"
-            case .celsius: return "°C"
-            }
-        }
-    }
-    enum WeightUnit: String, CaseIterable, Identifiable {
-        case auto, lb, kg
-        var id: String { rawValue }
-        var displayName: String { rawValue.capitalized }
-    }
+    @Environment(ServiceContainer.self) private var services
 
     var body: some View {
-        Form {
+        @Bindable var services = services
+        return Form {
             Section("Theme") {
-                Picker("Theme", selection: $theme) {
-                    ForEach(Theme.allCases) { Text($0.displayName).tag($0) }
+                Picker("Theme", selection: $services.theme) {
+                    ForEach(AppTheme.allCases) { Text($0.displayName).tag($0) }
                 }
                 .pickerStyle(.inline)
                 .labelsHidden()
             }
             Section("Temperature") {
-                Picker("Temperature", selection: $temperature) {
+                Picker("Temperature", selection: $services.temperatureUnit) {
                     ForEach(TemperatureUnit.allCases) { Text($0.displayName).tag($0) }
                 }
                 .pickerStyle(.inline)
                 .labelsHidden()
             }
             Section("Weight") {
-                Picker("Weight", selection: $weight) {
+                Picker("Weight", selection: $services.weightUnit) {
                     ForEach(WeightUnit.allCases) { Text($0.displayName).tag($0) }
                 }
                 .pickerStyle(.inline)
@@ -103,40 +80,30 @@ struct DisplaySettingsView: View {
 // MARK: - Hive
 
 struct HiveSettingsView: View {
-    @State private var comparison = false
-    @State private var showHiveMap = false
-    @State private var multiHive = false
-    @State private var defaultAudio = false
-    @State private var defaultQuality: VideoQuality = .auto
-    @State private var liveActivity = false
-
-    enum VideoQuality: String, CaseIterable, Identifiable {
-        case auto, sd, hd
-        var id: String { rawValue }
-        var displayName: String { rawValue == "auto" ? "Auto" : rawValue.uppercased() }
-    }
+    @Environment(ServiceContainer.self) private var services
 
     var body: some View {
-        Form {
+        @Bindable var services = services
+        return Form {
             Section("Privacy") {
-                Toggle("Hive comparison (anonymized)", isOn: $comparison)
+                Toggle("Hive comparison (anonymized)", isOn: $services.hiveComparisonEnabled)
             }
             Section {
-                Toggle("Show map of available hives", isOn: $showHiveMap)
-                Toggle("Allow multiple hives", isOn: $multiHive)
+                Toggle("Show map of available hives", isOn: $services.showHiveMap)
+                Toggle("Allow multiple hives", isOn: $services.multiHiveEnabled)
             } header: {
                 Text("Hive map (preview)")
             } footer: {
                 Text("These are dev-preview toggles. Both will be enabled later.")
             }
             Section("Video") {
-                Toggle("Audio on by default", isOn: $defaultAudio)
-                Picker("Default quality", selection: $defaultQuality) {
+                Toggle("Audio on by default", isOn: $services.defaultAudioOn)
+                Picker("Default quality", selection: $services.defaultVideoQuality) {
                     ForEach(VideoQuality.allCases) { Text($0.displayName).tag($0) }
                 }
             }
             Section("Live Activity") {
-                Toggle("Hive activity Live Activity", isOn: $liveActivity)
+                Toggle("Hive activity Live Activity", isOn: $services.liveActivityEnabled)
             }
         }
         .navigationTitle("Hive settings")

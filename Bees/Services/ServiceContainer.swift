@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Observation
 
 enum OnboardingVariant: String, CaseIterable, Hashable, Identifiable {
@@ -14,6 +15,48 @@ enum OnboardingVariant: String, CaseIterable, Hashable, Identifiable {
     }
 }
 
+enum AppTheme: String, CaseIterable, Hashable, Identifiable {
+    case system, light, dark
+
+    var id: String { rawValue }
+    var displayName: String { rawValue.capitalized }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light:  return .light
+        case .dark:   return .dark
+        }
+    }
+}
+
+enum TemperatureUnit: String, CaseIterable, Hashable, Identifiable {
+    case auto, fahrenheit, celsius
+
+    var id: String { rawValue }
+    var displayName: String {
+        switch self {
+        case .auto:       return "Auto"
+        case .fahrenheit: return "°F"
+        case .celsius:    return "°C"
+        }
+    }
+}
+
+enum WeightUnit: String, CaseIterable, Hashable, Identifiable {
+    case auto, lb, kg
+
+    var id: String { rawValue }
+    var displayName: String { rawValue.capitalized }
+}
+
+enum VideoQuality: String, CaseIterable, Hashable, Identifiable {
+    case auto, sd, hd
+
+    var id: String { rawValue }
+    var displayName: String { self == .auto ? "Auto" : rawValue.uppercased() }
+}
+
 @Observable
 final class ServiceContainer {
     let authService: AuthService
@@ -21,12 +64,26 @@ final class ServiceContainer {
     let shipmentService: ShipmentService
     let stickerService: StickerService
     let achievementService: AchievementService
+
     var currentTier: Tier
     var hasCompletedOnboarding: Bool
     var billingHistory: [BillingRecord]
     var subscriptionStatus: SubscriptionStatus
     var trialEndsAt: Date?
     var onboardingVariant: OnboardingVariant = .carouselFirst
+
+    // Display preferences
+    var theme: AppTheme = .system
+    var temperatureUnit: TemperatureUnit = .auto
+    var weightUnit: WeightUnit = .auto
+
+    // Hive preferences
+    var hiveComparisonEnabled: Bool = false
+    var showHiveMap: Bool = false
+    var multiHiveEnabled: Bool = false
+    var defaultAudioOn: Bool = false
+    var defaultVideoQuality: VideoQuality = .auto
+    var liveActivityEnabled: Bool = false
 
     enum SubscriptionStatus: Hashable {
         case trial, active, paused, pastDue, canceled

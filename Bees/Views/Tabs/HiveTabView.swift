@@ -187,10 +187,12 @@ struct HiveTabView: View {
             }
             .buttonStyle(.beesSecondary)
 
-            Button { } label: {
-                Label("Compare", systemImage: "arrow.triangle.2.circlepath")
+            if services.hiveComparisonEnabled {
+                Button { } label: {
+                    Label("Compare", systemImage: "arrow.triangle.2.circlepath")
+                }
+                .buttonStyle(.beesSecondary)
             }
-            .buttonStyle(.beesSecondary)
         }
     }
 

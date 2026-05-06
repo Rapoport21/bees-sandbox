@@ -8,7 +8,7 @@ struct BeesApp: App {
         WindowGroup {
             ContentView()
                 .environment(services)
-                .preferredColorScheme(.light)
+                .preferredColorScheme(services.theme.colorScheme)
         }
     }
 }
