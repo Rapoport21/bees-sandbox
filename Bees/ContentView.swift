@@ -8,30 +8,27 @@ struct ContentView: View {
         case hive, honey, farm, you
     }
 
+    private enum Screen: String { case auth, onboarding, main }
+
+    private var currentScreen: Screen {
+        if !services.authService.isAuthenticated { return .auth }
+        if !services.hasCompletedOnboarding      { return .onboarding }
+        return .main
+    }
+
     var body: some View {
         ZStack {
-            if services.authService.isAuthenticated {
-                // Both onboarding and main app stay mounted once
-                // authenticated. They cross-fade by opacity. This keeps
-                // HiveTabView's LoopingVideoPlayer alive across the
-                // hand-off, so the video doesn't reload on transition.
-                ZStack {
-                    mainTabs
-                        .opacity(services.hasCompletedOnboarding ? 1 : 0)
-                        .allowsHitTesting(services.hasCompletedOnboarding)
-
-                    OnboardingFlow()
-                        .opacity(services.hasCompletedOnboarding ? 0 : 1)
-                        .allowsHitTesting(!services.hasCompletedOnboarding)
+            Group {
+                switch currentScreen {
+                case .auth:       AuthFlowView()
+                case .onboarding: OnboardingFlow()
+                case .main:       mainTabs
                 }
-                .animation(.easeInOut(duration: 0.55), value: services.hasCompletedOnboarding)
-                .transition(.opacity)
-            } else {
-                AuthFlowView()
-                    .transition(.opacity)
             }
+            .id(currentScreen.rawValue)
+            .transition(.opacity)
         }
-        .animation(.easeInOut(duration: 0.35), value: services.authService.isAuthenticated)
+        .animation(.easeInOut(duration: 0.55), value: currentScreen)
     }
 
     private var mainTabs: some View {
