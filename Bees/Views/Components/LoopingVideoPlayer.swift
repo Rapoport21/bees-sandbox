@@ -99,19 +99,34 @@ final class PlayerContainerView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.addSublayer(playerLayer)
-        backgroundColor = .black
+        configure()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        layer.addSublayer(playerLayer)
+        configure()
+    }
+
+    private func configure() {
         backgroundColor = .black
+        playerLayer.frame = bounds
+        // Auto-track parent layer bounds so the AVPlayerLayer resizes
+        // in lockstep with the SwiftUI .frame animation. Without this
+        // the layer stays at its initial size while the host UIView
+        // grows, leaving black bars where the video hasn't filled.
+        playerLayer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
+        layer.addSublayer(playerLayer)
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        // Belt + suspenders: also set frame explicitly each layout pass
+        // and suppress the implicit CA fade so the resize doesn't lag
+        // behind the parent's animation.
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
         playerLayer.frame = bounds
+        CATransaction.commit()
     }
 }
 
