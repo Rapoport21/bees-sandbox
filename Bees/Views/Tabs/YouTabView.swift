@@ -45,6 +45,15 @@ struct YouTabView: View {
                     label("Settings", icon: "gearshape.fill")
                     label("Help & Support", icon: "questionmark.circle.fill")
                 }
+
+                Section("Developer") {
+                    Button {
+                        services.resetOnboarding()
+                    } label: {
+                        Label("Replay onboarding", systemImage: "arrow.clockwise")
+                            .foregroundStyle(BeesColors.charcoal900)
+                    }
+                }
             }
             .navigationTitle("You")
         }

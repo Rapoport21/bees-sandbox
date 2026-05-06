@@ -19,6 +19,9 @@ struct HiveTabView: View {
             .background(BeesColors.honey100.opacity(0.4).ignoresSafeArea())
             .navigationTitle("Hive")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: StatType.self) { stat in
+                StatDetailView(stat: stat)
+            }
         }
     }
 
@@ -80,28 +83,43 @@ struct HiveTabView: View {
     private var statStrip: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: BeesSpacing.s) {
-                StatTile(icon: "thermometer",
-                         value: String(format: "%.0f", services.hiveService.current.temperatureF),
-                         unit: "°F", trend: .up)
-                StatTile(icon: "humidity",
-                         value: String(format: "%.0f", services.hiveService.current.humidityPct),
-                         unit: "%", trend: .flat)
-                StatTile(icon: "scalemass",
-                         value: String(format: "%.1f", services.hiveService.current.weightLb),
-                         unit: "lb", trend: .up)
-                StatTile(icon: "ant",
-                         value: "\(services.hiveService.current.populationEstimate / 1000)k",
-                         unit: "BEES", trend: .up)
-                StatTile(icon: "arrow.up.forward",
-                         value: format(services.hiveService.current.takeoffsLast24h),
-                         unit: "OUT", trend: .up)
-                StatTile(icon: "arrow.down.left",
-                         value: format(services.hiveService.current.landingsLast24h),
-                         unit: "IN", trend: .up)
-                StatTile(icon: "waveform",
-                         value: services.hiveService.current.soundLevel.displayName.prefix(4).uppercased(),
-                         unit: "SND", trend: .flat)
+                NavigationLink(value: StatType.temperature) {
+                    StatTile(icon: StatType.temperature.iconName,
+                             value: String(format: "%.0f", services.hiveService.current.temperatureF),
+                             unit: "°F", trend: .up)
+                }
+                NavigationLink(value: StatType.humidity) {
+                    StatTile(icon: StatType.humidity.iconName,
+                             value: String(format: "%.0f", services.hiveService.current.humidityPct),
+                             unit: "%", trend: .flat)
+                }
+                NavigationLink(value: StatType.weight) {
+                    StatTile(icon: StatType.weight.iconName,
+                             value: String(format: "%.1f", services.hiveService.current.weightLb),
+                             unit: "lb", trend: .up)
+                }
+                NavigationLink(value: StatType.population) {
+                    StatTile(icon: StatType.population.iconName,
+                             value: "\(services.hiveService.current.populationEstimate / 1000)k",
+                             unit: "BEES", trend: .up)
+                }
+                NavigationLink(value: StatType.takeoffs) {
+                    StatTile(icon: StatType.takeoffs.iconName,
+                             value: format(services.hiveService.current.takeoffsLast24h),
+                             unit: "OUT", trend: .up)
+                }
+                NavigationLink(value: StatType.landings) {
+                    StatTile(icon: StatType.landings.iconName,
+                             value: format(services.hiveService.current.landingsLast24h),
+                             unit: "IN", trend: .up)
+                }
+                NavigationLink(value: StatType.sound) {
+                    StatTile(icon: StatType.sound.iconName,
+                             value: services.hiveService.current.soundLevel.displayName.prefix(4).uppercased(),
+                             unit: "SND", trend: .flat)
+                }
             }
+            .buttonStyle(.plain)
         }
     }
 
@@ -158,17 +176,14 @@ struct HiveTabView: View {
         HStack(spacing: BeesSpacing.s) {
             Button { } label: {
                 Label("Full stats", systemImage: "chart.line.uptrend.xyaxis")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(.beesSecondary)
 
             Button { } label: {
                 Label("Compare", systemImage: "arrow.triangle.2.circlepath")
-                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(.beesSecondary)
         }
-        .tint(BeesColors.honey500)
     }
 
     private func format(_ value: Int) -> String {

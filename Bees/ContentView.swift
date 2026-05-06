@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(ServiceContainer.self) private var services
     @State private var selection: Tab = .hive
 
     enum Tab: Hashable {
@@ -8,28 +9,37 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TabView(selection: $selection) {
-            HiveTabView()
-                .tabItem { Label("Hive", systemImage: "hexagon.fill") }
-                .tag(Tab.hive)
+        if !services.hasCompletedOnboarding {
+            OnboardingFlow()
+        } else {
+            TabView(selection: $selection) {
+                HiveTabView()
+                    .tabItem { Label("Hive", systemImage: "hexagon.fill") }
+                    .tag(Tab.hive)
 
-            HoneyTabView()
-                .tabItem { Label("Honey", systemImage: "drop.fill") }
-                .tag(Tab.honey)
+                HoneyTabView()
+                    .tabItem { Label("Honey", systemImage: "drop.fill") }
+                    .tag(Tab.honey)
 
-            FarmTabView()
-                .tabItem { Label("Farm", systemImage: "leaf.fill") }
-                .tag(Tab.farm)
+                FarmTabView()
+                    .tabItem { Label("Farm", systemImage: "leaf.fill") }
+                    .tag(Tab.farm)
 
-            YouTabView()
-                .tabItem { Label("You", systemImage: "person.fill") }
-                .tag(Tab.you)
+                YouTabView()
+                    .tabItem { Label("You", systemImage: "person.fill") }
+                    .tag(Tab.you)
+            }
+            .tint(BeesColors.honey500)
         }
-        .tint(BeesColors.honey500)
     }
 }
 
-#Preview {
+#Preview("Main app") {
     ContentView()
         .environment(ServiceContainer.preview())
+}
+
+#Preview("Fresh launch") {
+    ContentView()
+        .environment(ServiceContainer.freshLaunch())
 }

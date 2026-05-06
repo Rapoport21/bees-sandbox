@@ -31,6 +31,10 @@ final class MockHiveService: HiveService {
         }
     }
 
+    func rename(_ name: String) {
+        hive.name = name
+    }
+
     func stopSimulating() {
         timer?.invalidate()
         timer = nil

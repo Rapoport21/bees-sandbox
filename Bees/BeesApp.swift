@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct BeesApp: App {
-    @State private var services = ServiceContainer.preview()
+    @State private var services = ServiceContainer.freshLaunch()
 
     var body: some Scene {
         WindowGroup {
