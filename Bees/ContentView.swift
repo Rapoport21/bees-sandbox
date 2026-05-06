@@ -8,21 +8,27 @@ struct ContentView: View {
         case hive, honey, farm, you
     }
 
+    private enum Screen: String { case auth, onboarding, main }
+
+    private var currentScreen: Screen {
+        if !services.authService.isAuthenticated { return .auth }
+        if !services.hasCompletedOnboarding      { return .onboarding }
+        return .main
+    }
+
     var body: some View {
         ZStack {
-            if !services.authService.isAuthenticated {
-                AuthFlowView()
-                    .transition(.opacity)
-            } else if !services.hasCompletedOnboarding {
-                OnboardingFlow()
-                    .transition(.opacity)
-            } else {
-                mainTabs
-                    .transition(.opacity)
+            Group {
+                switch currentScreen {
+                case .auth:       AuthFlowView()
+                case .onboarding: OnboardingFlow()
+                case .main:       mainTabs
+                }
             }
+            .id(currentScreen.rawValue)
+            .transition(.opacity)
         }
-        .animation(.easeInOut(duration: 0.5), value: services.hasCompletedOnboarding)
-        .animation(.easeInOut(duration: 0.3), value: services.authService.isAuthenticated)
+        .animation(.easeInOut(duration: 0.6), value: currentScreen)
     }
 
     private var mainTabs: some View {

@@ -21,7 +21,7 @@ struct HiveRevealView: View {
 
     var body: some View {
         GeometryReader { geo in
-            ZStack {
+            ZStack(alignment: .top) {
                 background
 
                 if !reduceMotion && phase >= .beesEnter && phase < .hiveCrystallize && !isMorphing {
@@ -30,22 +30,37 @@ struct HiveRevealView: View {
                         .transition(.opacity)
                 }
 
-                VStack(spacing: BeesSpacing.l) {
-                    Spacer()
-                        .frame(height: topPadding(in: geo))
+                // Video — fixed top position, only width + shape morph
+                VStack(spacing: 0) {
+                    Spacer().frame(height: BeesSpacing.s)
 
                     if phase >= .hiveCrystallize {
                         hiveVideo
-                            .frame(width: videoWidth(in: geo), height: videoHeight)
+                            .frame(
+                                width: videoWidth(in: geo),
+                                height: videoHeight
+                            )
                             .transition(.scale(scale: 0.4).combined(with: .opacity))
                     }
 
-                    if isMorphing {
+                    Spacer()
+                }
+
+                // Below-video region holds BOTH reveal and hive-tab content
+                // overlaid in a ZStack so layout never reflows.
+                VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: BeesSpacing.s + videoHeight + BeesSpacing.l)
+
+                    ZStack(alignment: .top) {
+                        revealContent
+                            .opacity(isMorphing ? 0 : 1)
+                            .allowsHitTesting(!isMorphing)
+
                         hiveTabContent
                             .padding(.horizontal, BeesSpacing.m)
                             .opacity(hiveContentVisible ? 1 : 0)
-                    } else {
-                        revealContent
+                            .allowsHitTesting(false)
                     }
 
                     Spacer()
@@ -72,10 +87,6 @@ struct HiveRevealView: View {
     }
 
     // MARK: - Layout
-
-    private func topPadding(in geo: GeometryProxy) -> CGFloat {
-        isMorphing ? geo.safeAreaInsets.top + BeesSpacing.s : BeesSpacing.s
-    }
 
     private var videoHeight: CGFloat { 220 }
 
@@ -124,21 +135,19 @@ struct HiveRevealView: View {
                         .opacity(isMorphing ? 0 : 1)
                 )
                 .overlay(alignment: .topLeading) {
-                    if isMorphing {
-                        HStack(spacing: BeesSpacing.xxs) {
-                            Circle()
-                                .fill(BeesColors.error500)
-                                .frame(width: 6, height: 6)
-                            Text("LIVE")
-                                .font(BeesType.captionS)
-                                .foregroundStyle(.white)
-                        }
-                        .padding(.horizontal, BeesSpacing.xs)
-                        .padding(.vertical, BeesSpacing.xxs)
-                        .background(.black.opacity(0.5), in: Capsule())
-                        .padding(BeesSpacing.s)
-                        .opacity(hiveContentVisible ? 1 : 0)
+                    HStack(spacing: BeesSpacing.xxs) {
+                        Circle()
+                            .fill(BeesColors.error500)
+                            .frame(width: 6, height: 6)
+                        Text("LIVE")
+                            .font(BeesType.captionS)
+                            .foregroundStyle(.white)
                     }
+                    .padding(.horizontal, BeesSpacing.xs)
+                    .padding(.vertical, BeesSpacing.xxs)
+                    .background(.black.opacity(0.5), in: Capsule())
+                    .padding(BeesSpacing.s)
+                    .opacity(isMorphing ? 1 : 0)
                 }
                 .shadow(color: BeesColors.honey500.opacity(isMorphing ? 0 : 0.45),
                         radius: 22, x: 0, y: 10)
@@ -157,46 +166,47 @@ struct HiveRevealView: View {
         }
     }
 
-    // MARK: - Reveal content (visible when not morphing)
+    // MARK: - Reveal content
 
     @ViewBuilder
     private var revealContent: some View {
-        if phase >= .nameReveal {
-            VStack(spacing: BeesSpacing.xxs) {
-                Text("Meet your hive.")
-                    .font(BeesType.displayL)
-                    .foregroundStyle(BeesColors.charcoal900)
-                Text("Hive #47 at Sunny Acre Farm")
-                    .font(BeesType.bodyL)
-                    .foregroundStyle(BeesColors.charcoal900)
-                Text("Sonoma County, California")
-                    .font(BeesType.bodyM)
-                    .foregroundStyle(BeesColors.charcoal600)
-            }
-            .multilineTextAlignment(.center)
-            .transition(.opacity.combined(with: .move(edge: .bottom)))
-        }
-
-        if phase >= .ctaAppear {
-            namingSection
+        VStack(spacing: BeesSpacing.l) {
+            if phase >= .nameReveal {
+                VStack(spacing: BeesSpacing.xxs) {
+                    Text("Meet your hive.")
+                        .font(BeesType.displayL)
+                        .foregroundStyle(BeesColors.charcoal900)
+                    Text("Hive #47 at Sunny Acre Farm")
+                        .font(BeesType.bodyL)
+                        .foregroundStyle(BeesColors.charcoal900)
+                    Text("Sonoma County, California")
+                        .font(BeesType.bodyM)
+                        .foregroundStyle(BeesColors.charcoal600)
+                }
+                .multilineTextAlignment(.center)
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
-        }
-
-        Spacer(minLength: BeesSpacing.s)
-
-        if phase >= .ctaAppear {
-            VStack(spacing: BeesSpacing.xs) {
-                Button("Continue") { triggerMorph() }
-                    .buttonStyle(.beesPrimary)
-
-                Text("Free trial starts today · First jar ships in ~6 weeks")
-                    .font(BeesType.captionM)
-                    .foregroundStyle(BeesColors.charcoal600)
-                    .multilineTextAlignment(.center)
             }
-            .padding(.horizontal, BeesSpacing.l)
-            .padding(.bottom, BeesSpacing.l)
-            .transition(.opacity)
+
+            if phase >= .ctaAppear {
+                namingSection
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+
+            Spacer(minLength: BeesSpacing.s)
+
+            if phase >= .ctaAppear {
+                VStack(spacing: BeesSpacing.xs) {
+                    Button("Continue") { triggerMorph() }
+                        .buttonStyle(.beesPrimary)
+                    Text("Free trial starts today · First jar ships in ~6 weeks")
+                        .font(BeesType.captionM)
+                        .foregroundStyle(BeesColors.charcoal600)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.horizontal, BeesSpacing.l)
+                .padding(.bottom, BeesSpacing.l)
+                .transition(.opacity)
+            }
         }
     }
 
@@ -260,11 +270,10 @@ struct HiveRevealView: View {
         .padding(.horizontal, BeesSpacing.m)
     }
 
-    // MARK: - Hive tab content (visible during morph)
+    // MARK: - Hive tab content (below video) — fades in during morph
 
     private var hiveTabContent: some View {
         VStack(spacing: BeesSpacing.l) {
-            // Hive identity pill
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(hiveName.isEmpty ? "Hive #47" : hiveName)
@@ -279,7 +288,6 @@ struct HiveRevealView: View {
                 HealthPill(health: services.hiveService.current.health)
             }
 
-            // Stat strip
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: BeesSpacing.s) {
                     StatTile(icon: "thermometer",
@@ -304,7 +312,6 @@ struct HiveRevealView: View {
             }
             .scrollDisabled(true)
 
-            // Activity card
             VStack(alignment: .leading, spacing: BeesSpacing.s) {
                 HStack(spacing: BeesSpacing.xs) {
                     Text("🐝")
@@ -383,21 +390,18 @@ struct HiveRevealView: View {
         nameFocused = false
         if hiveName.isEmpty { hiveName = "Hive #47" }
 
-        withAnimation(.spring(response: 0.7, dampingFraction: 0.85)) {
+        // One smooth motion — circle expands to rounded rect, hive UI
+        // appears below in the same animation tick. No spring (no shake).
+        withAnimation(.easeInOut(duration: 0.55)) {
             isMorphing = true
+            hiveContentVisible = true
         }
 
+        // Hand off to the real Hive tab AFTER the morph + UI fade-in
+        // have completely settled. ContentView cross-fades the tree
+        // swap so the LoopingVideoPlayer instance change is masked.
         Task {
-            try? await Task.sleep(for: .milliseconds(220))
-            await MainActor.run {
-                withAnimation(.easeInOut(duration: 0.45)) {
-                    hiveContentVisible = true
-                }
-            }
-        }
-
-        Task {
-            try? await Task.sleep(for: .seconds(1.35))
+            try? await Task.sleep(for: .milliseconds(950))
             await MainActor.run { onContinue() }
         }
     }
