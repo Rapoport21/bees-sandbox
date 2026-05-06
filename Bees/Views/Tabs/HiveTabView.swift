@@ -27,20 +27,27 @@ struct HiveTabView: View {
 
     private var videoPlaceholder: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: BeesRadius.lg)
-                .fill(BeesColors.charcoal900)
-                .frame(height: 220)
-
-            VStack(spacing: BeesSpacing.s) {
-                Image(systemName: "video.fill")
-                    .font(.system(size: 36))
-                    .foregroundStyle(BeesColors.honey500)
-                Text("Live video — entrance cam")
-                    .font(BeesType.bodyM)
-                    .foregroundStyle(.white.opacity(0.8))
-                Text("(Real HLS stream wires up later)")
-                    .font(BeesType.captionM)
-                    .foregroundStyle(.white.opacity(0.5))
+            if let url = BundledVideo.firstAvailable() {
+                LoopingVideoPlayer(url: url)
+                    .frame(height: 220)
+                    .clipShape(RoundedRectangle(cornerRadius: BeesRadius.lg))
+            } else {
+                RoundedRectangle(cornerRadius: BeesRadius.lg)
+                    .fill(BeesColors.charcoal900)
+                    .frame(height: 220)
+                    .overlay(
+                        VStack(spacing: BeesSpacing.s) {
+                            Image(systemName: "video.fill")
+                                .font(.system(size: 36))
+                                .foregroundStyle(BeesColors.honey500)
+                            Text("Live video — entrance cam")
+                                .font(BeesType.bodyM)
+                                .foregroundStyle(.white.opacity(0.8))
+                            Text("Drop a video into Bees/Videos/ to test")
+                                .font(BeesType.captionM)
+                                .foregroundStyle(.white.opacity(0.5))
+                        }
+                    )
             }
 
             VStack {
@@ -62,6 +69,7 @@ struct HiveTabView: View {
                 Spacer()
             }
         }
+        .frame(height: 220)
     }
 
     private var hiveIdentityPill: some View {

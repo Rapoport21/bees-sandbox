@@ -58,6 +58,8 @@
 		BEEF200000000000000000E2 /* CancelSubscriptionFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E2 /* CancelSubscriptionFlow.swift */; };
 		BEEF200000000000000000E3 /* SettingsHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E3 /* SettingsHomeView.swift */; };
 		BEEF200000000000000000E4 /* SettingsSubViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E4 /* SettingsSubViews.swift */; };
+		BEEF200000000000000000E5 /* LoopingVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */; };
+		BEEF200000000000000000F2 /* Videos in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F2 /* Videos */; };
 		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
 		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -114,6 +116,8 @@
 		BEEF100000000000000000E2 /* CancelSubscriptionFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelSubscriptionFlow.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000E3 /* SettingsHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHomeView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000E4 /* SettingsSubViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSubViews.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopingVideoPlayer.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000F2 /* Videos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Videos; sourceTree = "<group>"; };
 		BEEF100000000000000000C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEEF100000000000000000C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BEEF100000000000000000F1 /* Bees.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bees.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +152,7 @@
 				BEEF300000000000000000A5 /* Services */,
 				BEEF300000000000000000A6 /* Views */,
 				BEEF100000000000000000C1 /* Assets.xcassets */,
+				BEEF100000000000000000F2 /* Videos */,
 				BEEF300000000000000000A9 /* Preview Content */,
 			);
 			path = Bees;
@@ -232,6 +237,7 @@
 				BEEF100000000000000000B7 /* BeesButton.swift */,
 				BEEF100000000000000000B8 /* JarPreview.swift */,
 				BEEF100000000000000000B9 /* SectionHeader.swift */,
+				BEEF100000000000000000E5 /* LoopingVideoPlayer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -394,6 +400,7 @@
 			files = (
 				BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */,
 				BEEF200000000000000000C1 /* Assets.xcassets in Resources */,
+				BEEF200000000000000000F2 /* Videos in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +462,7 @@
 				BEEF200000000000000000E2 /* CancelSubscriptionFlow.swift in Sources */,
 				BEEF200000000000000000E3 /* SettingsHomeView.swift in Sources */,
 				BEEF200000000000000000E4 /* SettingsSubViews.swift in Sources */,
+				BEEF200000000000000000E5 /* LoopingVideoPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
