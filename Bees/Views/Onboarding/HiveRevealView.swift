@@ -81,6 +81,7 @@ struct HiveRevealView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Welcome to your hive. Hive number 47, at Sunny Acre Farm, Sonoma County, California. Continue button.")
         .task { await runSequence() }
