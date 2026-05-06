@@ -26,7 +26,7 @@ final class ServiceContainer {
     var billingHistory: [BillingRecord]
     var subscriptionStatus: SubscriptionStatus
     var trialEndsAt: Date?
-    var onboardingVariant: OnboardingVariant = .videosFirst
+    var onboardingVariant: OnboardingVariant = .carouselFirst
 
     enum SubscriptionStatus: Hashable {
         case trial, active, paused, pastDue, canceled
