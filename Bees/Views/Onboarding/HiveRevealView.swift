@@ -438,10 +438,8 @@ private struct BeeSwarmAnimation: View {
 
 private struct BeeGlyph: View {
     var body: some View {
-        Image(systemName: "ant.fill")
-            .font(.system(size: 18))
-            .foregroundStyle(BeesColors.charcoal900.opacity(0.6))
-            .rotationEffect(.degrees(-20))
+        Text("🐝")
+            .font(.system(size: 26))
     }
 }
 
