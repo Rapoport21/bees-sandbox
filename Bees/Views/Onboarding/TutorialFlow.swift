@@ -17,7 +17,6 @@ struct TutorialFlow: View {
             content
             topBar
         }
-        .ignoresSafeArea()
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .contentShape(Rectangle())
@@ -136,10 +135,10 @@ struct TutorialFlow: View {
                 color: progressColor,
                 trackOpacity: isCurrentVideo ? 0.3 : 0.25
             )
+            .padding(.top, BeesSpacing.s)
             Spacer()
         }
         .padding(.horizontal, BeesSpacing.m)
-        .padding(.top, BeesSpacing.l)
     }
 
     // MARK: - Helpers

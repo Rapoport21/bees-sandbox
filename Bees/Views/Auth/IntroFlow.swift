@@ -32,7 +32,6 @@ struct IntroFlow: View {
             content
             topBar
         }
-        .ignoresSafeArea()
         .navigationBarHidden(true)
         .contentShape(Rectangle())
         .gesture(
@@ -144,10 +143,10 @@ struct IntroFlow: View {
                     .padding(.vertical, BeesSpacing.xxs)
                     .background(.black.opacity(0.3), in: Capsule())
             }
+            .padding(.top, BeesSpacing.s)
             Spacer()
         }
         .padding(.horizontal, BeesSpacing.m)
-        .padding(.top, BeesSpacing.l)
     }
 
     private func advance() {
