@@ -70,11 +70,18 @@ struct HiveRevealView: View {
                         Spacer(minLength: BeesSpacing.s)
 
                         if phase >= .ctaAppear {
-                            Button("Continue") { triggerMorph() }
-                                .buttonStyle(.beesPrimary)
-                                .padding(.horizontal, BeesSpacing.l)
-                                .padding(.bottom, BeesSpacing.l)
-                                .transition(.opacity)
+                            VStack(spacing: BeesSpacing.xs) {
+                                Button("Continue") { triggerMorph() }
+                                    .buttonStyle(.beesPrimary)
+
+                                Text("Free trial starts today · First jar ships in ~6 weeks")
+                                    .font(BeesType.captionM)
+                                    .foregroundStyle(BeesColors.charcoal600)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .padding(.horizontal, BeesSpacing.l)
+                            .padding(.bottom, BeesSpacing.l)
+                            .transition(.opacity)
                         }
                     } else {
                         Spacer()
@@ -148,23 +155,39 @@ struct HiveRevealView: View {
     }
 
     private var namingSection: some View {
-        VStack(spacing: BeesSpacing.xs) {
+        VStack(spacing: BeesSpacing.s) {
             Text("NAME IT")
                 .font(BeesType.captionS)
                 .tracking(1.2)
                 .foregroundStyle(BeesColors.charcoal600)
 
-            TextField("Buzzy McHive", text: $hiveName)
-                .focused($nameFocused)
-                .textFieldStyle(.roundedBorder)
-                .multilineTextAlignment(.center)
-                .submitLabel(.done)
-                .onChange(of: hiveName) { _, newValue in
-                    if newValue.count > nameLimit {
-                        hiveName = String(newValue.prefix(nameLimit))
+            ZStack {
+                RoundedRectangle(cornerRadius: BeesRadius.lg)
+                    .fill(BeesColors.surfaceCard)
+                    .shadow(color: .black.opacity(0.06), radius: 10, x: 0, y: 4)
+
+                TextField("Buzzy McHive", text: $hiveName)
+                    .font(BeesType.headingM)
+                    .foregroundStyle(BeesColors.charcoal900)
+                    .multilineTextAlignment(.center)
+                    .focused($nameFocused)
+                    .submitLabel(.done)
+                    .padding(.horizontal, BeesSpacing.m)
+                    .padding(.vertical, BeesSpacing.s + 2)
+                    .onChange(of: hiveName) { _, newValue in
+                        if newValue.count > nameLimit {
+                            hiveName = String(newValue.prefix(nameLimit))
+                        }
                     }
-                }
-                .onSubmit { nameFocused = false }
+                    .onSubmit { nameFocused = false }
+            }
+            .frame(height: 56)
+            .overlay(
+                RoundedRectangle(cornerRadius: BeesRadius.lg)
+                    .stroke(nameFocused ? BeesColors.honey500 : BeesColors.charcoal300.opacity(0.35),
+                            lineWidth: nameFocused ? 2 : 1)
+                    .animation(.easeOut(duration: 0.15), value: nameFocused)
+            )
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: BeesSpacing.xs) {
@@ -173,7 +196,7 @@ struct HiveRevealView: View {
                             hiveName = suggestion
                             nameFocused = false
                         }
-                        .font(BeesType.captionM)
+                        .font(BeesType.captionM.weight(.medium))
                         .foregroundStyle(BeesColors.charcoal900)
                         .padding(.horizontal, BeesSpacing.s + 2)
                         .padding(.vertical, BeesSpacing.xxs + 2)
