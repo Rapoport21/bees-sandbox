@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BEEF200000000000000000A1 /* BeesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A1 /* BeesApp.swift */; };
+		BEEF200000000000000000A2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A2 /* ContentView.swift */; };
+		BEEF200000000000000000A3 /* BeesColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A3 /* BeesColors.swift */; };
+		BEEF200000000000000000A4 /* BeesTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A4 /* BeesTypography.swift */; };
+		BEEF200000000000000000A5 /* BeesSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A5 /* BeesSpacing.swift */; };
+		BEEF200000000000000000A6 /* Tier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A6 /* Tier.swift */; };
+		BEEF200000000000000000A7 /* Hive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A7 /* Hive.swift */; };
+		BEEF200000000000000000A8 /* HiveSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A8 /* HiveSnapshot.swift */; };
+		BEEF200000000000000000A9 /* HiveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A9 /* HiveService.swift */; };
+		BEEF200000000000000000AA /* ServiceContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AA /* ServiceContainer.swift */; };
+		BEEF200000000000000000AB /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AB /* Fixtures.swift */; };
+		BEEF200000000000000000AC /* HiveTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AC /* HiveTabView.swift */; };
+		BEEF200000000000000000AD /* HoneyTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AD /* HoneyTabView.swift */; };
+		BEEF200000000000000000AE /* FarmTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AE /* FarmTabView.swift */; };
+		BEEF200000000000000000AF /* YouTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000AF /* YouTabView.swift */; };
+		BEEF200000000000000000B0 /* StatTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B0 /* StatTile.swift */; };
+		BEEF200000000000000000B1 /* HealthPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B1 /* HealthPill.swift */; };
+		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
+		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BEEF100000000000000000A1 /* BeesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesApp.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A3 /* BeesColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesColors.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A4 /* BeesTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesTypography.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A5 /* BeesSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesSpacing.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A6 /* Tier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tier.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A7 /* Hive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hive.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A8 /* HiveSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveSnapshot.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000A9 /* HiveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveService.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000AA /* ServiceContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceContainer.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000AB /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000AC /* HiveTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveTabView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000AD /* HoneyTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoneyTabView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000AE /* FarmTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FarmTabView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000AF /* YouTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTabView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000B0 /* StatTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatTile.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000B1 /* HealthPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPill.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BEEF100000000000000000C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BEEF100000000000000000F1 /* Bees.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bees.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BEEF700000000000000000A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BEEF300000000000000000A0 = {
+			isa = PBXGroup;
+			children = (
+				BEEF300000000000000000A1 /* Bees */,
+				BEEF300000000000000000A2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A1 /* Bees */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000A1 /* BeesApp.swift */,
+				BEEF100000000000000000A2 /* ContentView.swift */,
+				BEEF300000000000000000A3 /* DesignSystem */,
+				BEEF300000000000000000A4 /* Models */,
+				BEEF300000000000000000A5 /* Services */,
+				BEEF300000000000000000A6 /* Views */,
+				BEEF100000000000000000C1 /* Assets.xcassets */,
+				BEEF300000000000000000A9 /* Preview Content */,
+			);
+			path = Bees;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000F1 /* Bees.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A3 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000A3 /* BeesColors.swift */,
+				BEEF100000000000000000A4 /* BeesTypography.swift */,
+				BEEF100000000000000000A5 /* BeesSpacing.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000A6 /* Tier.swift */,
+				BEEF100000000000000000A7 /* Hive.swift */,
+				BEEF100000000000000000A8 /* HiveSnapshot.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000A9 /* HiveService.swift */,
+				BEEF100000000000000000AA /* ServiceContainer.swift */,
+				BEEF100000000000000000AB /* Fixtures.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF300000000000000000A7 /* Tabs */,
+				BEEF300000000000000000A8 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A7 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000AC /* HiveTabView.swift */,
+				BEEF100000000000000000AD /* HoneyTabView.swift */,
+				BEEF100000000000000000AE /* FarmTabView.swift */,
+				BEEF100000000000000000AF /* YouTabView.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000B0 /* StatTile.swift */,
+				BEEF100000000000000000B1 /* HealthPill.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		BEEF300000000000000000A9 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BEEF100000000000000000C2 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BEEF400000000000000000A1 /* Bees */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BEEF800000000000000000A2 /* Build configuration list for PBXNativeTarget "Bees" */;
+			buildPhases = (
+				BEEF700000000000000000A1 /* Sources */,
+				BEEF700000000000000000A2 /* Frameworks */,
+				BEEF700000000000000000A3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Bees;
+			productName = Bees;
+			productReference = BEEF100000000000000000F1 /* Bees.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BEEF600000000000000000A1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					BEEF400000000000000000A1 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = BEEF800000000000000000A1 /* Build configuration list for PBXProject "Bees" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BEEF300000000000000000A0;
+			productRefGroup = BEEF300000000000000000A2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BEEF400000000000000000A1 /* Bees */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BEEF700000000000000000A3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */,
+				BEEF200000000000000000C1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BEEF700000000000000000A1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEEF200000000000000000A1 /* BeesApp.swift in Sources */,
+				BEEF200000000000000000A2 /* ContentView.swift in Sources */,
+				BEEF200000000000000000A3 /* BeesColors.swift in Sources */,
+				BEEF200000000000000000A4 /* BeesTypography.swift in Sources */,
+				BEEF200000000000000000A5 /* BeesSpacing.swift in Sources */,
+				BEEF200000000000000000A6 /* Tier.swift in Sources */,
+				BEEF200000000000000000A7 /* Hive.swift in Sources */,
+				BEEF200000000000000000A8 /* HiveSnapshot.swift in Sources */,
+				BEEF200000000000000000A9 /* HiveService.swift in Sources */,
+				BEEF200000000000000000AA /* ServiceContainer.swift in Sources */,
+				BEEF200000000000000000AB /* Fixtures.swift in Sources */,
+				BEEF200000000000000000AC /* HiveTabView.swift in Sources */,
+				BEEF200000000000000000AD /* HoneyTabView.swift in Sources */,
+				BEEF200000000000000000AE /* FarmTabView.swift in Sources */,
+				BEEF200000000000000000AF /* YouTabView.swift in Sources */,
+				BEEF200000000000000000B0 /* StatTile.swift in Sources */,
+				BEEF200000000000000000B1 /* HealthPill.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BEEF900000000000000000A1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BEEF900000000000000000A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BEEF900000000000000000A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Bees/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Bees;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bees.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BEEF900000000000000000A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Bees/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Bees;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bees.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BEEF800000000000000000A1 /* Build configuration list for PBXProject "Bees" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEEF900000000000000000A1 /* Debug */,
+				BEEF900000000000000000A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BEEF800000000000000000A2 /* Build configuration list for PBXNativeTarget "Bees" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEEF900000000000000000A3 /* Debug */,
+				BEEF900000000000000000A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BEEF600000000000000000A1 /* Project object */;
+}
