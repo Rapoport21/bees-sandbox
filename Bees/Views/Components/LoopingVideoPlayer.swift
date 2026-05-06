@@ -7,6 +7,24 @@ struct LoopingVideoPlayer: UIViewRepresentable {
 
     func makeUIView(context: Context) -> PlayerContainerView {
         let view = PlayerContainerView()
+        configure(view: view, url: url, context: context)
+        return view
+    }
+
+    func updateUIView(_ view: PlayerContainerView, context: Context) {
+        if context.coordinator.currentURL != url {
+            configure(view: view, url: url, context: context)
+        }
+        context.coordinator.player?.isMuted = isMuted
+    }
+
+    private func configure(view: PlayerContainerView, url: URL, context: Context) {
+        // Tear down previous player so we don't leak items.
+        context.coordinator.player?.pause()
+        context.coordinator.player?.removeAllItems()
+        context.coordinator.looper = nil
+        context.coordinator.player = nil
+
         let asset = AVURLAsset(url: url)
         let item = AVPlayerItem(asset: asset)
         let queuePlayer = AVQueuePlayer()
@@ -20,12 +38,7 @@ struct LoopingVideoPlayer: UIViewRepresentable {
 
         context.coordinator.looper = looper
         context.coordinator.player = queuePlayer
-
-        return view
-    }
-
-    func updateUIView(_ view: PlayerContainerView, context: Context) {
-        context.coordinator.player?.isMuted = isMuted
+        context.coordinator.currentURL = url
     }
 
     func makeCoordinator() -> Coordinator { Coordinator() }
@@ -33,6 +46,7 @@ struct LoopingVideoPlayer: UIViewRepresentable {
     final class Coordinator {
         var looper: AVPlayerLooper?
         var player: AVQueuePlayer?
+        var currentURL: URL?
     }
 }
 
@@ -70,10 +84,12 @@ enum BundledVideo {
 
     static func url(named name: String) -> URL? {
         for ext in supportedExtensions {
+            // Bundle root
             if let url = Bundle.main.url(forResource: name, withExtension: ext) {
                 return url
             }
-            if let url = Bundle.main.url(forResource: "Videos/\(name)", withExtension: ext) {
+            // Videos/ subdirectory (folder reference)
+            if let url = Bundle.main.url(forResource: name, withExtension: ext, subdirectory: "Videos") {
                 return url
             }
         }
