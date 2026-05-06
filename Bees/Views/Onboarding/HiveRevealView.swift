@@ -93,8 +93,10 @@ struct HiveRevealView: View {
         isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 220
     }
 
-    // MARK: - Background — fades to transparent during morph so the
-    // hive tab beneath is exposed through the overlay.
+    // MARK: - Background — stays fully opaque through the morph.
+    // The fade-to-hive-tab happens at the OnboardingFlow level via
+    // an opacity transition, so the gradient never visibly swaps to
+    // surfacePage mid-morph.
 
     private var background: some View {
         LinearGradient(
@@ -103,7 +105,6 @@ struct HiveRevealView: View {
             endPoint: .bottom
         )
         .ignoresSafeArea()
-        .opacity(isMorphing ? 0 : 1)
     }
 
     // MARK: - Video
@@ -290,22 +291,28 @@ struct HiveRevealView: View {
         nameFocused = false
         if hiveName.isEmpty { hiveName = "Hive #47" }
 
-        // One animation: video circle widens to rounded rect at the
-        // exact position of HiveTabView's video, the warm-gradient
-        // background fades to transparent (revealing HiveTabView
-        // beneath), and the reveal content + halo + stroke all fade
-        // out. By the end of this, the screen looks identical to the
-        // Hive tab — because HiveTabView IS what's underneath.
-        withAnimation(.easeInOut(duration: 0.55)) {
+        // Phase 1 — morph: video circle widens to a rounded rect at
+        // the exact position of HiveTabView's video. The reveal
+        // content (text, name field, CTA), halo, stroke, and shadow
+        // all fade out. Gradient background stays fully opaque.
+        withAnimation(.easeInOut(duration: 0.6)) {
             isMorphing = true
         }
 
-        // After the morph, complete onboarding. The OnboardingFlow
-        // overlay unmounts; HiveTabView (which has been rendered
-        // underneath the whole time) is already there.
+        // Phase 2 — soft hand-off: after the morph settles, flip
+        // hasCompletedOnboarding inside withAnimation so OnboardingFlow's
+        // opacity transition fades the whole overlay (gradient + video +
+        // LIVE chip) out as a single unit. HiveTabView underneath
+        // naturally cross-fades in — same SharedHiveVideoPlayer, same
+        // surface color, but the chrome (tab bar, stat grid) appears
+        // smoothly instead of snapping in.
         Task {
-            try? await Task.sleep(for: .milliseconds(700))
-            await MainActor.run { onContinue() }
+            try? await Task.sleep(for: .milliseconds(620))
+            await MainActor.run {
+                withAnimation(.easeOut(duration: 0.55)) {
+                    onContinue()
+                }
+            }
         }
     }
 }

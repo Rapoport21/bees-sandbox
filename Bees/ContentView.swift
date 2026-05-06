@@ -12,13 +12,15 @@ struct ContentView: View {
         if services.authService.isAuthenticated {
             // Main tabs are always rendered underneath. Onboarding is
             // an overlay on top. When onboarding finishes, the overlay
-            // disappears — there's no view swap, just a curtain
-            // lifting on the page that was already there.
+            // fades out as a single unit (.transition(.opacity)) so the
+            // tab bar and HiveTabView UI cross-fade in instead of
+            // snapping in.
             ZStack {
                 mainTabs
 
                 if !services.hasCompletedOnboarding {
                     OnboardingFlow()
+                        .transition(.opacity)
                 }
             }
         } else {
