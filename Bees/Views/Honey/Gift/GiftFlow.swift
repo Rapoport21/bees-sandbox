@@ -13,6 +13,7 @@ struct GiftFlow: View {
     @State private var senderName: String = "Nick"
     @State private var cardStyle: CardStyle = .hexagon
     @State private var packaging: Packaging = .standard
+    @State private var giftDesignIndex: Int = 0
 
     enum Step: Hashable {
         case launchpad, recipient, tierPicker, sticker, message, packaging, review, confirmation
@@ -323,44 +324,41 @@ struct GiftFlow: View {
                 Text("Customize their sticker")
                     .font(BeesType.displayL)
                     .padding(.top, BeesSpacing.l)
-                JarPreview(design: design, size: 180)
-                Text("Their name, an inside joke, a date...")
+
+                TabView(selection: $giftDesignIndex) {
+                    ForEach(Array(StickerBaseDesign.catalog.enumerated()), id: \.offset) { index, base in
+                        JarPreview(design: previewDesign(for: base), size: 200)
+                            .frame(maxWidth: .infinity)
+                            .tag(index)
+                    }
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 300)
+                .onChange(of: giftDesignIndex) { _, newValue in
+                    guard StickerBaseDesign.catalog.indices.contains(newValue) else { return }
+                    design.baseDesignId = StickerBaseDesign.catalog[newValue].id
+                }
+
+                HStack(spacing: BeesSpacing.xs) {
+                    ForEach(Array(StickerBaseDesign.catalog.enumerated()), id: \.offset) { index, _ in
+                        Capsule()
+                            .fill(index == giftDesignIndex ? BeesColors.honey500 : BeesColors.charcoal300)
+                            .frame(width: index == giftDesignIndex ? 18 : 6, height: 6)
+                            .animation(.easeOut(duration: 0.2), value: giftDesignIndex)
+                    }
+                }
+
+                Text("\(StickerBaseDesign.catalog[giftDesignIndex].name) · swipe to browse")
                     .font(BeesType.captionM)
                     .foregroundStyle(BeesColors.charcoal600)
 
                 VStack(alignment: .leading, spacing: BeesSpacing.s) {
-                    SectionHeader(title: "Base design")
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: BeesSpacing.s) {
-                            ForEach(StickerBaseDesign.catalog) { d in
-                                Button {
-                                    design.baseDesignId = d.id
-                                } label: {
-                                    Circle()
-                                        .fill(d.backgroundColor)
-                                        .frame(width: 60, height: 60)
-                                        .overlay(
-                                            Circle()
-                                                .stroke(design.baseDesignId == d.id ? BeesColors.honey500 : .clear, lineWidth: 3)
-                                        )
-                                        .overlay(
-                                            Circle()
-                                                .fill(d.accentColor.opacity(0.5))
-                                                .frame(width: 16, height: 16)
-                                        )
-                                }
-                            }
-                        }
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: BeesSpacing.s) {
                     SectionHeader(title: "Custom text")
-                    TextField("Line 1", text: $design.line1)
+                    TextField("Line 1 — their name?", text: $design.line1)
                         .textFieldStyle(.roundedBorder)
-                    TextField("Line 2", text: $design.line2)
+                    TextField("Line 2 — date or note?", text: $design.line2)
                         .textFieldStyle(.roundedBorder)
-                    TextField("Line 3", text: $design.line3)
+                    TextField("Line 3 — optional", text: $design.line3)
                         .textFieldStyle(.roundedBorder)
                 }
             }
@@ -376,6 +374,12 @@ struct GiftFlow: View {
                 .padding(.vertical, BeesSpacing.s)
                 .background(.regularMaterial)
         }
+    }
+
+    private func previewDesign(for base: StickerBaseDesign) -> StickerDesign {
+        var d = design
+        d.baseDesignId = base.id
+        return d
     }
 
     private var messageStep: some View {

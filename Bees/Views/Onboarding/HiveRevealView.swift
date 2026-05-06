@@ -128,21 +128,21 @@ private struct HiveImage: View {
                 .frame(width: 280, height: 280)
                 .blur(radius: 20)
 
-            HexagonShape()
+            RevealHexShape()
                 .fill(LinearGradient(
                     colors: [BeesColors.honey500, BeesColors.amber500],
                     startPoint: .top, endPoint: .bottom))
                 .frame(width: 160, height: 180)
                 .shadow(color: BeesColors.honey500.opacity(0.4), radius: 16, y: 8)
 
-            HexagonShape()
+            RevealHexShape()
                 .stroke(.white.opacity(0.5), lineWidth: 2)
                 .frame(width: 100, height: 110)
         }
     }
 }
 
-private struct HexagonShape: Shape {
+private struct RevealHexShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let w = rect.width

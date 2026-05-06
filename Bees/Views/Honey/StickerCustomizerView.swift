@@ -5,6 +5,7 @@ struct StickerCustomizerView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var workingDesign: StickerDesign = StickerDesign.empty
+    @State private var selectedDesignIndex: Int = 0
     @State private var saveAsFavorite: Bool = false
     @State private var favoriteName: String = ""
     @State private var showLockConfirm = false
@@ -15,9 +16,9 @@ struct StickerCustomizerView: View {
             ScrollView {
                 VStack(spacing: BeesSpacing.l) {
                     deadlineBanner
-                    JarPreview(design: workingDesign, size: 200)
-                        .padding(.top, BeesSpacing.s)
-                    baseDesignSection
+
+                    jarPager
+
                     if services.currentTier.canCustomizeText {
                         customTextSection
                     } else {
@@ -63,7 +64,13 @@ struct StickerCustomizerView: View {
             .onAppear {
                 if let active = services.shipmentService.activeShipment {
                     workingDesign = active.design
+                    selectedDesignIndex = StickerBaseDesign.catalog.firstIndex { $0.id == active.design.baseDesignId } ?? 0
                 }
+            }
+            .onChange(of: selectedDesignIndex) { _, newValue in
+                guard StickerBaseDesign.catalog.indices.contains(newValue) else { return }
+                workingDesign.baseDesignId = StickerBaseDesign.catalog[newValue].id
+                didSave = false
             }
             .alert("Lock this design?", isPresented: $showLockConfirm) {
                 Button("Lock it in", role: .destructive) {
@@ -94,42 +101,43 @@ struct StickerCustomizerView: View {
         .background(BeesColors.honey100, in: RoundedRectangle(cornerRadius: BeesRadius.md))
     }
 
-    private var baseDesignSection: some View {
-        VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            SectionHeader(
-                title: "Base design",
-                trailing: "\(currentBaseDesignIndex + 1) of \(StickerBaseDesign.catalog.count)"
-            )
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: BeesSpacing.s) {
-                    ForEach(StickerBaseDesign.catalog) { design in
-                        Button {
-                            workingDesign.baseDesignId = design.id
-                            didSave = false
-                        } label: {
-                            VStack(spacing: BeesSpacing.xxs) {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: BeesRadius.sm)
-                                        .fill(design.backgroundColor)
-                                    Circle()
-                                        .fill(design.accentColor.opacity(0.5))
-                                        .frame(width: 24, height: 24)
-                                }
-                                .frame(width: 80, height: 80)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: BeesRadius.sm)
-                                        .stroke(workingDesign.baseDesignId == design.id ? BeesColors.honey500 : .clear,
-                                                lineWidth: 3)
-                                )
-                                Text(design.name)
-                                    .font(BeesType.captionS)
-                                    .foregroundStyle(BeesColors.charcoal600)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                    }
+    private var jarPager: some View {
+        VStack(spacing: BeesSpacing.s) {
+            TabView(selection: $selectedDesignIndex) {
+                ForEach(Array(StickerBaseDesign.catalog.enumerated()), id: \.offset) { index, base in
+                    JarPreview(design: previewDesign(for: base), size: 230)
+                        .frame(maxWidth: .infinity)
+                        .tag(index)
                 }
             }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .frame(height: 340)
+
+            HStack(spacing: BeesSpacing.xs) {
+                ForEach(Array(StickerBaseDesign.catalog.enumerated()), id: \.offset) { index, _ in
+                    Capsule()
+                        .fill(index == selectedDesignIndex ? BeesColors.honey500 : BeesColors.charcoal300)
+                        .frame(width: index == selectedDesignIndex ? 18 : 6, height: 6)
+                        .animation(.easeOut(duration: 0.2), value: selectedDesignIndex)
+                }
+            }
+
+            HStack(spacing: BeesSpacing.xs) {
+                Text("\(selectedDesignIndex + 1) of \(StickerBaseDesign.catalog.count)")
+                    .font(BeesType.captionS)
+                    .tracking(1)
+                    .foregroundStyle(BeesColors.charcoal600)
+                Text("·")
+                    .foregroundStyle(BeesColors.charcoal300)
+                Text(StickerBaseDesign.catalog[selectedDesignIndex].name)
+                    .font(BeesType.captionM.weight(.semibold))
+                    .foregroundStyle(BeesColors.charcoal900)
+            }
+
+            Text("Swipe to browse designs")
+                .font(BeesType.captionS)
+                .foregroundStyle(BeesColors.charcoal600)
+                .padding(.top, 2)
         }
     }
 
@@ -269,8 +277,10 @@ struct StickerCustomizerView: View {
 
     // MARK: - Helpers
 
-    private var currentBaseDesignIndex: Int {
-        StickerBaseDesign.catalog.firstIndex { $0.id == workingDesign.baseDesignId } ?? 0
+    private func previewDesign(for base: StickerBaseDesign) -> StickerDesign {
+        var d = workingDesign
+        d.baseDesignId = base.id
+        return d
     }
 
     private var deadlineText: String {

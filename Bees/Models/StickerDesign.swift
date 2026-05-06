@@ -1,12 +1,18 @@
 import Foundation
 import SwiftUI
 
+enum StickerShape: String, Hashable {
+    case rounded, square, oval, hexagon, badge, scallop
+}
+
 struct StickerBaseDesign: Identifiable, Hashable {
     let id: String
     let name: String
     let category: Category
     let backgroundColor: Color
     let accentColor: Color
+    let shape: StickerShape
+    let accentIcon: String
 
     enum Category: String, Hashable {
         case floral, geometric, vintage, botanical, minimalist, hexagon, watercolor, letterpress, gift
@@ -14,21 +20,29 @@ struct StickerBaseDesign: Identifiable, Hashable {
 
     static let catalog: [StickerBaseDesign] = [
         .init(id: "floral",       name: "Floral",      category: .floral,
-              backgroundColor: BeesColors.honey100, accentColor: BeesColors.honey500),
+              backgroundColor: BeesColors.honey100,  accentColor: BeesColors.honey500,
+              shape: .scallop, accentIcon: "leaf.fill"),
         .init(id: "geometric",    name: "Geometric",   category: .geometric,
-              backgroundColor: BeesColors.comb500, accentColor: BeesColors.charcoal900),
+              backgroundColor: BeesColors.comb500,   accentColor: BeesColors.charcoal900,
+              shape: .square, accentIcon: "square.grid.3x3.fill"),
         .init(id: "vintage",      name: "Vintage",     category: .vintage,
-              backgroundColor: BeesColors.honey300, accentColor: BeesColors.charcoal900),
+              backgroundColor: BeesColors.honey300,  accentColor: BeesColors.charcoal900,
+              shape: .badge, accentIcon: "rosette"),
         .init(id: "botanical",    name: "Botanical",   category: .botanical,
-              backgroundColor: BeesColors.honey100, accentColor: BeesColors.leaf500),
+              backgroundColor: BeesColors.honey100,  accentColor: BeesColors.leaf500,
+              shape: .oval, accentIcon: "leaf"),
         .init(id: "minimalist",   name: "Minimalist",  category: .minimalist,
-              backgroundColor: .white, accentColor: BeesColors.charcoal900),
+              backgroundColor: .white,               accentColor: BeesColors.charcoal900,
+              shape: .rounded, accentIcon: "minus"),
         .init(id: "hexagon",      name: "Hexagon",     category: .hexagon,
-              backgroundColor: BeesColors.honey300, accentColor: BeesColors.charcoal900),
+              backgroundColor: BeesColors.honey300,  accentColor: BeesColors.charcoal900,
+              shape: .hexagon, accentIcon: "hexagon.fill"),
         .init(id: "watercolor",   name: "Watercolor",  category: .watercolor,
-              backgroundColor: BeesColors.comb500, accentColor: BeesColors.amber500),
+              backgroundColor: BeesColors.comb500,   accentColor: BeesColors.amber500,
+              shape: .oval, accentIcon: "paintbrush.fill"),
         .init(id: "letterpress",  name: "Letterpress", category: .letterpress,
-              backgroundColor: BeesColors.charcoal900, accentColor: BeesColors.honey300),
+              backgroundColor: BeesColors.charcoal900, accentColor: BeesColors.honey300,
+              shape: .square, accentIcon: "textformat.alt"),
     ]
 }
 
