@@ -3,6 +3,7 @@ import SwiftUI
 struct HiveRevealView: View {
     var onContinue: () -> Void
     @State private var phase: Phase = .hush
+    @State private var isMorphing = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     enum Phase: Int, Comparable {
@@ -11,80 +12,154 @@ struct HiveRevealView: View {
     }
 
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+        GeometryReader { geo in
+            ZStack {
+                LinearGradient(
+                    colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted.opacity(0.6)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
 
-            if !reduceMotion && phase >= .beesEnter && phase < .hiveCrystallize {
-                BeeSwarmAnimation()
-                    .accessibilityHidden(true)
-            }
-
-            VStack {
-                Spacer()
-
-                if phase >= .hiveCrystallize {
-                    HiveImage()
-                        .transition(.scale(scale: 0.4).combined(with: .opacity))
+                if !reduceMotion && phase >= .beesEnter && phase < .hiveCrystallize && !isMorphing {
+                    BeeSwarmAnimation()
                         .accessibilityHidden(true)
-                }
-
-                Spacer().frame(height: BeesSpacing.xl)
-
-                if phase >= .nameReveal {
-                    VStack(spacing: BeesSpacing.s) {
-                        Text("Meet your hive.")
-                            .font(BeesType.displayXL)
-                            .foregroundStyle(BeesColors.charcoal900)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-
-                        Text("Hive #47 at Sunny Acre Farm")
-                            .font(BeesType.headingM)
-                            .foregroundStyle(BeesColors.charcoal900)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-
-                        Text("Sonoma County, California")
-                            .font(BeesType.bodyM)
-                            .foregroundStyle(BeesColors.charcoal600)
-                            .transition(.opacity.combined(with: .move(edge: .bottom)))
-                    }
-                    .multilineTextAlignment(.center)
-                }
-
-                Spacer()
-
-                if phase >= .ctaAppear {
-                    Button("Continue") { onContinue() }
-                        .buttonStyle(.beesPrimary)
-                        .padding(.horizontal, BeesSpacing.l)
-                        .padding(.bottom, BeesSpacing.l)
                         .transition(.opacity)
                 }
-            }
-            .padding(.horizontal, BeesSpacing.m)
 
-            VStack {
-                HStack {
-                    Spacer()
-                    if phase >= .beesEnter && phase < .ctaAppear {
-                        Button("Skip") { skip() }
-                            .buttonStyle(.beesGhost)
-                            .transition(.opacity)
-                    }
+                if phase >= .hiveCrystallize {
+                    hiveVideo
+                        .frame(
+                            width: videoWidth(in: geo),
+                            height: videoHeight
+                        )
+                        .position(
+                            x: geo.size.width / 2,
+                            y: videoCenterY(in: geo)
+                        )
+                        .transition(.scale(scale: 0.5).combined(with: .opacity))
                 }
-                Spacer()
+
+                if !isMorphing {
+                    VStack {
+                        Spacer().frame(
+                            height: max(0, videoCenterY(in: geo) + videoHeight / 2 + BeesSpacing.l)
+                        )
+
+                        if phase >= .nameReveal {
+                            VStack(spacing: BeesSpacing.s) {
+                                Text("Meet your hive.")
+                                    .font(BeesType.displayXL)
+                                    .foregroundStyle(BeesColors.charcoal900)
+                                Text("Hive #47 at Sunny Acre Farm")
+                                    .font(BeesType.headingM)
+                                    .foregroundStyle(BeesColors.charcoal900)
+                                Text("Sonoma County, California")
+                                    .font(BeesType.bodyM)
+                                    .foregroundStyle(BeesColors.charcoal600)
+                            }
+                            .multilineTextAlignment(.center)
+                            .transition(.opacity.combined(with: .move(edge: .bottom)))
+                        }
+
+                        Spacer()
+
+                        if phase >= .ctaAppear {
+                            Button("Continue") { triggerMorph() }
+                                .buttonStyle(.beesPrimary)
+                                .padding(.horizontal, BeesSpacing.l)
+                                .padding(.bottom, BeesSpacing.l)
+                                .transition(.opacity)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.horizontal, BeesSpacing.m)
+                    .transition(.opacity)
+                }
+
+                if !isMorphing && phase >= .beesEnter && phase < .ctaAppear {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button("Skip") { skip() }
+                                .buttonStyle(.beesGhost)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, BeesSpacing.m)
+                    .transition(.opacity)
+                }
             }
-            .padding(.horizontal, BeesSpacing.m)
         }
         .navigationBarBackButtonHidden(true)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Welcome to your hive. Hive number 47, at Sunny Acre Farm, Sonoma County, California. Continue button.")
         .task { await runSequence() }
     }
+
+    // MARK: - Hive video
+
+    @ViewBuilder
+    private var hiveVideo: some View {
+        ZStack {
+            if !isMorphing {
+                Circle()
+                    .fill(RadialGradient(
+                        colors: [BeesColors.honey300.opacity(0.55), .clear],
+                        center: .center, startRadius: 20, endRadius: 220))
+                    .scaleEffect(1.6)
+                    .blur(radius: 24)
+                    .transition(.opacity)
+            }
+
+            videoContent
+                .mask(
+                    ZStack {
+                        HexagonShape()
+                            .opacity(isMorphing ? 0 : 1)
+                        RoundedRectangle(cornerRadius: BeesRadius.lg)
+                            .opacity(isMorphing ? 1 : 0)
+                    }
+                )
+                .overlay(
+                    HexagonShape()
+                        .stroke(.white.opacity(0.5), lineWidth: 3)
+                        .opacity(isMorphing ? 0 : 1)
+                )
+                .shadow(color: BeesColors.honey500.opacity(isMorphing ? 0 : 0.45),
+                        radius: 22, x: 0, y: 10)
+        }
+    }
+
+    @ViewBuilder
+    private var videoContent: some View {
+        if let url = BundledVideo.url(named: "hive-entrance") {
+            LoopingVideoPlayer(url: url)
+        } else {
+            LinearGradient(
+                colors: [BeesColors.honey500, BeesColors.amber500],
+                startPoint: .top, endPoint: .bottom
+            )
+        }
+    }
+
+    // MARK: - Layout
+
+    private var videoHeight: CGFloat { isMorphing ? 220 : 280 }
+
+    private func videoWidth(in geo: GeometryProxy) -> CGFloat {
+        isMorphing ? max(0, geo.size.width - BeesSpacing.m * 2) : 260
+    }
+
+    private func videoCenterY(in geo: GeometryProxy) -> CGFloat {
+        if isMorphing {
+            return geo.safeAreaInsets.top + videoHeight / 2 + BeesSpacing.l
+        } else {
+            return geo.size.height * 0.40
+        }
+    }
+
+    // MARK: - Sequence
 
     private func runSequence() async {
         if reduceMotion {
@@ -101,66 +176,24 @@ struct HiveRevealView: View {
     }
 
     private func advance(to next: Phase, after delay: TimeInterval = 0, duration: TimeInterval) async {
-        if delay > 0 {
-            try? await Task.sleep(for: .seconds(delay))
-        }
+        if delay > 0 { try? await Task.sleep(for: .seconds(delay)) }
         await MainActor.run {
-            withAnimation(.easeInOut(duration: duration)) {
-                phase = next
-            }
+            withAnimation(.easeInOut(duration: duration)) { phase = next }
         }
     }
 
     private func skip() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            phase = .ctaAppear
-        }
+        withAnimation(.easeInOut(duration: 0.3)) { phase = .ctaAppear }
     }
-}
 
-private struct HiveImage: View {
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(RadialGradient(
-                    colors: [BeesColors.honey300.opacity(0.7), .clear],
-                    center: .center, startRadius: 30, endRadius: 140))
-                .frame(width: 280, height: 280)
-                .blur(radius: 20)
-
-            RevealHexShape()
-                .fill(LinearGradient(
-                    colors: [BeesColors.honey500, BeesColors.amber500],
-                    startPoint: .top, endPoint: .bottom))
-                .frame(width: 160, height: 180)
-                .shadow(color: BeesColors.honey500.opacity(0.4), radius: 16, y: 8)
-
-            RevealHexShape()
-                .stroke(.white.opacity(0.5), lineWidth: 2)
-                .frame(width: 100, height: 110)
+    private func triggerMorph() {
+        withAnimation(.spring(response: 0.75, dampingFraction: 0.85)) {
+            isMorphing = true
         }
-    }
-}
-
-private struct RevealHexShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let w = rect.width
-        let h = rect.height
-        let points: [CGPoint] = [
-            CGPoint(x: w / 2, y: 0),
-            CGPoint(x: w, y: h * 0.25),
-            CGPoint(x: w, y: h * 0.75),
-            CGPoint(x: w / 2, y: h),
-            CGPoint(x: 0, y: h * 0.75),
-            CGPoint(x: 0, y: h * 0.25),
-        ]
-        path.move(to: points[0])
-        for point in points.dropFirst() {
-            path.addLine(to: point)
+        Task {
+            try? await Task.sleep(for: .seconds(0.9))
+            await MainActor.run { onContinue() }
         }
-        path.closeSubpath()
-        return path
     }
 }
 
@@ -183,9 +216,7 @@ private struct BeeSwarmAnimation: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear {
-            animate = true
-        }
+        .onAppear { animate = true }
     }
 
     private func startOffset(for index: Int) -> CGPoint {
