@@ -26,7 +26,7 @@ struct IntroFlow: View {
     ]
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
             videoLayer
             bottomGradient
             content
@@ -34,17 +34,31 @@ struct IntroFlow: View {
         }
         .ignoresSafeArea()
         .navigationBarHidden(true)
+        .contentShape(Rectangle())
+        .gesture(
+            DragGesture(minimumDistance: 30)
+                .onEnded { value in
+                    let threshold: CGFloat = 50
+                    if value.translation.width < -threshold {
+                        advance()
+                    } else if value.translation.width > threshold {
+                        retreat()
+                    }
+                }
+        )
     }
 
     private var videoLayer: some View {
-        TabView(selection: $currentPage) {
+        ZStack {
             ForEach(Array(pages.enumerated()), id: \.offset) { index, page in
-                pageVideo(for: page)
-                    .tag(index)
+                if index == currentPage {
+                    pageVideo(for: page)
+                        .id(page.videoName)
+                        .transition(.opacity)
+                }
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .ignoresSafeArea()
+        .animation(.easeInOut(duration: 0.3), value: currentPage)
     }
 
     @ViewBuilder
@@ -143,6 +157,13 @@ struct IntroFlow: View {
             }
         } else {
             onAdopt()
+        }
+    }
+
+    private func retreat() {
+        guard currentPage > 0 else { return }
+        withAnimation(.easeInOut(duration: 0.3)) {
+            currentPage -= 1
         }
     }
 

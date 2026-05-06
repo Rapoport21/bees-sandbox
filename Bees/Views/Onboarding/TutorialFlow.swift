@@ -11,35 +11,40 @@ struct TutorialFlow: View {
     var body: some View {
         ZStack {
             backgroundLayer
+            if isCurrentVideo {
+                bottomGradient
+            }
             content
             topBar
         }
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .contentShape(Rectangle())
+        .gesture(
+            DragGesture(minimumDistance: 30)
+                .onEnded { value in
+                    let threshold: CGFloat = 50
+                    if value.translation.width < -threshold {
+                        advance()
+                    } else if value.translation.width > threshold {
+                        retreat()
+                    }
+                }
+        )
     }
 
     private var backgroundLayer: some View {
         ZStack {
-            TabView(selection: $currentPage) {
-                ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+            ForEach(Array(items.enumerated()), id: \.offset) { index, item in
+                if index == currentPage {
                     pageBackground(for: item)
-                        .tag(index)
+                        .id(itemKey(item))
+                        .transition(.opacity)
                 }
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .ignoresSafeArea()
-
-            if isCurrentVideo {
-                LinearGradient(
-                    colors: [.clear, .black.opacity(0.55), .black.opacity(0.92)],
-                    startPoint: .center,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
-                .allowsHitTesting(false)
-            }
         }
+        .animation(.easeInOut(duration: 0.3), value: currentPage)
     }
 
     @ViewBuilder
@@ -76,6 +81,17 @@ struct TutorialFlow: View {
                 }
             }
         }
+    }
+
+    private var bottomGradient: some View {
+        LinearGradient(
+            colors: [.clear, .black.opacity(0.55), .black.opacity(0.92)],
+            startPoint: .center,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
+        .frame(maxHeight: .infinity, alignment: .bottom)
+        .allowsHitTesting(false)
     }
 
     private var content: some View {
@@ -162,6 +178,13 @@ struct TutorialFlow: View {
         isCurrentVideo ? .white : BeesColors.honey500
     }
 
+    private func itemKey(_ item: TutorialItem) -> String {
+        switch item {
+        case .card(_, let title, _): return "card_\(title)"
+        case .video(let name, _, _): return "video_\(name)"
+        }
+    }
+
     private func advance() {
         if currentPage < items.count - 1 {
             withAnimation(.easeInOut(duration: 0.3)) {
@@ -169,6 +192,13 @@ struct TutorialFlow: View {
             }
         } else {
             onComplete()
+        }
+    }
+
+    private func retreat() {
+        guard currentPage > 0 else { return }
+        withAnimation(.easeInOut(duration: 0.3)) {
+            currentPage -= 1
         }
     }
 }
