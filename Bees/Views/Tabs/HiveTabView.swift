@@ -7,7 +7,6 @@ struct HiveTabView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: BeesSpacing.l) {
-                    Spacer().frame(height: BeesSpacing.s)
                     videoPlaceholder
                     hiveIdentityPill
                     statStrip
@@ -15,6 +14,7 @@ struct HiveTabView: View {
                     quickActions
                 }
                 .padding(.horizontal, BeesSpacing.m)
+                .padding(.top, BeesSpacing.s)
                 .padding(.bottom, BeesSpacing.xl)
             }
             .background(BeesColors.surfacePage.ignoresSafeArea())
