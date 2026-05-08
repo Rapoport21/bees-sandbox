@@ -2,11 +2,13 @@ import SwiftUI
 
 struct HoneyHomeView: View {
     @Environment(ServiceContainer.self) private var services
-    @State private var customizerOpen = false
+    @State private var path: [HoneyDestination] = []
     @State private var giftFlowOpen = false
 
+    enum HoneyDestination: Hashable { case customizer }
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(spacing: BeesSpacing.l) {
                     if let active = services.shipmentService.activeShipment {
@@ -40,9 +42,12 @@ struct HoneyHomeView: View {
                     .tint(BeesColors.honey500)
                 }
             }
-            .fullScreenCover(isPresented: $customizerOpen) {
-                StickerCustomizerView()
-                    .environment(services)
+            .navigationDestination(for: HoneyDestination.self) { dest in
+                switch dest {
+                case .customizer:
+                    JarStudioView()
+                        .environment(services)
+                }
             }
             .fullScreenCover(isPresented: $giftFlowOpen) {
                 GiftFlow()
@@ -70,7 +75,7 @@ struct HoneyHomeView: View {
 
             Button(primaryCTA(for: shipment)) {
                 if shipment.status == .customizing || shipment.status == .approachingLock {
-                    customizerOpen = true
+                    path.append(.customizer)
                 } else if shipment.status == .shipped || shipment.status == .outForDelivery {
                     // would open tracker
                 } else {

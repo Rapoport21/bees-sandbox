@@ -55,3 +55,6 @@ Bees/Videos/*.mp4
 Bees/Videos/*.mov
 Bees/Videos/*.m4v
 !Bees/Videos/README.md
+
+# Local-only context docs (used with external Claude sessions, not shipped)
+BEES_APP_CONTEXT.md
