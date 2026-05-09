@@ -25,6 +25,8 @@ struct ApplePaymentSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             topBar
+            Divider()
+                .opacity(0.5)
             ScrollView {
                 VStack(spacing: 18) {
                     appIcon
@@ -40,12 +42,18 @@ struct ApplePaymentSheet: View {
                     termsText
                 }
                 .padding(.horizontal, 16)
-                .padding(.top, 4)
-                .padding(.bottom, 20)
+                .padding(.top, 16)
+                .padding(.bottom, 16)
             }
-            subscribeButton
         }
         .background(backgroundColor.ignoresSafeArea())
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 0) {
+                Divider().opacity(0.5)
+                subscribeButton
+            }
+            .background(backgroundColor)
+        }
         .interactiveDismissDisabled(isProcessing)
     }
 
@@ -169,15 +177,15 @@ struct ApplePaymentSheet: View {
                 Text(isProcessing ? "Processing…" : "Subscribe with Face ID")
                     .font(.system(size: 17, weight: .semibold))
             }
-            .frame(maxWidth: .infinity, minHeight: 48)
+            .frame(maxWidth: .infinity, minHeight: 50)
             .foregroundStyle(.white)
             .background(.black, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(PressableButtonStyle())
         .disabled(isProcessing)
         .padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .background(backgroundColor)
+        .padding(.top, 12)
+        .padding(.bottom, 8)
     }
 
     // MARK: - Confirm flow
