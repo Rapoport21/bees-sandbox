@@ -86,7 +86,7 @@ struct HoneyHomeView: View {
         }
         .padding(BeesSpacing.m)
         .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
-        .shadow(color: BeesColors.shadowWarm.opacity(0.06), radius: 4, x: 0, y: 2)
+        .shadow(color: .black.opacity(0.04), radius: 4, x: 0, y: 2)
     }
 
     private func timeline(for shipment: Shipment) -> some View {
@@ -266,7 +266,7 @@ struct HoneyHomeView: View {
             .padding(BeesSpacing.m)
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
-        .buttonStyle(PressableButtonStyle())
+        .buttonStyle(.plain)
     }
 
     private func statusBadge(_ status: Shipment.Status) -> some View {

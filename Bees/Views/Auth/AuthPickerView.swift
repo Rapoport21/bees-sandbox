@@ -25,26 +25,21 @@ struct AuthPickerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Top: brand + title — left-aligned, smaller hexagon mark
-            // sitting like a logo above the headline. Anti-centered-
-            // hero pattern: this is a "pick a sign-in" screen, not
-            // a marketing splash.
-            VStack(alignment: .leading, spacing: BeesSpacing.s) {
+            // Top: brand + title
+            VStack(spacing: BeesSpacing.s) {
                 Image(systemName: "hexagon.fill")
-                    .font(.system(size: 36))
+                    .font(.system(size: 56))
                     .foregroundStyle(BeesColors.honey500)
-                    .padding(.top, BeesSpacing.l)
+                    .padding(.top, BeesSpacing.xl)
 
                 Text(title)
                     .font(BeesType.displayL)
                     .foregroundStyle(BeesColors.charcoal900)
-                    .padding(.top, BeesSpacing.xxs)
 
                 Text("Pick how you'd like to sign in.")
                     .font(BeesType.bodyM)
                     .foregroundStyle(BeesColors.charcoal600)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer()
 
