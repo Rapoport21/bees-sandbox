@@ -43,13 +43,6 @@ struct ContentView: View {
                 .zIndex(100)
             }
         }
-        .task {
-            // Slight delay so the haptic lands as the first content
-            // settles in, not while iOS is still tearing down the
-            // launch screen.
-            try? await Task.sleep(for: .milliseconds(180))
-            HapticManager.shared.playLaunchSequence()
-        }
     }
 
     private var mainTabs: some View {

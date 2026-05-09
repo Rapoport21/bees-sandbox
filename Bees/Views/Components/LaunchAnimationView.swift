@@ -101,6 +101,11 @@ struct LaunchAnimationView: View {
     }
 
     private func runSequence() async {
+        // Fire the haptic at the same instant the visual starts so
+        // the SNAPs at 1.00s and 1.34s align with the haptic BIG HITs
+        // at the same timeline positions.
+        HapticManager.shared.playLaunchSequence()
+
         // 0.00–0.55s — hex emerges with bounce
         withAnimation(.spring(duration: 0.55, bounce: 0.38)) {
             hexScale = 1.0
