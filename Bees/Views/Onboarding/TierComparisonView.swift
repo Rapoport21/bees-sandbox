@@ -18,44 +18,48 @@ struct TierComparisonView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: BeesSpacing.l) {
-                header
+        VStack(spacing: BeesSpacing.m) {
+            titleBlock
+                .padding(.top, BeesSpacing.s)
 
-                Picker("Billing", selection: $billingCycle) {
-                    ForEach(BillingCycle.allCases) { cycle in
-                        Text(cycle.displayName).tag(cycle)
-                    }
+            Picker("Billing", selection: $billingCycle) {
+                ForEach(BillingCycle.allCases) { cycle in
+                    Text(cycle.displayName).tag(cycle)
                 }
-                .pickerStyle(.segmented)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, BeesSpacing.m)
 
-                VStack(spacing: BeesSpacing.s) {
-                    ForEach(Tier.allCases, id: \.self) { tier in
-                        tierCard(tier)
-                    }
-                }
-
-                if let errorText {
-                    Text(errorText)
-                        .font(BeesType.captionM)
-                        .foregroundStyle(BeesColors.error500)
-                        .multilineTextAlignment(.center)
+            VStack(spacing: BeesSpacing.s) {
+                ForEach(Tier.allCases, id: \.self) { tier in
+                    tierCard(tier)
                 }
             }
             .padding(.horizontal, BeesSpacing.m)
-            .padding(.bottom, BeesSpacing.xxl + BeesSpacing.l)
+
+            if let errorText {
+                Text(errorText)
+                    .font(BeesType.captionM)
+                    .foregroundStyle(BeesColors.error500)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, BeesSpacing.m)
+            }
+
+            Spacer(minLength: 0)
         }
         .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
-            VStack(spacing: BeesSpacing.xs) {
+            VStack(spacing: BeesSpacing.xxs) {
                 Button(primaryCTAText) {
+                    let h = UIImpactFeedbackGenerator(style: .medium)
+                    h.impactOccurred()
                     Task { await purchaseSelected() }
                 }
                 .buttonStyle(.beesPrimary)
                 .disabled(isPurchasing)
 
                 Text("Cancel anytime · 1-week free trial included")
-                    .font(BeesType.captionM)
+                    .font(BeesType.captionS)
                     .foregroundStyle(BeesColors.charcoal600)
             }
             .padding(.horizontal, BeesSpacing.m)
@@ -101,69 +105,65 @@ struct TierComparisonView: View {
         return "Subscribe to \(pickedTier.displayName)"
     }
 
-    private var header: some View {
-        VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            ForEach(["Live video of your hive",
-                     "Real-time hive stats",
-                     "Honey jars shipped to you",
-                     "1-week free trial",
-                     "Cancel anytime"], id: \.self) { text in
-                HStack(spacing: BeesSpacing.s) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(BeesColors.honey500)
-                    Text(text)
-                        .font(BeesType.bodyM)
-                        .foregroundStyle(BeesColors.charcoal900)
-                }
-            }
+    private var titleBlock: some View {
+        VStack(spacing: BeesSpacing.xxs) {
+            Text("Choose your plan")
+                .font(BeesType.displayM)
+                .foregroundStyle(BeesColors.charcoal900)
+            Text("Live video, real-time stats, custom-stickered honey jars.")
+                .font(BeesType.captionM)
+                .foregroundStyle(BeesColors.charcoal600)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, BeesSpacing.m)
         }
-        .padding(BeesSpacing.m)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
     }
 
     private func tierCard(_ tier: Tier) -> some View {
         let isSelected = pickedTier == tier
+        let isPopular = tier == .forager
         return Button {
+            let h = UIImpactFeedbackGenerator(style: .light)
+            h.impactOccurred()
             withAnimation(.easeOut(duration: 0.2)) { pickedTier = tier }
         } label: {
-            VStack(alignment: .leading, spacing: BeesSpacing.s) {
-                HStack {
+            VStack(alignment: .leading, spacing: BeesSpacing.xs) {
+                HStack(alignment: .firstTextBaseline) {
                     Text(tier.displayName)
                         .font(BeesType.headingM)
                         .foregroundStyle(BeesColors.charcoal900)
-                    if tier == .forager {
+                    if isPopular {
                         Text("MOST POPULAR")
                             .font(BeesType.captionS)
-                            .tracking(0.8)
+                            .tracking(0.6)
                             .foregroundStyle(.white)
                             .padding(.horizontal, BeesSpacing.xs)
                             .padding(.vertical, 2)
                             .background(BeesColors.honey500, in: Capsule())
                     }
                     Spacer()
-                    Image(systemName: isSelected ? "circle.inset.filled" : "circle")
+                    Text(priceText(for: tier))
+                        .font(BeesType.headingM.weight(.semibold))
+                        .foregroundStyle(BeesColors.charcoal900)
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                         .foregroundStyle(isSelected ? BeesColors.honey500 : BeesColors.charcoal300)
                         .font(.system(size: 22))
                 }
 
-                Text(priceText(for: tier))
-                    .font(BeesType.displayL)
-                    .foregroundStyle(BeesColors.charcoal900)
-
-                VStack(alignment: .leading, spacing: BeesSpacing.xxs) {
+                VStack(alignment: .leading, spacing: 3) {
                     ForEach(features(for: tier), id: \.self) { feature in
-                        HStack(spacing: BeesSpacing.xs) {
-                            Text("✓")
+                        HStack(spacing: BeesSpacing.xxs) {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 10, weight: .bold))
                                 .foregroundStyle(BeesColors.leaf500)
                             Text(feature)
-                                .font(BeesType.bodyM)
-                                .foregroundStyle(BeesColors.charcoal900)
+                                .font(BeesType.captionM)
+                                .foregroundStyle(BeesColors.charcoal600)
                         }
                     }
                 }
             }
-            .padding(BeesSpacing.m)
+            .padding(.horizontal, BeesSpacing.m)
+            .padding(.vertical, BeesSpacing.s + 2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
             .overlay(
@@ -174,10 +174,8 @@ struct TierComparisonView: View {
         .buttonStyle(.plain)
     }
 
-    /// Pulls localized prices from the loaded StoreKit products. Falls
-    /// back to the hardcoded `Tier.monthlyPrice` if products haven't
-    /// loaded yet (first frame, no network, etc.) so the UI never
-    /// shows blanks.
+    /// Pulls localized prices from loaded StoreKit products. Falls back
+    /// to the hardcoded `Tier.monthlyPrice` when products haven't loaded.
     private func priceText(for tier: Tier) -> String {
         let product = services.subscriptionService.product(for: tier)
         switch billingCycle {
@@ -185,9 +183,8 @@ struct TierComparisonView: View {
             if let p = product { return "\(p.displayPrice)/mo" }
             return "$\(format(tier.monthlyPrice))/mo"
         case .annual:
-            // Annual is a 2-month discount: monthly * 10. We don't yet
-            // have annual products in the StoreKit config, so derive
-            // from the displayed monthly price for visual consistency.
+            // Annual = 2-month discount: monthly * 10. No annual SKU
+            // yet; derived for now.
             let annual = tier.monthlyPrice * 10
             return "$\(format(annual))/yr"
         }
@@ -217,21 +214,35 @@ struct TierComparisonView: View {
     }
 
     private func format(_ value: Decimal) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
-        formatter.minimumFractionDigits = 2
-        return formatter.string(from: value as NSDecimalNumber) ?? "\(value)"
+        let f = NumberFormatter()
+        f.numberStyle = .decimal
+        f.maximumFractionDigits = 2
+        f.minimumFractionDigits = 2
+        return f.string(from: value as NSDecimalNumber) ?? "\(value)"
     }
 
+    /// Three top differentiators per tier — keeps cards short enough
+    /// that all three fit above the fold on iPhone 14+ class devices.
     private func features(for tier: Tier) -> [String] {
         switch tier {
         case .pollinator:
-            return ["1 jar every 3 months", "Entrance camera", "8 sticker designs", "All hive stats"]
+            return [
+                "1 jar every 3 months",
+                "Entrance camera",
+                "All hive stats"
+            ]
         case .forager:
-            return ["1 jar every month", "All 3 cameras", "Custom sticker text", "Save 5 designs", "Clip recording"]
+            return [
+                "1 jar every month",
+                "All 3 cameras + clip recording",
+                "Custom sticker text · 5 saved designs"
+            ]
         case .queenKeeper:
-            return ["2 jars every month", "All cameras + early access", "Exclusive seasonal stickers", "Painted hive name", "Sister hive option", "Annual bonus jar"]
+            return [
+                "2 jars/month + annual bonus jar",
+                "Painted hive name · sister hive option",
+                "All cameras + early access"
+            ]
         }
     }
 
@@ -240,17 +251,10 @@ struct TierComparisonView: View {
         errorText = nil
         isPurchasing = true
 
-        // Make sure products are loaded before attempting purchase.
         if services.subscriptionService.products.isEmpty {
             await services.subscriptionService.loadProducts()
         }
 
-        // If StoreKit Configuration isn't active (CLI launch instead of
-        // Xcode ⌘R, or running without registered App Store Connect
-        // products), the products array stays empty. Apple's
-        // `product.purchase()` would hang forever waiting on a server
-        // response. Fall back to a mock confirm so the prototype always
-        // completes — when launched via Xcode, the real path runs.
         guard !services.subscriptionService.products.isEmpty else {
             isPurchasing = false
             showMockConfirm = true
@@ -263,8 +267,6 @@ struct TierComparisonView: View {
             if transaction != nil {
                 onContinue()
             }
-            // If transaction is nil the user cancelled Apple's sheet —
-            // stay on this screen, no error.
         } catch {
             isPurchasing = false
             errorText = "Couldn't complete purchase: \(error.localizedDescription)"
