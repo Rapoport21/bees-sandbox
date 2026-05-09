@@ -123,7 +123,11 @@ struct AppleSignInSheet: View {
         VStack(spacing: 0) {
             // Share My Email row
             Button {
-                shareEmail = true
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
+                withAnimation(.spring(duration: 0.32, bounce: 0.18)) {
+                    shareEmail = true
+                }
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -138,18 +142,24 @@ struct AppleSignInSheet: View {
                     if shareEmail {
                         Image(systemName: "checkmark")
                             .foregroundStyle(.blue)
+                            .transition(.scale(scale: 0.5).combined(with: .opacity))
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
+                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
+            .buttonStyle(RowPressStyle())
 
             Divider().padding(.leading, 16)
 
             // Hide My Email row
             Button {
-                shareEmail = false
+                let generator = UIImpactFeedbackGenerator(style: .light)
+                generator.impactOccurred()
+                withAnimation(.spring(duration: 0.32, bounce: 0.18)) {
+                    shareEmail = false
+                }
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
@@ -164,18 +174,22 @@ struct AppleSignInSheet: View {
                     if !shareEmail {
                         Image(systemName: "checkmark")
                             .foregroundStyle(.blue)
+                            .transition(.scale(scale: 0.5).combined(with: .opacity))
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
+                .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
+            .buttonStyle(RowPressStyle())
         }
         .background(rowBackground, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
     private var continueButton: some View {
         Button {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
             Task { await authenticate() }
         } label: {
             HStack(spacing: 8) {
@@ -189,6 +203,7 @@ struct AppleSignInSheet: View {
             .foregroundStyle(.white)
             .background(.black, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
+        .buttonStyle(PressableButtonStyle())
         .disabled(isAuthenticating)
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
@@ -241,6 +256,32 @@ struct AppleSignInSheet: View {
     }
 }
 
+// MARK: - Button styles for press feedback
+
+/// Continue / primary button — slight scale + opacity dip on press,
+/// matching Apple's tappable bottom-sheet button feel.
+struct PressableButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .opacity(configuration.isPressed ? 0.85 : 1.0)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+    }
+}
+
+/// Email / list-row button — gray fill flash on press, no scale, like
+/// the cells inside Apple's sign-in sheet.
+struct RowPressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                Color(uiColor: .systemGray4)
+                    .opacity(configuration.isPressed ? 0.5 : 0)
+            )
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+    }
+}
+
 #Preview {
     Color.gray.ignoresSafeArea().sheet(isPresented: .constant(true)) {
         AppleSignInSheet(
@@ -250,6 +291,6 @@ struct AppleSignInSheet: View {
             onSuccess: { _ in },
             onCancel: { }
         )
-        .presentationDetents([.large])
+        .presentationDetents([.fraction(0.78)])
     }
 }

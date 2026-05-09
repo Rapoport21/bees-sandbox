@@ -124,7 +124,11 @@ private struct AppleLookalikeButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            let generator = UIImpactFeedbackGenerator(style: .light)
+            generator.impactOccurred()
+            action()
+        } label: {
             HStack(spacing: 8) {
                 Image(systemName: "applelogo")
                     .font(.system(size: 18, weight: .medium))
@@ -138,6 +142,6 @@ private struct AppleLookalikeButton: View {
                     .fill(colorScheme == .dark ? Color.white : Color.black)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 }
