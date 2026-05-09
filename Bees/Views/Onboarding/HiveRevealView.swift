@@ -10,7 +10,7 @@ struct HiveRevealView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     enum Phase: Int, Comparable {
-        case hush, beesEnter, swarmCoalesce, hiveCrystallize, nameReveal, ctaAppear
+        case hush, hiveCrystallize, nameReveal, ctaAppear
         static func < (lhs: Phase, rhs: Phase) -> Bool { lhs.rawValue < rhs.rawValue }
     }
 
@@ -21,12 +21,6 @@ struct HiveRevealView: View {
         GeometryReader { geo in
             ZStack(alignment: .top) {
                 background
-
-                if !reduceMotion && phase >= .beesEnter && phase < .hiveCrystallize && !isMorphing {
-                    BeeSwarmAnimation()
-                        .accessibilityHidden(true)
-                        .transition(.opacity)
-                }
 
                 // Video — only this stays visible through the morph.
                 // It morphs from circle to rounded rect at the same Y
@@ -64,19 +58,6 @@ struct HiveRevealView: View {
                         .animation(.easeOut(duration: 0.18), value: isMorphing)
 
                     Spacer()
-                }
-
-                if !isMorphing && phase >= .beesEnter && phase < .ctaAppear {
-                    VStack {
-                        HStack {
-                            Spacer()
-                            Button("Skip") { skip() }
-                                .buttonStyle(.beesGhost)
-                        }
-                        Spacer()
-                    }
-                    .padding(.horizontal, BeesSpacing.m)
-                    .transition(.opacity)
                 }
             }
         }
@@ -271,11 +252,11 @@ struct HiveRevealView: View {
             await advance(to: .ctaAppear, duration: 0.3)
             return
         }
-        await advance(to: .beesEnter, after: 0.4, duration: 0.6)
-        await advance(to: .swarmCoalesce, after: 1.2, duration: 0.5)
-        await advance(to: .hiveCrystallize, after: 1.0, duration: 0.6)
-        await advance(to: .nameReveal, after: 0.4, duration: 0.5)
-        await advance(to: .ctaAppear, after: 0.5, duration: 0.4)
+        // Bees-flying-in intermission removed — go straight from the
+        // tutorial hand-off into the hive video reveal.
+        await advance(to: .hiveCrystallize, after: 0.15, duration: 0.55)
+        await advance(to: .nameReveal, after: 0.35, duration: 0.5)
+        await advance(to: .ctaAppear, after: 0.45, duration: 0.4)
     }
 
     private func advance(to next: Phase, after delay: TimeInterval = 0, duration: TimeInterval) async {
@@ -283,10 +264,6 @@ struct HiveRevealView: View {
         await MainActor.run {
             withAnimation(.easeInOut(duration: duration)) { phase = next }
         }
-    }
-
-    private func skip() {
-        withAnimation(.easeInOut(duration: 0.3)) { phase = .ctaAppear }
     }
 
     private func triggerMorph() {
@@ -315,42 +292,6 @@ struct HiveRevealView: View {
                 }
             }
         }
-    }
-}
-
-private struct BeeSwarmAnimation: View {
-    @State private var animate = false
-
-    var body: some View {
-        ZStack {
-            ForEach(0..<10, id: \.self) { index in
-                BeeGlyph()
-                    .offset(
-                        x: animate ? 0 : startOffset(for: index).x,
-                        y: animate ? 0 : startOffset(for: index).y
-                    )
-                    .opacity(animate ? 1 : 0)
-                    .animation(
-                        .easeInOut(duration: 1.6).delay(Double(index) * 0.1),
-                        value: animate
-                    )
-            }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear { animate = true }
-    }
-
-    private func startOffset(for index: Int) -> CGPoint {
-        let angle = Double(index) * (2 * .pi / 10)
-        let radius: CGFloat = 220
-        return CGPoint(x: cos(angle) * radius, y: sin(angle) * radius)
-    }
-}
-
-private struct BeeGlyph: View {
-    var body: some View {
-        Text("🐝")
-            .font(.system(size: 26))
     }
 }
 
