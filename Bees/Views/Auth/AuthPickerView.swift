@@ -20,60 +20,67 @@ struct AuthPickerView: View {
     @State private var isLoading = false
     @State private var showAppleSheet = false
 
+    private let buttonHeight: CGFloat = 50
+    private let buttonCornerRadius: CGFloat = 10
+
     var body: some View {
-        ScrollView {
-            VStack(spacing: BeesSpacing.l) {
+        VStack(spacing: 0) {
+            // Top: brand + title
+            VStack(spacing: BeesSpacing.s) {
                 Image(systemName: "hexagon.fill")
-                    .font(.system(size: 64))
+                    .font(.system(size: 56))
                     .foregroundStyle(BeesColors.honey500)
                     .padding(.top, BeesSpacing.xl)
 
                 Text(title)
                     .font(BeesType.displayL)
+                    .foregroundStyle(BeesColors.charcoal900)
 
                 Text("Pick how you'd like to sign in.")
                     .font(BeesType.bodyM)
                     .foregroundStyle(BeesColors.charcoal600)
+            }
 
-                VStack(spacing: BeesSpacing.s) {
-                    AppleLookalikeButton(
-                        colorScheme: colorScheme,
-                        action: { showAppleSheet = true }
-                    )
-                    .frame(height: 50)
+            Spacer()
 
-                    Button {
-                        Task { await mockSignIn(provider: .google) }
-                    } label: {
-                        HStack {
-                            Image(systemName: "g.circle.fill")
-                            Text("Continue with Google")
-                        }
+            // Bottom: actions block — all three buttons share the
+            // exact same dimensions, corner radius, and press feedback.
+            // Only the fill colors differ.
+            VStack(spacing: BeesSpacing.s) {
+                AppleLookalikeButton(
+                    colorScheme: colorScheme,
+                    cornerRadius: buttonCornerRadius,
+                    action: {
+                        let h = UIImpactFeedbackGenerator(style: .light)
+                        h.impactOccurred()
+                        showAppleSheet = true
                     }
-                    .buttonStyle(.beesSecondary)
+                )
+                .frame(height: buttonHeight)
 
-                    Button {
-                        onEmail(true)
-                    } label: {
-                        HStack {
-                            Image(systemName: "envelope.fill")
-                            Text("Continue with email")
-                        }
-                    }
-                    .buttonStyle(.beesSecondary)
-                }
-                .padding(.top, BeesSpacing.l)
+                outlinedSignInButton(
+                    iconName: "g.circle.fill",
+                    text: "Continue with Google",
+                    action: { Task { await mockSignIn(provider: .google) } }
+                )
+
+                outlinedSignInButton(
+                    iconName: "envelope.fill",
+                    text: "Continue with email",
+                    action: { onEmail(true) }
+                )
 
                 Text("By continuing, you agree to our Terms of Service and Privacy Policy.")
                     .font(BeesType.captionM)
                     .foregroundStyle(BeesColors.charcoal600)
                     .multilineTextAlignment(.center)
-                    .padding(.top, BeesSpacing.l)
+                    .padding(.top, BeesSpacing.xs)
+                    .padding(.horizontal, BeesSpacing.s)
             }
-            .padding(.horizontal, BeesSpacing.m)
-            .padding(.bottom, BeesSpacing.xxl)
-            .frame(maxWidth: .infinity)
+            .padding(.bottom, BeesSpacing.l)
         }
+        .padding(.horizontal, BeesSpacing.m)
+        .frame(maxHeight: .infinity)
         .background(BeesColors.surfacePage.ignoresSafeArea())
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
@@ -108,6 +115,35 @@ struct AuthPickerView: View {
         }
     }
 
+    // MARK: - Buttons
+
+    private func outlinedSignInButton(
+        iconName: String,
+        text: String,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button {
+            let h = UIImpactFeedbackGenerator(style: .light)
+            h.impactOccurred()
+            action()
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: iconName)
+                    .font(.system(size: 18, weight: .medium))
+                Text(text)
+                    .font(.system(size: 17, weight: .medium))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundStyle(BeesColors.charcoal900)
+            .background(
+                RoundedRectangle(cornerRadius: buttonCornerRadius, style: .continuous)
+                    .stroke(BeesColors.charcoal300, lineWidth: 1.5)
+            )
+        }
+        .buttonStyle(PressableButtonStyle())
+        .frame(height: buttonHeight)
+    }
+
     // MARK: - Mock providers
 
     private func mockSignIn(provider: AuthProvider) async {
@@ -121,14 +157,11 @@ struct AuthPickerView: View {
 
 private struct AppleLookalikeButton: View {
     let colorScheme: ColorScheme
+    var cornerRadius: CGFloat = 8
     let action: () -> Void
 
     var body: some View {
-        Button {
-            let generator = UIImpactFeedbackGenerator(style: .light)
-            generator.impactOccurred()
-            action()
-        } label: {
+        Button(action: action) {
             HStack(spacing: 8) {
                 Image(systemName: "applelogo")
                     .font(.system(size: 18, weight: .medium))
@@ -138,7 +171,7 @@ private struct AppleLookalikeButton: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundStyle(colorScheme == .dark ? .black : .white)
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .fill(colorScheme == .dark ? Color.white : Color.black)
             )
         }
