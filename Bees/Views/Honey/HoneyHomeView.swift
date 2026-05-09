@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HoneyHomeView: View {
     @Environment(ServiceContainer.self) private var services
+    @Environment(ToastCenter.self) private var toastCenter
     @State private var path: [HoneyDestination] = []
     @State private var giftFlowOpen = false
 
@@ -36,7 +37,11 @@ struct HoneyHomeView: View {
             .navigationTitle("Honey")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { } label: {
+                    Button {
+                        let h = UIImpactFeedbackGenerator(style: .light)
+                        h.impactOccurred()
+                        toastCenter.show("Sharing — coming soon")
+                    } label: {
                         Image(systemName: "square.and.arrow.up")
                     }
                     .tint(BeesColors.honey500)
@@ -245,7 +250,11 @@ struct HoneyHomeView: View {
     }
 
     private func sideCard(icon: String, title: String, subtitle: String) -> some View {
-        Button { } label: {
+        Button {
+            let h = UIImpactFeedbackGenerator(style: .light)
+            h.impactOccurred()
+            toastCenter.show("\(title) — coming soon")
+        } label: {
             HStack(spacing: BeesSpacing.m) {
                 Image(systemName: icon)
                     .font(.system(size: 22))
@@ -266,7 +275,7 @@ struct HoneyHomeView: View {
             .padding(BeesSpacing.m)
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 
     private func statusBadge(_ status: Shipment.Status) -> some View {

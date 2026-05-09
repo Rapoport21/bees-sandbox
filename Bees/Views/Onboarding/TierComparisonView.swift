@@ -106,10 +106,10 @@ struct TierComparisonView: View {
 
     private var titleBlock: some View {
         VStack(spacing: BeesSpacing.xxs) {
-            Text("Choose your plan")
+            Text("Adopt a hive")
                 .font(BeesType.displayM)
                 .foregroundStyle(BeesColors.charcoal900)
-            Text("Live video, real-time stats, custom-stickered honey jars.")
+            Text("A real beehive at a partner farm — your name on every jar.")
                 .font(BeesType.captionM)
                 .foregroundStyle(BeesColors.charcoal600)
                 .multilineTextAlignment(.center)
@@ -146,6 +146,12 @@ struct TierComparisonView: View {
                     Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                         .foregroundStyle(isSelected ? BeesColors.honey500 : BeesColors.charcoal300)
                         .font(.system(size: 22))
+                        // Spring scale + symbol effect when this tier
+                        // becomes selected — small celebratory tap.
+                        .scaleEffect(isSelected ? 1.0 : 0.88)
+                        .animation(.spring(duration: 0.32, bounce: 0.42),
+                                   value: isSelected)
+                        .symbolEffect(.bounce, value: isSelected)
                 }
 
                 VStack(alignment: .leading, spacing: 3) {
@@ -168,9 +174,10 @@ struct TierComparisonView: View {
             .overlay(
                 RoundedRectangle(cornerRadius: BeesRadius.lg)
                     .stroke(isSelected ? BeesColors.honey500 : Color.clear, lineWidth: 2)
+                    .animation(.easeOut(duration: 0.2), value: isSelected)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 
     /// Pulls localized prices from loaded StoreKit products. Falls back

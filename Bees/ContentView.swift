@@ -4,6 +4,7 @@ struct ContentView: View {
     @Environment(ServiceContainer.self) private var services
     @State private var selection: Tab = .hive
     @State private var showLaunchAnimation: Bool = !LaunchState.shared.didShowLaunchAnimation
+    @State private var toastCenter = ToastCenter()
 
     enum Tab: Hashable {
         case hive, honey, farm, you
@@ -32,6 +33,17 @@ struct ContentView: View {
                 }
             }
 
+            if let toastMsg = toastCenter.message {
+                VStack {
+                    Spacer()
+                    ComingSoonToast(message: toastMsg)
+                        .padding(.bottom, 92)  // clears the tab bar
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+                .allowsHitTesting(false)
+                .zIndex(50)
+            }
+
             if showLaunchAnimation {
                 LaunchAnimationView {
                     LaunchState.shared.didShowLaunchAnimation = true
@@ -43,6 +55,8 @@ struct ContentView: View {
                 .zIndex(100)
             }
         }
+        .environment(toastCenter)
+        .animation(.spring(duration: 0.4, bounce: 0.2), value: toastCenter.message)
     }
 
     private var mainTabs: some View {

@@ -201,20 +201,28 @@ struct JarStudioView: View {
             }
     }
 
-    // MARK: - Caption
+    // MARK: - Caption — design name only, with a quiet pagination
+    // dot row beneath. Inventory text ("1 of 8 · swipe to browse")
+    // was dashboard-y; the dots communicate the same thing more
+    // tactilely.
 
     private var captionBlock: some View {
-        VStack(spacing: BeesSpacing.xxs) {
+        VStack(spacing: BeesSpacing.s) {
             Text(currentBase.name)
                 .font(BeesType.displayM)
                 .foregroundStyle(BeesColors.charcoal900)
                 .id(currentBase.id)
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
 
-            Text("\(selectedIndex + 1) of \(catalog.count) · swipe to browse")
-                .font(BeesType.captionS)
-                .tracking(0.6)
-                .foregroundStyle(BeesColors.charcoal600)
+            HStack(spacing: 6) {
+                ForEach(catalog.indices, id: \.self) { idx in
+                    Capsule()
+                        .fill(idx == selectedIndex
+                              ? BeesColors.honey500
+                              : BeesColors.charcoal300.opacity(0.5))
+                        .frame(width: idx == selectedIndex ? 18 : 6, height: 6)
+                }
+            }
         }
         .animation(.snappy(duration: 0.3), value: selectedIndex)
     }
