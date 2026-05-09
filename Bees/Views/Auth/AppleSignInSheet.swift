@@ -76,7 +76,7 @@ struct AppleSignInSheet: View {
                 .foregroundStyle(.white.opacity(0.95))
         }
         .frame(width: 100, height: 100)
-        .shadow(color: BeesColors.shadowWarm.opacity(0.10), radius: 8, y: 4)
+        .shadow(color: .black.opacity(0.08), radius: 8, y: 4)
         .padding(.top, 8)
     }
 

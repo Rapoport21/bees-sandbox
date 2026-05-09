@@ -193,7 +193,7 @@ struct HiveRevealView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: BeesRadius.lg)
                     .fill(BeesColors.surfaceCard)
-                    .shadow(color: BeesColors.shadowWarm.opacity(0.08), radius: 10, x: 0, y: 4)
+                    .shadow(color: .black.opacity(0.06), radius: 10, x: 0, y: 4)
 
                 TextField("Buzzy McHive", text: $hiveName)
                     .font(BeesType.headingM)

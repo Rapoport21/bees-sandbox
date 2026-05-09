@@ -68,7 +68,7 @@ struct JarPreview: View {
         return ZStack {
             stickerShape
                 .fill(design.baseDesign.backgroundColor)
-                .shadow(color: BeesColors.shadowWarm.opacity(0.18), radius: 4, x: 0, y: 2)
+                .shadow(color: .black.opacity(0.18), radius: 4, x: 0, y: 2)
 
             stickerShape
                 .stroke(design.baseDesign.accentColor.opacity(0.25), lineWidth: 1.5)

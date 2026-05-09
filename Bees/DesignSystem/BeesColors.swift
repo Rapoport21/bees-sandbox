@@ -62,16 +62,6 @@ enum BeesColors {
         dark:  UIColor(red: 0.46, green: 0.44, blue: 0.41, alpha: 1.0)
     )
 
-    // MARK: - Shadows
-
-    /// Warm-tinted shadow color. Use with .shadow(color:) instead of
-    /// pure black so cast shadows pick up the honey hue and read as
-    /// part of the brand world. Combine with low opacity (0.10–0.22).
-    static let shadowWarm = adaptive(
-        light: UIColor(red: 0.20, green: 0.12, blue: 0.04, alpha: 1.0),
-        dark:  UIColor(red: 0.04, green: 0.02, blue: 0.00, alpha: 1.0)
-    )
-
     // MARK: - Helper
 
     private static func adaptive(light: UIColor, dark: UIColor) -> Color {

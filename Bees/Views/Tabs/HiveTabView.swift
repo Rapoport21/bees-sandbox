@@ -54,15 +54,13 @@ struct HiveTabView: View {
     }
 
     private var hiveIdentityPill: some View {
-        HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 4) {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(services.hiveService.hive.name)
-                    .font(BeesType.displayL)
+                    .font(BeesType.displayM)
                     .foregroundStyle(BeesColors.charcoal900)
-                    .lineLimit(2)
                 Text("\(services.hiveService.hive.farmName) · \(services.hiveService.hive.farmLocation)")
                     .font(BeesType.captionM)
-                    .italic()
                     .foregroundStyle(BeesColors.charcoal600)
                     .lineLimit(1)
             }
@@ -87,7 +85,7 @@ struct HiveTabView: View {
                     delta: "+0.4",
                     deltaPositive: true,
                     sparkline: sparkline(for: .temperature, base: snapshot.temperatureF, jitter: 1.4),
-                    accent: BeesColors.honey500
+                    accent: BeesColors.amber500
                 )
             }
             NavigationLink(value: StatType.humidity) {
@@ -127,7 +125,7 @@ struct HiveTabView: View {
                 )
             }
         }
-        .buttonStyle(PressableButtonStyle())
+        .buttonStyle(.plain)
     }
 
     private var honeyProductionTile: some View {
@@ -139,7 +137,7 @@ struct HiveTabView: View {
                 weeklyDelta: 1.2
             )
         }
-        .buttonStyle(PressableButtonStyle())
+        .buttonStyle(.plain)
     }
 
     private func sparkline(for stat: StatType, base: Double, jitter: Double, trend: Double = 0) -> [Double] {
@@ -154,7 +152,13 @@ struct HiveTabView: View {
 
     private var activityCard: some View {
         VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            SectionLabel(number: "01", title: "AT THE ENTRANCE")
+            HStack(spacing: BeesSpacing.xs) {
+                Text("🐝")
+                Text("ACTIVITY RIGHT NOW")
+                    .font(BeesType.captionM)
+                    .tracking(1)
+                    .foregroundStyle(BeesColors.charcoal600)
+            }
 
             HStack(spacing: BeesSpacing.xl) {
                 counter(label: "Take-offs", value: services.hiveService.activity.rollingTakeoffs, glyph: "↑")

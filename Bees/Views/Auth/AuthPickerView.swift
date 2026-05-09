@@ -25,25 +25,21 @@ struct AuthPickerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Asymmetric brand block — left-aligned, smaller hex,
-            // serif title gets to be the focus. Anti-centered-hero
-            // pattern for the editorial farmhouse direction.
-            VStack(alignment: .leading, spacing: BeesSpacing.s) {
+            // Top: brand + title
+            VStack(spacing: BeesSpacing.s) {
                 Image(systemName: "hexagon.fill")
-                    .font(.system(size: 36))
+                    .font(.system(size: 56))
                     .foregroundStyle(BeesColors.honey500)
-                    .padding(.top, BeesSpacing.l)
+                    .padding(.top, BeesSpacing.xl)
 
                 Text(title)
                     .font(BeesType.displayL)
                     .foregroundStyle(BeesColors.charcoal900)
-                    .padding(.top, BeesSpacing.xxs)
 
                 Text("Pick how you'd like to sign in.")
                     .font(BeesType.bodyM)
                     .foregroundStyle(BeesColors.charcoal600)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer()
 
