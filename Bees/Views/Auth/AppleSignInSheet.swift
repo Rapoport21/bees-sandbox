@@ -26,7 +26,7 @@ struct AppleSignInSheet: View {
         VStack(spacing: 0) {
             topBar
             ScrollView {
-                VStack(spacing: 24) {
+                VStack(spacing: 18) {
                     appIcon
                     titleBlock
                     identityCard
@@ -39,8 +39,8 @@ struct AppleSignInSheet: View {
                     }
                 }
                 .padding(.horizontal, 16)
-                .padding(.top, 8)
-                .padding(.bottom, 24)
+                .padding(.top, 4)
+                .padding(.bottom, 20)
             }
             continueButton
         }
@@ -51,22 +51,15 @@ struct AppleSignInSheet: View {
     // MARK: - Pieces
 
     private var topBar: some View {
-        ZStack {
-            Text("Use Apple ID")
-                .font(.system(size: 17, weight: .semibold))
-            HStack {
-                Button("Cancel", action: onCancel)
-                    .font(.system(size: 17))
-                    .foregroundStyle(.blue)
-                    .disabled(isAuthenticating)
-                Spacer()
-            }
-            .padding(.horizontal, 16)
+        HStack {
+            Button("Cancel", action: onCancel)
+                .font(.system(size: 17))
+                .foregroundStyle(.blue)
+                .disabled(isAuthenticating)
+            Spacer()
         }
-        .frame(height: 56)
-        .overlay(alignment: .bottom) {
-            Divider()
-        }
+        .padding(.horizontal, 16)
+        .frame(height: 44)
     }
 
     private var appIcon: some View {
@@ -83,16 +76,16 @@ struct AppleSignInSheet: View {
                 .foregroundStyle(.white.opacity(0.95))
         }
         .frame(width: 100, height: 100)
-        .shadow(color: .black.opacity(0.12), radius: 12, y: 6)
-        .padding(.top, 12)
+        .shadow(color: .black.opacity(0.08), radius: 8, y: 4)
+        .padding(.top, 8)
     }
 
     private var titleBlock: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 4) {
             Text("Sign in to \(appName)")
-                .font(.system(size: 22, weight: .bold))
+                .font(.system(size: 22, weight: .semibold))
                 .foregroundStyle(.primary)
-            Text("with your Apple ID “\(appleID)”")
+            Text("with your Apple ID \(appleID)")
                 .font(.system(size: 14))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -116,7 +109,7 @@ struct AppleSignInSheet: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
         }
-        .background(rowBackground, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(rowBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
     private var emailCard: some View {
@@ -183,7 +176,7 @@ struct AppleSignInSheet: View {
             }
             .buttonStyle(RowPressStyle())
         }
-        .background(rowBackground, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(rowBackground, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 
     private var continueButton: some View {
@@ -201,7 +194,7 @@ struct AppleSignInSheet: View {
             }
             .frame(maxWidth: .infinity, minHeight: 48)
             .foregroundStyle(.white)
-            .background(.black, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .background(.black, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
         .buttonStyle(PressableButtonStyle())
         .disabled(isAuthenticating)
