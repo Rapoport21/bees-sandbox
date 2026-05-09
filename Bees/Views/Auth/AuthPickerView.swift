@@ -102,8 +102,9 @@ struct AuthPickerView: View {
                 },
                 onCancel: { showAppleSheet = false }
             )
-            .presentationDetents([.large])
+            .presentationDetents([.fraction(0.78)])
             .presentationDragIndicator(.hidden)
+            .presentationCornerRadius(28)
         }
     }
 
