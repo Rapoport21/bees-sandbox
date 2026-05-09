@@ -25,6 +25,7 @@
 		BEEF200000000000000000B0 /* StatTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B0 /* StatTile.swift */; };
 		BEEF200000000000000000F3 /* HiveStatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F3 /* HiveStatCard.swift */; };
 		BEEF200000000000000000F4 /* JarStudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F4 /* JarStudioView.swift */; };
+		BEEF200000000000000000F7 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F7 /* SubscriptionService.swift */; };
 		BEEF200000000000000000B1 /* HealthPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B1 /* HealthPill.swift */; };
 		BEEF200000000000000000B2 /* Shipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B2 /* Shipment.swift */; };
 		BEEF200000000000000000B3 /* StickerDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B3 /* StickerDesign.swift */; };
@@ -67,6 +68,7 @@
 		BEEF200000000000000000E9 /* IntroFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E9 /* IntroFlow.swift */; };
 		BEEF200000000000000000EA /* TutorialFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000EA /* TutorialFlow.swift */; };
 		BEEF200000000000000000F2 /* Videos in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F2 /* Videos */; };
+		BEEF200000000000000000F6 /* Bees.storekit in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F6 /* Bees.storekit */; };
 		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
 		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -90,6 +92,8 @@
 		BEEF100000000000000000B0 /* StatTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatTile.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000F3 /* HiveStatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveStatCard.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000F4 /* JarStudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JarStudioView.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000F6 /* Bees.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bees.storekit; sourceTree = "<group>"; };
+		BEEF100000000000000000F7 /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B1 /* HealthPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPill.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B2 /* Shipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shipment.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B3 /* StickerDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerDesign.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 			children = (
 				BEEF100000000000000000A1 /* BeesApp.swift */,
 				BEEF100000000000000000A2 /* ContentView.swift */,
+				BEEF100000000000000000F6 /* Bees.storekit */,
 				BEEF300000000000000000A3 /* DesignSystem */,
 				BEEF300000000000000000A4 /* Models */,
 				BEEF300000000000000000A5 /* Services */,
@@ -212,6 +217,7 @@
 				BEEF100000000000000000B5 /* ShipmentService.swift */,
 				BEEF100000000000000000B6 /* StickerService.swift */,
 				BEEF100000000000000000D6 /* AchievementService.swift */,
+				BEEF100000000000000000F7 /* SubscriptionService.swift */,
 				BEEF100000000000000000AA /* ServiceContainer.swift */,
 				BEEF100000000000000000AB /* Fixtures.swift */,
 			);
@@ -422,6 +428,7 @@
 				BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */,
 				BEEF200000000000000000C1 /* Assets.xcassets in Resources */,
 				BEEF200000000000000000F2 /* Videos in Resources */,
+				BEEF200000000000000000F6 /* Bees.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +472,7 @@
 				BEEF200000000000000000BB /* HoneyHomeView.swift in Sources */,
 				BEEF200000000000000000BC /* StickerCustomizerView.swift in Sources */,
 				BEEF200000000000000000F4 /* JarStudioView.swift in Sources */,
+				BEEF200000000000000000F7 /* SubscriptionService.swift in Sources */,
 				BEEF200000000000000000BD /* OnboardingFlow.swift in Sources */,
 				BEEF200000000000000000BE /* TierComparisonView.swift in Sources */,
 				BEEF200000000000000000BF /* TutorialCardsView.swift in Sources */,

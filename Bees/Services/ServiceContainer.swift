@@ -64,6 +64,7 @@ final class ServiceContainer {
     let shipmentService: ShipmentService
     let stickerService: StickerService
     let achievementService: AchievementService
+    let subscriptionService: SubscriptionService
 
     var currentTier: Tier
     var hasCompletedOnboarding: Bool
@@ -104,6 +105,7 @@ final class ServiceContainer {
         shipmentService: ShipmentService,
         stickerService: StickerService,
         achievementService: AchievementService,
+        subscriptionService: SubscriptionService,
         currentTier: Tier,
         hasCompletedOnboarding: Bool,
         billingHistory: [BillingRecord],
@@ -115,6 +117,7 @@ final class ServiceContainer {
         self.shipmentService = shipmentService
         self.stickerService = stickerService
         self.achievementService = achievementService
+        self.subscriptionService = subscriptionService
         self.currentTier = currentTier
         self.hasCompletedOnboarding = hasCompletedOnboarding
         self.billingHistory = billingHistory
@@ -175,6 +178,7 @@ final class ServiceContainer {
             shipmentService: MockShipmentService(active: Fixtures.demoActiveShipment, history: Fixtures.demoHistory),
             stickerService: MockStickerService(savedStickers: Fixtures.demoSavedStickers, maxSaved: 5),
             achievementService: MockAchievementService(all: Fixtures.demoAchievements),
+            subscriptionService: SubscriptionService(),
             currentTier: .forager,
             hasCompletedOnboarding: completedOnboarding,
             billingHistory: Fixtures.demoBilling,

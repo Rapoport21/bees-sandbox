@@ -1,9 +1,14 @@
 import SwiftUI
+import StoreKit
 
 struct TierComparisonView: View {
     @Binding var pickedTier: Tier
     var onContinue: () -> Void
+
+    @Environment(ServiceContainer.self) private var services
     @State private var billingCycle: BillingCycle = .monthly
+    @State private var isPurchasing = false
+    @State private var errorText: String?
 
     enum BillingCycle: String, CaseIterable, Identifiable {
         case monthly, annual
@@ -28,6 +33,13 @@ struct TierComparisonView: View {
                         tierCard(tier)
                     }
                 }
+
+                if let errorText {
+                    Text(errorText)
+                        .font(BeesType.captionM)
+                        .foregroundStyle(BeesColors.error500)
+                        .multilineTextAlignment(.center)
+                }
             }
             .padding(.horizontal, BeesSpacing.m)
             .padding(.bottom, BeesSpacing.xxl + BeesSpacing.l)
@@ -35,9 +47,13 @@ struct TierComparisonView: View {
         .background(BeesColors.surfacePage.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: BeesSpacing.xs) {
-                Button("Start 7-day free trial of \(pickedTier.displayName)") { onContinue() }
-                    .buttonStyle(.beesPrimary)
-                Text("Cancel anytime")
+                Button(primaryCTAText) {
+                    Task { await purchaseSelected() }
+                }
+                .buttonStyle(.beesPrimary)
+                .disabled(isPurchasing)
+
+                Text("Cancel anytime · 1-week free trial included")
                     .font(BeesType.captionM)
                     .foregroundStyle(BeesColors.charcoal600)
             }
@@ -47,6 +63,24 @@ struct TierComparisonView: View {
         }
         .navigationTitle("Choose your hive plan")
         .navigationBarTitleDisplayMode(.inline)
+        .overlay {
+            if isPurchasing {
+                ZStack {
+                    Color.black.opacity(0.2).ignoresSafeArea()
+                    ProgressView("Connecting to App Store…")
+                        .padding(BeesSpacing.l)
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+                }
+            }
+        }
+        .task { await services.subscriptionService.loadProducts() }
+    }
+
+    private var primaryCTAText: String {
+        if let intro = introOfferText(for: pickedTier) {
+            return "Start \(intro) of \(pickedTier.displayName)"
+        }
+        return "Subscribe to \(pickedTier.displayName)"
     }
 
     private var header: some View {
@@ -54,7 +88,7 @@ struct TierComparisonView: View {
             ForEach(["Live video of your hive",
                      "Real-time hive stats",
                      "Honey jars shipped to you",
-                     "7-day free trial",
+                     "1-week free trial",
                      "Cancel anytime"], id: \.self) { text in
                 HStack(spacing: BeesSpacing.s) {
                     Image(systemName: "checkmark.circle.fill")
@@ -122,13 +156,45 @@ struct TierComparisonView: View {
         .buttonStyle(.plain)
     }
 
+    /// Pulls localized prices from the loaded StoreKit products. Falls
+    /// back to the hardcoded `Tier.monthlyPrice` if products haven't
+    /// loaded yet (first frame, no network, etc.) so the UI never
+    /// shows blanks.
     private func priceText(for tier: Tier) -> String {
+        let product = services.subscriptionService.product(for: tier)
         switch billingCycle {
         case .monthly:
+            if let p = product { return "\(p.displayPrice)/mo" }
             return "$\(format(tier.monthlyPrice))/mo"
         case .annual:
+            // Annual is a 2-month discount: monthly * 10. We don't yet
+            // have annual products in the StoreKit config, so derive
+            // from the displayed monthly price for visual consistency.
             let annual = tier.monthlyPrice * 10
             return "$\(format(annual))/yr"
+        }
+    }
+
+    private func introOfferText(for tier: Tier) -> String? {
+        guard let product = services.subscriptionService.product(for: tier),
+              let intro = product.subscription?.introductoryOffer else { return nil }
+        switch intro.paymentMode {
+        case .freeTrial:
+            return periodText(intro.period) + " free"
+        case .payAsYouGo, .payUpFront:
+            return "intro offer"
+        default:
+            return nil
+        }
+    }
+
+    private func periodText(_ period: Product.SubscriptionPeriod) -> String {
+        switch period.unit {
+        case .day:   return "\(period.value)-day"
+        case .week:  return "\(period.value)-week"
+        case .month: return "\(period.value)-month"
+        case .year:  return "\(period.value)-year"
+        @unknown default: return "trial"
         }
     }
 
@@ -150,10 +216,36 @@ struct TierComparisonView: View {
             return ["2 jars every month", "All cameras + early access", "Exclusive seasonal stickers", "Painted hive name", "Sister hive option", "Annual bonus jar"]
         }
     }
+
+    @MainActor
+    private func purchaseSelected() async {
+        errorText = nil
+        isPurchasing = true
+        defer { isPurchasing = false }
+
+        // Make sure products are loaded before attempting purchase —
+        // first-launch race condition where the .task hasn't finished
+        // yet but the user already tapped.
+        if services.subscriptionService.products.isEmpty {
+            await services.subscriptionService.loadProducts()
+        }
+
+        do {
+            let transaction = try await services.subscriptionService.purchase(pickedTier)
+            if transaction != nil {
+                onContinue()
+            }
+            // If transaction is nil the user cancelled the Apple sheet —
+            // stay on this screen, no error.
+        } catch {
+            errorText = "Couldn't complete purchase: \(error.localizedDescription)"
+        }
+    }
 }
 
 #Preview {
     NavigationStack {
         TierComparisonView(pickedTier: .constant(.forager), onContinue: {})
+            .environment(ServiceContainer.preview())
     }
 }
