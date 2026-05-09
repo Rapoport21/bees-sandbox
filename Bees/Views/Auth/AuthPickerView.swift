@@ -13,6 +13,7 @@ struct AuthPickerView: View {
     let title: String
     var onEmail: (_ isSignup: Bool) -> Void
     @State private var isLoading = false
+    @State private var showAppleSheet = false
 
     var body: some View {
         ScrollView {
@@ -32,7 +33,7 @@ struct AuthPickerView: View {
                 VStack(spacing: BeesSpacing.s) {
                     AppleLookalikeButton(
                         colorScheme: colorScheme,
-                        action: { Task { await mockAppleSignIn() } }
+                        action: { showAppleSheet = true }
                     )
                     .frame(height: 50)
 
@@ -80,6 +81,24 @@ struct AuthPickerView: View {
                         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
                 }
             }
+        }
+        .sheet(isPresented: $showAppleSheet) {
+            AppleSignInSheet(
+                appName: "Bees",
+                appleID: "rapoportn21@gmail.com",
+                userName: "Nikita Rapoport",
+                onSuccess: { shareEmail in
+                    services.authService.signInWithApple(
+                        userID: "MOCK-APPLE-USER-\(UUID().uuidString.prefix(8))",
+                        name: "Nikita Rapoport",
+                        email: shareEmail ? "rapoportn21@gmail.com" : "private-relay-\(UUID().uuidString.prefix(6))@privaterelay.appleid.com"
+                    )
+                    showAppleSheet = false
+                },
+                onCancel: { showAppleSheet = false }
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.hidden)
         }
     }
 

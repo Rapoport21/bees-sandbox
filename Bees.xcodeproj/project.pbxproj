@@ -26,6 +26,7 @@
 		BEEF200000000000000000F3 /* HiveStatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F3 /* HiveStatCard.swift */; };
 		BEEF200000000000000000F4 /* JarStudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F4 /* JarStudioView.swift */; };
 		BEEF200000000000000000F7 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F7 /* SubscriptionService.swift */; };
+		BEEF200000000000000000F8 /* AppleSignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F8 /* AppleSignInSheet.swift */; };
 		BEEF200000000000000000B1 /* HealthPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B1 /* HealthPill.swift */; };
 		BEEF200000000000000000B2 /* Shipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B2 /* Shipment.swift */; };
 		BEEF200000000000000000B3 /* StickerDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B3 /* StickerDesign.swift */; };
@@ -94,6 +95,7 @@
 		BEEF100000000000000000F4 /* JarStudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JarStudioView.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000F6 /* Bees.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bees.storekit; sourceTree = "<group>"; };
 		BEEF100000000000000000F7 /* SubscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionService.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000F8 /* AppleSignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInSheet.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B1 /* HealthPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPill.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B2 /* Shipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shipment.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B3 /* StickerDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerDesign.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				BEEF100000000000000000E7 /* VideoIntroView.swift */,
 				BEEF100000000000000000D9 /* AuthPickerView.swift */,
 				BEEF100000000000000000DA /* EmailAuthFormView.swift */,
+				BEEF100000000000000000F8 /* AppleSignInSheet.swift */,
 				BEEF100000000000000000DB /* DemoHiveViewerView.swift */,
 			);
 			path = Auth;
@@ -483,6 +486,7 @@
 				BEEF200000000000000000D8 /* ValueCarouselView.swift in Sources */,
 				BEEF200000000000000000D9 /* AuthPickerView.swift in Sources */,
 				BEEF200000000000000000DA /* EmailAuthFormView.swift in Sources */,
+				BEEF200000000000000000F8 /* AppleSignInSheet.swift in Sources */,
 				BEEF200000000000000000DB /* DemoHiveViewerView.swift in Sources */,
 				BEEF200000000000000000DC /* GiftFlow.swift in Sources */,
 				BEEF200000000000000000DD /* AchievementsView.swift in Sources */,
@@ -638,6 +642,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Bees;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Bees uses Face ID to confirm it's you when signing in.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_BackgroundColor = LaunchBackground;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -668,6 +673,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Bees;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Bees uses Face ID to confirm it's you when signing in.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_BackgroundColor = LaunchBackground;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
