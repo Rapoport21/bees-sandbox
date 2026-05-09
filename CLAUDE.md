@@ -125,6 +125,26 @@ any other relevant model files. Use neutral, code-grounded names
   on the new customizer yet — add as secondary axes (chip strips or
   Watch-Studio-style bottom tabs) when needed.
 
+## Design Context
+
+**See [`.impeccable.md`](.impeccable.md) at repo root for the full
+design context.** Quick summary so design-skill invocations don't
+have to fetch:
+
+- **Audience**: 30–45 urban professionals who garden, care about
+  provenance, $15–50/mo budget. Curious, craft-valuing, would rather
+  pay a small farm than a faceless brand.
+- **Personality**: warm · earnest · farmhouse · grounded · cozy · a
+  little nerdy.
+- **Theme**: cream/honey at the soul; dark-warm (not AI-template
+  dark) when needed.
+- **Anti-references**: crypto/Web3, corporate SaaS dashboard, cold
+  luxury minimalism, "modern AI template" (rounded grid + gradient
+  hero + side-stripe accents).
+- **Principles**: warmth over precision · provenance is the product ·
+  stats are stories, not surveillance · comfort over density ·
+  quietly confident.
+
 ## Repos
 
 - **Main**: github.com/Rapoport21/bees-ios (private)
