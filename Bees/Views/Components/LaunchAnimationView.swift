@@ -16,6 +16,8 @@ import SwiftUI
 struct LaunchAnimationView: View {
     var onFinished: () -> Void
 
+    @Environment(\.colorScheme) private var colorScheme
+
     @State private var hexScale: CGFloat = 0.32
     @State private var hexRotation: Double = -160
     @State private var hexOpacity: Double = 0
@@ -28,16 +30,10 @@ struct LaunchAnimationView: View {
 
     var body: some View {
         ZStack {
-            // Warm-dark background — feels premium without being pure black
-            LinearGradient(
-                colors: [
-                    Color(red: 0.06, green: 0.05, blue: 0.04),
-                    Color(red: 0.14, green: 0.10, blue: 0.06)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            // Adaptive warm gradient — dark warm on dark, cream-honey
+            // on light. Both feel like brand moments rather than a
+            // generic black or white splash.
+            backgroundGradient.ignoresSafeArea()
 
             VStack(spacing: 28) {
                 ZStack {
@@ -90,7 +86,7 @@ struct LaunchAnimationView: View {
 
                 Text("Bees")
                     .font(.system(size: 48, weight: .bold, design: .serif))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(wordmarkColor)
                     .tracking(1.5)
                     .opacity(wordmarkOpacity)
                     .offset(y: wordmarkOffset)
@@ -98,6 +94,36 @@ struct LaunchAnimationView: View {
         }
         .opacity(exitOpacity)
         .task { await runSequence() }
+    }
+
+    // MARK: - Adaptive colors
+
+    private var backgroundGradient: LinearGradient {
+        if colorScheme == .dark {
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.06, green: 0.05, blue: 0.04),
+                    Color(red: 0.14, green: 0.10, blue: 0.06)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        } else {
+            return LinearGradient(
+                colors: [
+                    Color(red: 1.00, green: 0.96, blue: 0.84),
+                    Color(red: 1.00, green: 0.86, blue: 0.55)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        }
+    }
+
+    private var wordmarkColor: Color {
+        colorScheme == .dark
+            ? .white
+            : Color(red: 0.08, green: 0.07, blue: 0.06)
     }
 
     private func runSequence() async {
