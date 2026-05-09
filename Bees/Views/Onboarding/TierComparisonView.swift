@@ -9,6 +9,7 @@ struct TierComparisonView: View {
     @State private var billingCycle: BillingCycle = .monthly
     @State private var isPurchasing = false
     @State private var errorText: String?
+    @State private var showMockConfirm = false
 
     enum BillingCycle: String, CaseIterable, Identifiable {
         case monthly, annual
@@ -74,6 +75,18 @@ struct TierComparisonView: View {
             }
         }
         .task { await services.subscriptionService.loadProducts() }
+        .confirmationDialog(
+            "Subscribe to \(pickedTier.displayName)?",
+            isPresented: $showMockConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Subscribe — 1 week free, then \(priceText(for: pickedTier))") {
+                onContinue()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("\(pickedTier.displayName) plan · cancel anytime in Settings.\nDemo build — no real charge.")
+        }
     }
 
     private var primaryCTAText: String {
@@ -221,23 +234,34 @@ struct TierComparisonView: View {
     private func purchaseSelected() async {
         errorText = nil
         isPurchasing = true
-        defer { isPurchasing = false }
 
-        // Make sure products are loaded before attempting purchase —
-        // first-launch race condition where the .task hasn't finished
-        // yet but the user already tapped.
+        // Make sure products are loaded before attempting purchase.
         if services.subscriptionService.products.isEmpty {
             await services.subscriptionService.loadProducts()
         }
 
+        // If StoreKit Configuration isn't active (CLI launch instead of
+        // Xcode ⌘R, or running without registered App Store Connect
+        // products), the products array stays empty. Apple's
+        // `product.purchase()` would hang forever waiting on a server
+        // response. Fall back to a mock confirm so the prototype always
+        // completes — when launched via Xcode, the real path runs.
+        guard !services.subscriptionService.products.isEmpty else {
+            isPurchasing = false
+            showMockConfirm = true
+            return
+        }
+
         do {
             let transaction = try await services.subscriptionService.purchase(pickedTier)
+            isPurchasing = false
             if transaction != nil {
                 onContinue()
             }
-            // If transaction is nil the user cancelled the Apple sheet —
+            // If transaction is nil the user cancelled Apple's sheet —
             // stay on this screen, no error.
         } catch {
+            isPurchasing = false
             errorText = "Couldn't complete purchase: \(error.localizedDescription)"
         }
     }
