@@ -131,21 +131,13 @@ struct TierComparisonView: View {
                         .font(BeesType.headingM)
                         .foregroundStyle(BeesColors.charcoal900)
                     if isPopular {
-                        Text("MOST POPULAR")
-                            .font(BeesType.captionS)
-                            .tracking(0.6)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, BeesSpacing.xs)
-                            .padding(.vertical, 2)
-                            .background(BeesColors.honey500, in: Capsule())
+                        TapeBadge(text: "MOST POPULAR")
                     }
                     Spacer()
                     Text(priceText(for: tier))
                         .font(BeesType.headingM.weight(.semibold))
                         .foregroundStyle(BeesColors.charcoal900)
-                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                        .foregroundStyle(isSelected ? BeesColors.honey500 : BeesColors.charcoal300)
-                        .font(.system(size: 22))
+                    HexagonRadio(isSelected: isSelected, size: 22)
                 }
 
                 VStack(alignment: .leading, spacing: 3) {
@@ -169,8 +161,13 @@ struct TierComparisonView: View {
                 RoundedRectangle(cornerRadius: BeesRadius.lg)
                     .stroke(isSelected ? BeesColors.honey500 : Color.clear, lineWidth: 2)
             )
+            .shadow(
+                color: BeesColors.shadowWarm.opacity(isSelected ? 0.10 : 0.04),
+                radius: isSelected ? 12 : 4,
+                y: isSelected ? 6 : 2
+            )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 
     /// Pulls localized prices from loaded StoreKit products. Falls back
