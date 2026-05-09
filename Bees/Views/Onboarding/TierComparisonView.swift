@@ -94,7 +94,6 @@ struct TierComparisonView: View {
             )
             .presentationDetents([.fraction(0.78)])
             .presentationDragIndicator(.hidden)
-            .presentationCornerRadius(28)
         }
     }
 
