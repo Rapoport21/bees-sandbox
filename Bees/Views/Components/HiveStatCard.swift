@@ -156,13 +156,13 @@ struct HoneyProductionCard: View {
             jarFillBar
 
             HStack {
-                Text("Jar #\(jarsHarvested + 1) · ≈ \(daysToNextJar) day\(daysToNextJar == 1 ? "" : "s") to harvest")
+                Text(milestoneCopy)
                     .font(BeesType.captionM)
-                    .foregroundStyle(BeesColors.charcoal600)
+                    .foregroundStyle(milestoneColor)
                 Spacer()
-                Text("\(Int(pct * 100))%")
+                Text(percentChip)
                     .font(BeesType.captionS.weight(.semibold))
-                    .foregroundStyle(BeesColors.honey500)
+                    .foregroundStyle(pct >= 1.0 ? BeesColors.amber500 : BeesColors.honey500)
                     .monospacedDigit()
             }
         }
@@ -173,6 +173,36 @@ struct HoneyProductionCard: View {
             RoundedRectangle(cornerRadius: BeesRadius.lg)
                 .stroke(BeesColors.charcoal300.opacity(0.18), lineWidth: 0.5)
         )
+    }
+
+    /// Beekeeper-voice copy that changes as the jar fills. Quiet
+    /// celebration without being loud — the brand is "warm + earnest
+    /// + grounded," not "🎉 jar party."
+    private var milestoneCopy: String {
+        let jarNumber = jarsHarvested + 1
+        let remaining = max(jarTargetLb - honeyLb, 0)
+        switch pct {
+        case 1.0...:
+            return "Jar #\(jarNumber) is ready to harvest"
+        case 0.9..<1.0:
+            return "Almost there — \(String(format: "%.1f", remaining)) lb to jar #\(jarNumber)"
+        case 0.5..<0.9:
+            return "Halfway to jar #\(jarNumber) · ≈ \(daysToNextJar) days to harvest"
+        default:
+            return "Jar #\(jarNumber) · ≈ \(daysToNextJar) day\(daysToNextJar == 1 ? "" : "s") to harvest"
+        }
+    }
+
+    /// Subtly colors the milestone line at high progress to draw the
+    /// eye without being a pop-up.
+    private var milestoneColor: Color {
+        pct >= 0.9 ? BeesColors.charcoal900 : BeesColors.charcoal600
+    }
+
+    /// At 100%, the percent chip swaps to a word — "Ready" — instead
+    /// of "100%". Reads as completion, not measurement.
+    private var percentChip: String {
+        pct >= 1.0 ? "Ready" : "\(Int(pct * 100))%"
     }
 
     private var jarFillBar: some View {

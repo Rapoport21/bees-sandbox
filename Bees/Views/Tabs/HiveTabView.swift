@@ -118,7 +118,37 @@ struct HiveTabView: View {
             case .dormant:  return "dormant"
             }
         }()
-        return "Your hive is \(healthDescriptor) — about \(pop)k bees, \(temp)°F at the entrance, busy this afternoon."
+        return "\(timeOfDay.narrativePrefix) your hive is \(healthDescriptor) — about \(pop)k bees, \(temp)°F at the entrance."
+    }
+
+    // MARK: - Time-of-day awareness (the hive is alive)
+
+    private var timeOfDay: TimeOfDay {
+        let hour = Calendar.current.component(.hour, from: Date())
+        switch hour {
+        case 5..<8:   return .dawn
+        case 8..<12:  return .morning
+        case 12..<16: return .midday
+        case 16..<19: return .lateAfternoon
+        case 19..<22: return .evening
+        default:      return .night
+        }
+    }
+
+    enum TimeOfDay {
+        case dawn, morning, midday, lateAfternoon, evening, night
+
+        /// Sentence-leading prefix for the today narrative.
+        var narrativePrefix: String {
+            switch self {
+            case .dawn:           return "This morning,"
+            case .morning:        return "This morning,"
+            case .midday:         return "This afternoon,"
+            case .lateAfternoon:  return "This afternoon,"
+            case .evening:        return "Tonight,"
+            case .night:          return "Tonight,"
+            }
+        }
     }
 
     // MARK: - Stat grid (quieter, no decoration)
@@ -212,12 +242,45 @@ struct HiveTabView: View {
         )
     }
 
+    /// Beekeeper-voice narration that varies with both activity level
+    /// and time of day. A real hive at 2am is quiet; at noon on a
+    /// warm day, it's at peak. Static "busy" copy 24/7 reads as fake
+    /// — this makes the dashboard feel like a real living thing.
     private func activityNarration(last60: Int) -> String {
-        switch last60 {
-        case 0...3:    return "Quiet at the entrance — most of the colony is inside."
-        case 4...10:   return "Steady flow in and out of the hive."
-        case 11...20:  return "Busy — foragers heading out, workers coming back."
-        default:       return "Peak traffic. The hive is having a moment."
+        switch timeOfDay {
+        case .night:
+            return "Quiet hive. Most bees are inside, regulating temperature."
+
+        case .dawn:
+            return last60 < 4
+                ? "Just waking up. Foragers warming their wings."
+                : "Early start — scouts already heading out."
+
+        case .morning:
+            switch last60 {
+            case 0...3:   return "Slow morning at the entrance. The first foragers haven't left yet."
+            case 4...10:  return "Steady morning flow. Foragers heading to the field."
+            case 11...20: return "Busy morning — lots of takeoffs."
+            default:      return "Peak morning traffic. Foragers in full swing."
+            }
+
+        case .midday:
+            switch last60 {
+            case 0...3:   return "Quiet at the entrance — a midday lull."
+            case 4...10:  return "Steady midday flow."
+            case 11...20: return "Busy at the entrance — peak foraging hours."
+            default:      return "Peak traffic. The hive is having a moment."
+            }
+
+        case .lateAfternoon:
+            return last60 < 6
+                ? "Slowing down. A few late returners coming in."
+                : "Foragers returning, packed with pollen."
+
+        case .evening:
+            return last60 < 4
+                ? "Settling for the night. Last bees coming home."
+                : "Last few foragers headed home before dark."
         }
     }
 
