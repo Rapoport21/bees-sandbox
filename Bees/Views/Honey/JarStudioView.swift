@@ -172,7 +172,7 @@ struct JarStudioView: View {
                         .allowsHitTesting(false)
                 }
                 .frame(width: bodyWidth, height: bodyHeight)
-                .shadow(color: .black.opacity(0.18), radius: 14, x: 0, y: 12)
+                .shadow(color: BeesColors.shadowWarm.opacity(0.22), radius: 14, x: 0, y: 12)
                 .contentShape(Rectangle())
                 .gesture(carouselDrag(stride: stride))
             }
@@ -262,7 +262,7 @@ private struct EditableSticker: View {
         ZStack {
             stickerShape
                 .fill(design.baseDesign.backgroundColor)
-                .shadow(color: .black.opacity(0.18), radius: 4, x: 0, y: 2)
+                .shadow(color: BeesColors.shadowWarm.opacity(0.18), radius: 4, x: 0, y: 2)
 
             stickerShape
                 .stroke(design.baseDesign.accentColor.opacity(0.25), lineWidth: 1.5)
@@ -359,7 +359,7 @@ private struct StaticSticker: View {
         ZStack {
             stickerShape
                 .fill(design.baseDesign.backgroundColor)
-                .shadow(color: .black.opacity(0.18), radius: 4, x: 0, y: 2)
+                .shadow(color: BeesColors.shadowWarm.opacity(0.18), radius: 4, x: 0, y: 2)
 
             stickerShape
                 .stroke(design.baseDesign.accentColor.opacity(0.25), lineWidth: 1.5)

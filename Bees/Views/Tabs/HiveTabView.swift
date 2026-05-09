@@ -85,7 +85,7 @@ struct HiveTabView: View {
                     delta: "+0.4",
                     deltaPositive: true,
                     sparkline: sparkline(for: .temperature, base: snapshot.temperatureF, jitter: 1.4),
-                    accent: BeesColors.amber500
+                    accent: BeesColors.honey500
                 )
             }
             NavigationLink(value: StatType.humidity) {
@@ -125,7 +125,7 @@ struct HiveTabView: View {
                 )
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 
     private var honeyProductionTile: some View {
@@ -137,7 +137,7 @@ struct HiveTabView: View {
                 weeklyDelta: 1.2
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(PressableButtonStyle())
     }
 
     private func sparkline(for stat: StatType, base: Double, jitter: Double, trend: Double = 0) -> [Double] {
@@ -153,7 +153,9 @@ struct HiveTabView: View {
     private var activityCard: some View {
         VStack(alignment: .leading, spacing: BeesSpacing.s) {
             HStack(spacing: BeesSpacing.xs) {
-                Text("🐝")
+                Image(systemName: "wave.3.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(BeesColors.honey500)
                 Text("ACTIVITY RIGHT NOW")
                     .font(BeesType.captionM)
                     .tracking(1)
