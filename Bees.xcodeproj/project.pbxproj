@@ -28,6 +28,7 @@
 		BEEF200000000000000000F7 /* SubscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F7 /* SubscriptionService.swift */; };
 		BEEF200000000000000000FA /* AppleSignInSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000FA /* AppleSignInSheet.swift */; };
 		BEEF200000000000000000FB /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000FB /* HapticManager.swift */; };
+		BEEF200000000000000000FC /* ApplePaymentSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000FC /* ApplePaymentSheet.swift */; };
 		BEEF200000000000000000B1 /* HealthPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B1 /* HealthPill.swift */; };
 		BEEF200000000000000000B2 /* Shipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B2 /* Shipment.swift */; };
 		BEEF200000000000000000B3 /* StickerDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000B3 /* StickerDesign.swift */; };
@@ -99,6 +100,7 @@
 		BEEF100000000000000000F9 /* Bees.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bees.entitlements; sourceTree = "<group>"; };
 		BEEF100000000000000000FA /* AppleSignInSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInSheet.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000FB /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000FC /* ApplePaymentSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePaymentSheet.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B1 /* HealthPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPill.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B2 /* Shipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shipment.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000B3 /* StickerDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickerDesign.swift; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 			children = (
 				BEEF100000000000000000BD /* OnboardingFlow.swift */,
 				BEEF100000000000000000BE /* TierComparisonView.swift */,
+				BEEF100000000000000000FC /* ApplePaymentSheet.swift */,
 				BEEF100000000000000000EA /* TutorialFlow.swift */,
 				BEEF100000000000000000BF /* TutorialCardsView.swift */,
 				BEEF100000000000000000E6 /* OnboardingVideoView.swift */,
@@ -483,6 +486,7 @@
 				BEEF200000000000000000F7 /* SubscriptionService.swift in Sources */,
 				BEEF200000000000000000BD /* OnboardingFlow.swift in Sources */,
 				BEEF200000000000000000BE /* TierComparisonView.swift in Sources */,
+				BEEF200000000000000000FC /* ApplePaymentSheet.swift in Sources */,
 				BEEF200000000000000000BF /* TutorialCardsView.swift in Sources */,
 				BEEF200000000000000000D1 /* HiveRevealView.swift in Sources */,
 				BEEF200000000000000000D2 /* HiveNamingView.swift in Sources */,

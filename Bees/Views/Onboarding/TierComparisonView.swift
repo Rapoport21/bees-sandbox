@@ -75,17 +75,22 @@ struct TierComparisonView: View {
             }
         }
         .task { await services.subscriptionService.loadProducts() }
-        .confirmationDialog(
-            "Subscribe to \(pickedTier.displayName)?",
-            isPresented: $showMockConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Subscribe — 1 week free, then \(priceText(for: pickedTier))") {
-                onContinue()
-            }
-            Button("Cancel", role: .cancel) { }
-        } message: {
-            Text("\(pickedTier.displayName) plan · cancel anytime in Settings.\nDemo build — no real charge.")
+        .sheet(isPresented: $showMockConfirm) {
+            ApplePaymentSheet(
+                appName: "Bees",
+                tierName: pickedTier.displayName,
+                priceText: priceText(for: pickedTier),
+                trialText: "1 week free",
+                renewalText: "Then \(priceText(for: pickedTier))",
+                onSuccess: {
+                    showMockConfirm = false
+                    onContinue()
+                },
+                onCancel: { showMockConfirm = false }
+            )
+            .presentationDetents([.fraction(0.78)])
+            .presentationDragIndicator(.hidden)
+            .presentationCornerRadius(28)
         }
     }
 
