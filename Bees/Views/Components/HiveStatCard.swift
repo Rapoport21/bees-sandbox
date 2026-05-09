@@ -1,33 +1,25 @@
 import SwiftUI
 
+/// Editorial-style stat card. Quieter than the previous version —
+/// no icon chip, no sparkline (was decorative fake data), no delta
+/// capsule. Title in small caps + big serif value in Calistoga + small
+/// unit caption. The serif value is the hero of the card, breathing
+/// room around it.
 struct HiveStatCard: View {
-    let icon: String
     let title: String
     let value: String
     let unit: String
-    let delta: String?
-    let deltaPositive: Bool
-    let sparkline: [Double]
-    let accent: Color
 
     var body: some View {
         VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            HStack(spacing: BeesSpacing.xxs) {
-                Image(systemName: icon)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(accent)
-                    .frame(width: 18, height: 18)
-                    .background(accent.opacity(0.14), in: Circle())
-                Text(title)
-                    .font(BeesType.captionS)
-                    .tracking(0.6)
-                    .foregroundStyle(BeesColors.charcoal600)
-                Spacer(minLength: 0)
-            }
+            Text(title)
+                .font(BeesType.captionS)
+                .tracking(1.0)
+                .foregroundStyle(BeesColors.charcoal600)
 
-            HStack(alignment: .firstTextBaseline, spacing: 3) {
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(value)
-                    .font(BeesType.displayM)
+                    .font(BeesType.displayM)  // Calistoga 26pt serif
                     .foregroundStyle(BeesColors.charcoal900)
                     .contentTransition(.numericText())
                     .lineLimit(1)
@@ -37,28 +29,9 @@ struct HiveStatCard: View {
                     .foregroundStyle(BeesColors.charcoal600)
                 Spacer(minLength: 0)
             }
-
-            HStack(alignment: .center, spacing: BeesSpacing.xs) {
-                Sparkline(values: sparkline, color: accent)
-                    .frame(height: 22)
-                    .frame(maxWidth: .infinity)
-
-                if let delta {
-                    Text(delta)
-                        .font(BeesType.captionS)
-                        .foregroundStyle(deltaPositive ? BeesColors.leaf500 : BeesColors.charcoal600)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(
-                            (deltaPositive ? BeesColors.leaf500 : BeesColors.charcoal600).opacity(0.12),
-                            in: Capsule()
-                        )
-                        .lineLimit(1)
-                        .fixedSize(horizontal: true, vertical: false)
-                }
-            }
         }
-        .padding(BeesSpacing.s + 2)
+        .padding(.horizontal, BeesSpacing.m)
+        .padding(.vertical, BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
         .overlay(
@@ -222,26 +195,8 @@ struct HoneyProductionCard: View {
 #Preview {
     VStack(spacing: 12) {
         HStack(spacing: 12) {
-            HiveStatCard(
-                icon: "thermometer",
-                title: "TEMPERATURE",
-                value: "92",
-                unit: "°F",
-                delta: "+0.4",
-                deltaPositive: true,
-                sparkline: [89, 90, 91, 90, 91, 92, 92, 91, 92, 93, 92, 92],
-                accent: BeesColors.amber500
-            )
-            HiveStatCard(
-                icon: "humidity",
-                title: "HUMIDITY",
-                value: "64",
-                unit: "%",
-                delta: "stable",
-                deltaPositive: false,
-                sparkline: [62, 63, 62, 64, 63, 64, 64, 63, 64, 65, 64, 64],
-                accent: BeesColors.honey500
-            )
+            HiveStatCard(title: "TEMPERATURE", value: "92", unit: "°F")
+            HiveStatCard(title: "HUMIDITY", value: "64", unit: "%")
         }
         HoneyProductionCard(
             honeyLb: 8.4,

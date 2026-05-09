@@ -1,14 +1,20 @@
 import SwiftUI
 
+/// Editorial-farmhouse Hive tab. Reads as a page from a beekeeper's
+/// daily log: big serif hive name, a single warm narrative summary
+/// of the day, then quiet stat tiles, then honey-jar journey, then
+/// a narrative activity reading. No emoji. No fake-data sparklines.
+/// Stats are stories, not surveillance (see CLAUDE.md design context).
 struct HiveTabView: View {
     @Environment(ServiceContainer.self) private var services
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: BeesSpacing.l) {
+                VStack(alignment: .leading, spacing: BeesSpacing.l) {
                     videoPlaceholder
-                    hiveIdentityPill
+                    hiveIdentityHeader
+                    todaysReading
                     statGrid
                     honeyProductionTile
                     activityCard
@@ -24,6 +30,8 @@ struct HiveTabView: View {
             }
         }
     }
+
+    // MARK: - Video
 
     private var videoPlaceholder: some View {
         ZStack {
@@ -53,21 +61,67 @@ struct HiveTabView: View {
         .frame(height: 220)
     }
 
-    private var hiveIdentityPill: some View {
-        HStack {
+    // MARK: - Identity header (big Calistoga hive name, italic farm caption)
+
+    private var hiveIdentityHeader: some View {
+        HStack(alignment: .top, spacing: BeesSpacing.s) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(services.hiveService.hive.name)
-                    .font(BeesType.displayM)
+                    .font(BeesType.displayL)  // Calistoga 34pt
                     .foregroundStyle(BeesColors.charcoal900)
-                Text("\(services.hiveService.hive.farmName) · \(services.hiveService.hive.farmLocation)")
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+
+                (Text(services.hiveService.hive.farmName)
+                    .italic()
+                 + Text("  ·  \(services.hiveService.hive.farmLocation)"))
                     .font(BeesType.captionM)
                     .foregroundStyle(BeesColors.charcoal600)
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .padding(.top, BeesSpacing.xxs)
             }
             Spacer()
             HealthPill(health: services.hiveService.current.health)
+                .padding(.top, BeesSpacing.xs)
         }
     }
+
+    // MARK: - Today's reading (narrative summary card)
+
+    private var todaysReading: some View {
+        let snap = services.hiveService.current
+        return VStack(alignment: .leading, spacing: BeesSpacing.xs) {
+            Text("TODAY")
+                .font(BeesType.captionS)
+                .tracking(1.2)
+                .foregroundStyle(BeesColors.honey500)
+            Text(narrativeReading(snapshot: snap))
+                .font(BeesType.bodyL)
+                .foregroundStyle(BeesColors.charcoal900)
+                .fixedSize(horizontal: false, vertical: true)
+                .lineSpacing(2)
+        }
+        .padding(BeesSpacing.m)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(BeesColors.surfaceWarmHighlight, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+    }
+
+    private func narrativeReading(snapshot: HiveSnapshot) -> String {
+        let temp = Int(snapshot.temperatureF.rounded())
+        let pop = snapshot.populationEstimate / 1000
+        let healthDescriptor: String = {
+            switch snapshot.health {
+            case .thriving: return "thriving"
+            case .steady:   return "steady"
+            case .watch:    return "worth watching"
+            case .alert:    return "asking for attention"
+            case .dormant:  return "dormant"
+            }
+        }()
+        return "Your hive is \(healthDescriptor) — about \(pop)k bees, \(temp)°F at the entrance, busy this afternoon."
+    }
+
+    // MARK: - Stat grid (quieter, no decoration)
 
     private var statGrid: some View {
         let snapshot = services.hiveService.current
@@ -78,55 +132,37 @@ struct HiveTabView: View {
         return LazyVGrid(columns: columns, spacing: BeesSpacing.s) {
             NavigationLink(value: StatType.temperature) {
                 HiveStatCard(
-                    icon: StatType.temperature.iconName,
                     title: "TEMPERATURE",
                     value: String(format: "%.0f", snapshot.temperatureF),
-                    unit: "°F",
-                    delta: "+0.4",
-                    deltaPositive: true,
-                    sparkline: sparkline(for: .temperature, base: snapshot.temperatureF, jitter: 1.4),
-                    accent: BeesColors.amber500
+                    unit: "°F"
                 )
             }
             NavigationLink(value: StatType.humidity) {
                 HiveStatCard(
-                    icon: StatType.humidity.iconName,
                     title: "HUMIDITY",
                     value: String(format: "%.0f", snapshot.humidityPct),
-                    unit: "%",
-                    delta: "stable",
-                    deltaPositive: false,
-                    sparkline: sparkline(for: .humidity, base: snapshot.humidityPct, jitter: 1.8),
-                    accent: BeesColors.honey500
+                    unit: "%"
                 )
             }
             NavigationLink(value: StatType.weight) {
                 HiveStatCard(
-                    icon: StatType.weight.iconName,
                     title: "WEIGHT",
                     value: String(format: "%.1f", snapshot.weightLb),
-                    unit: "lb",
-                    delta: "+0.3",
-                    deltaPositive: true,
-                    sparkline: sparkline(for: .weight, base: snapshot.weightLb, jitter: 0.6, trend: 0.8),
-                    accent: BeesColors.leaf500
+                    unit: "lb"
                 )
             }
             NavigationLink(value: StatType.population) {
                 HiveStatCard(
-                    icon: StatType.population.iconName,
                     title: "POPULATION",
                     value: "\(snapshot.populationEstimate / 1000)k",
-                    unit: "bees",
-                    delta: "+1.2k",
-                    deltaPositive: true,
-                    sparkline: sparkline(for: .population, base: Double(snapshot.populationEstimate), jitter: 1200, trend: 1500),
-                    accent: BeesColors.honey500
+                    unit: "bees"
                 )
             }
         }
         .buttonStyle(.pressable)
     }
+
+    // MARK: - Honey production tile (kept rich — it's the hero stat)
 
     private var honeyProductionTile: some View {
         NavigationLink(value: StatType.honey) {
@@ -140,63 +176,78 @@ struct HiveTabView: View {
         .buttonStyle(.pressable)
     }
 
-    private func sparkline(for stat: StatType, base: Double, jitter: Double, trend: Double = 0) -> [Double] {
-        var seed = stat.hashValue
-        return (0..<14).map { i in
-            seed = seed &* 1_103_515_245 &+ 12_345
-            let r = Double((seed >> 16) & 0x7FFF) / Double(0x7FFF) - 0.5
-            let trendOffset = trend * (Double(i) / 13)
-            return base - trend + trendOffset + r * jitter
-        }
-    }
+    // MARK: - Activity card (narrative + ribbon, no gauge UI)
 
     private var activityCard: some View {
-        VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            HStack(spacing: BeesSpacing.xs) {
-                Text("🐝")
-                Text("ACTIVITY RIGHT NOW")
-                    .font(BeesType.captionM)
-                    .tracking(1)
-                    .foregroundStyle(BeesColors.charcoal600)
-            }
+        let activity = services.hiveService.activity
+        let last60 = activity.takeoffsLast60s + activity.landingsLast60s
+        return VStack(alignment: .leading, spacing: BeesSpacing.s) {
+            Text("AT THE ENTRANCE")
+                .font(BeesType.captionS)
+                .tracking(1.2)
+                .foregroundStyle(BeesColors.honey500)
+
+            Text(activityNarration(last60: last60))
+                .font(BeesType.bodyL)
+                .foregroundStyle(BeesColors.charcoal900)
+                .fixedSize(horizontal: false, vertical: true)
+                .lineSpacing(2)
 
             HStack(spacing: BeesSpacing.xl) {
-                counter(label: "Take-offs", value: services.hiveService.activity.rollingTakeoffs, glyph: "↑")
-                counter(label: "Landings", value: services.hiveService.activity.rollingLandings, glyph: "↓")
+                counter(label: "Out today",
+                        value: activity.rollingTakeoffs)
+                counter(label: "Back today",
+                        value: activity.rollingLandings)
             }
+            .padding(.top, BeesSpacing.xs)
 
-            ProgressView(value: Double(services.hiveService.activity.takeoffsLast60s + services.hiveService.activity.landingsLast60s),
-                         total: 60)
-                .tint(BeesColors.honey500)
-
-            Text("Last 60 seconds")
-                .font(BeesType.captionS)
-                .foregroundStyle(BeesColors.charcoal600)
+            activityRibbon(last60: last60)
         }
         .padding(BeesSpacing.m)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            LinearGradient(colors: [BeesColors.surfaceWarmHighlight, BeesColors.surfaceMuted],
-                           startPoint: .topLeading, endPoint: .bottomTrailing),
-            in: RoundedRectangle(cornerRadius: BeesRadius.lg)
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+        .overlay(
+            RoundedRectangle(cornerRadius: BeesRadius.lg)
+                .stroke(BeesColors.charcoal300.opacity(0.18), lineWidth: 0.5)
         )
     }
 
-    private func counter(label: String, value: Int, glyph: String) -> some View {
+    private func activityNarration(last60: Int) -> String {
+        switch last60 {
+        case 0...3:    return "Quiet at the entrance — most of the colony is inside."
+        case 4...10:   return "Steady flow in and out of the hive."
+        case 11...20:  return "Busy — foragers heading out, workers coming back."
+        default:       return "Peak traffic. The hive is having a moment."
+        }
+    }
+
+    private func counter(label: String, value: Int) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            HStack(spacing: BeesSpacing.xxs) {
-                Text(glyph)
-                    .font(BeesType.headingM)
-                    .foregroundStyle(BeesColors.honey500)
-                Text(format(value))
-                    .font(BeesType.monoL)
-                    .foregroundStyle(BeesColors.charcoal900)
-                    .contentTransition(.numericText())
-            }
+            Text(format(value))
+                .font(BeesType.displayM)  // Calistoga 26pt
+                .foregroundStyle(BeesColors.charcoal900)
+                .contentTransition(.numericText())
             Text(label)
                 .font(BeesType.captionM)
                 .foregroundStyle(BeesColors.charcoal600)
         }
+    }
+
+    private func activityRibbon(last60: Int) -> some View {
+        let pct = min(Double(last60) / 60.0, 1.0)
+        return GeometryReader { geo in
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(BeesColors.charcoal300.opacity(0.25))
+                Capsule()
+                    .fill(LinearGradient(
+                        colors: [BeesColors.honey300, BeesColors.honey500, BeesColors.amber500],
+                        startPoint: .leading, endPoint: .trailing))
+                    .frame(width: max(8, geo.size.width * pct))
+                    .animation(BeesAnimation.easeOut(0.6), value: pct)
+            }
+        }
+        .frame(height: 6)
     }
 
     private func format(_ value: Int) -> String {

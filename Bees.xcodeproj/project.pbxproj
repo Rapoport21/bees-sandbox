@@ -73,6 +73,7 @@
 		BEEF200000000000000000E9 /* IntroFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000E9 /* IntroFlow.swift */; };
 		BEEF200000000000000000EA /* TutorialFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000EA /* TutorialFlow.swift */; };
 		BEEF200000000000000000F2 /* Videos in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F2 /* Videos */; };
+		BEEF200000000000000000FE /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000FE /* Fonts */; };
 		BEEF200000000000000000F6 /* Bees.storekit in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000F6 /* Bees.storekit */; };
 		BEEF200000000000000000C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C1 /* Assets.xcassets */; };
 		BEEF200000000000000000C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C2 /* Preview Assets.xcassets */; };
@@ -147,6 +148,7 @@
 		BEEF100000000000000000E9 /* IntroFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroFlow.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000EA /* TutorialFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialFlow.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000F2 /* Videos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Videos; sourceTree = "<group>"; };
+		BEEF100000000000000000FE /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		BEEF100000000000000000C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEEF100000000000000000C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BEEF100000000000000000F1 /* Bees.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bees.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,6 +180,7 @@
 				BEEF100000000000000000A2 /* ContentView.swift */,
 				BEEF100000000000000000F9 /* Bees.entitlements */,
 				BEEF100000000000000000F6 /* Bees.storekit */,
+				BEEF100000000000000000FE /* Fonts */,
 				BEEF300000000000000000A3 /* DesignSystem */,
 				BEEF300000000000000000A4 /* Models */,
 				BEEF300000000000000000A5 /* Services */,
@@ -446,6 +449,7 @@
 				BEEF200000000000000000C1 /* Assets.xcassets in Resources */,
 				BEEF200000000000000000F2 /* Videos in Resources */,
 				BEEF200000000000000000F6 /* Bees.storekit in Resources */,
+				BEEF200000000000000000FE /* Fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
