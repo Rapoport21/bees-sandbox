@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// Cold-launch animation. ~2 seconds, paired with HapticManager's
+/// Cold-launch animation. ~2.4 seconds, paired with HapticManager's
 /// staccato launch sequence so the visual snap moments line up with
 /// the haptic BIG HITs at ~1.0s and ~1.34s.
 ///
@@ -11,8 +11,8 @@ import SwiftUI
 ///               with haptic BIG HIT)
 /// - 1.05–1.45s: "Bees" wordmark slides up + fades in below
 /// - 1.34s:      subtle second SNAP (hex pulse, second haptic BIG HIT)
-/// - 1.45–1.75s: hold
-/// - 1.75–2.05s: whole view fades to clear, calls onFinished()
+/// - 1.45–2.05s: hold — wordmark gets a moment to breathe
+/// - 2.05–2.40s: whole view fades to clear, calls onFinished()
 struct LaunchAnimationView: View {
     var onFinished: () -> Void
 
@@ -145,14 +145,15 @@ struct LaunchAnimationView: View {
             hexBoost = 1.0
         }
 
-        // 1.45–1.75s — hold (overlaps with previous animations finishing)
-        try? await Task.sleep(for: .milliseconds(280))
+        // 1.45–2.05s — extended hold so the wordmark gets a beat to
+        // breathe before exit
+        try? await Task.sleep(for: .milliseconds(600))
 
-        // 1.75–2.05s — fade everything to clear
-        withAnimation(.easeIn(duration: 0.30)) {
+        // 2.05–2.40s — fade everything to clear
+        withAnimation(.easeIn(duration: 0.35)) {
             exitOpacity = 0
         }
-        try? await Task.sleep(for: .milliseconds(310))
+        try? await Task.sleep(for: .milliseconds(360))
 
         onFinished()
     }
