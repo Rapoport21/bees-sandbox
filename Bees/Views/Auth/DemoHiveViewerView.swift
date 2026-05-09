@@ -141,7 +141,7 @@ struct DemoHiveViewerView: View {
                     StatTile(icon: "arrow.up.forward", value: "1,1k", unit: "OUT", trend: .up)
                 }
             }
-            .buttonStyle(.plain)
+            .buttonStyle(.pressable)
         }
         .overlay(alignment: .topTrailing) {
             Image(systemName: "lock.fill")
@@ -238,7 +238,7 @@ struct DemoHiveViewerView: View {
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: BeesRadius.md))
             .padding(.horizontal, BeesSpacing.m)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private func startSimulating() {

@@ -179,7 +179,7 @@ struct GiftFlow: View {
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
             .opacity(available ? 1.0 : 0.6)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
         .disabled(!available)
     }
 
@@ -289,7 +289,7 @@ struct GiftFlow: View {
                     .stroke(selected ? BeesColors.honey500 : .clear, lineWidth: 2)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
         .foregroundStyle(BeesColors.charcoal900)
     }
 
@@ -314,7 +314,7 @@ struct GiftFlow: View {
                     .stroke(selected ? BeesColors.honey500 : .clear, lineWidth: 2)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
         .foregroundStyle(BeesColors.charcoal900)
     }
 
@@ -410,7 +410,7 @@ struct GiftFlow: View {
                                         .foregroundStyle(BeesColors.charcoal600)
                                 }
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(.pressable)
                         }
                     }
                 }
@@ -500,7 +500,7 @@ struct GiftFlow: View {
                     .stroke(selected ? BeesColors.honey500 : .clear, lineWidth: 2)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private var reviewStep: some View {

@@ -14,8 +14,8 @@ struct BeesPrimaryButtonStyle: ButtonStyle {
                 in: RoundedRectangle(cornerRadius: BeesRadius.md)
             )
             .opacity(configuration.isPressed ? 0.85 : 1.0)
-            .scaleEffect(configuration.isPressed ? 0.99 : 1.0)
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(BeesAnimation.pressFeedback, value: configuration.isPressed)
     }
 }
 
@@ -32,7 +32,8 @@ struct BeesSecondaryButtonStyle: ButtonStyle {
             )
             .background(BeesColors.honey100.opacity(configuration.isPressed ? 0.6 : 0),
                         in: RoundedRectangle(cornerRadius: BeesRadius.md))
-            .animation(.easeOut(duration: 0.15), value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(BeesAnimation.pressFeedback, value: configuration.isPressed)
     }
 }
 

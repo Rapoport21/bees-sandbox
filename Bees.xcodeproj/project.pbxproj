@@ -12,6 +12,7 @@
 		BEEF200000000000000000A3 /* BeesColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A3 /* BeesColors.swift */; };
 		BEEF200000000000000000A4 /* BeesTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A4 /* BeesTypography.swift */; };
 		BEEF200000000000000000A5 /* BeesSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A5 /* BeesSpacing.swift */; };
+		BEEF200000000000000000C0 /* BeesAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000C0 /* BeesAnimation.swift */; };
 		BEEF200000000000000000A6 /* Tier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A6 /* Tier.swift */; };
 		BEEF200000000000000000A7 /* Hive.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A7 /* Hive.swift */; };
 		BEEF200000000000000000A8 /* HiveSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEF100000000000000000A8 /* HiveSnapshot.swift */; };
@@ -83,6 +84,7 @@
 		BEEF100000000000000000A3 /* BeesColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesColors.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000A4 /* BeesTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesTypography.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000A5 /* BeesSpacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesSpacing.swift; sourceTree = "<group>"; };
+		BEEF100000000000000000C0 /* BeesAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeesAnimation.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000A6 /* Tier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tier.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000A7 /* Hive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hive.swift; sourceTree = "<group>"; };
 		BEEF100000000000000000A8 /* HiveSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveSnapshot.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				BEEF100000000000000000A3 /* BeesColors.swift */,
 				BEEF100000000000000000A4 /* BeesTypography.swift */,
 				BEEF100000000000000000A5 /* BeesSpacing.swift */,
+				BEEF100000000000000000C0 /* BeesAnimation.swift */,
 			);
 			path = DesignSystem;
 			sourceTree = "<group>";
@@ -458,6 +461,7 @@
 				BEEF200000000000000000A3 /* BeesColors.swift in Sources */,
 				BEEF200000000000000000A4 /* BeesTypography.swift in Sources */,
 				BEEF200000000000000000A5 /* BeesSpacing.swift in Sources */,
+				BEEF200000000000000000C0 /* BeesAnimation.swift in Sources */,
 				BEEF200000000000000000A6 /* Tier.swift in Sources */,
 				BEEF200000000000000000A7 /* Hive.swift in Sources */,
 				BEEF200000000000000000A8 /* HiveSnapshot.swift in Sources */,

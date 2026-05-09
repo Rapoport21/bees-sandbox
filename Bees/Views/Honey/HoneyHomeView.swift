@@ -186,7 +186,7 @@ struct HoneyHomeView: View {
             .padding(BeesSpacing.m)
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private var historyRow: some View {
@@ -224,7 +224,7 @@ struct HoneyHomeView: View {
             .padding(BeesSpacing.m)
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private var emptyHero: some View {
@@ -266,7 +266,7 @@ struct HoneyHomeView: View {
             .padding(BeesSpacing.m)
             .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private func statusBadge(_ status: Shipment.Status) -> some View {

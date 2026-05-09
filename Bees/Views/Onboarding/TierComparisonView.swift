@@ -170,7 +170,7 @@ struct TierComparisonView: View {
                     .stroke(isSelected ? BeesColors.honey500 : Color.clear, lineWidth: 2)
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     /// Pulls localized prices from loaded StoreKit products. Falls back

@@ -249,21 +249,12 @@ struct AppleSignInSheet: View {
     }
 }
 
-// MARK: - Button styles for press feedback
+// MARK: - List-row press style (sheet-internal)
 
-/// Continue / primary button — slight scale + opacity dip on press,
-/// matching Apple's tappable bottom-sheet button feel.
-struct PressableButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .opacity(configuration.isPressed ? 0.85 : 1.0)
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
-    }
-}
-
-/// Email / list-row button — gray fill flash on press, no scale, like
-/// the cells inside Apple's sign-in sheet.
+/// Cell-style press feedback for the email rows in this sheet. Gray
+/// fill flash on press, no scale — Apple uses this row press treatment
+/// inside the real Sign in with Apple sheet. The general-purpose
+/// PressableButtonStyle (with scale-down) lives in BeesAnimation.swift.
 struct RowPressStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -271,7 +262,7 @@ struct RowPressStyle: ButtonStyle {
                 Color(uiColor: .systemGray4)
                     .opacity(configuration.isPressed ? 0.5 : 0)
             )
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+            .animation(BeesAnimation.pressFeedback, value: configuration.isPressed)
     }
 }
 

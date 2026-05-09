@@ -125,7 +125,7 @@ struct HiveTabView: View {
                 )
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private var honeyProductionTile: some View {
@@ -137,7 +137,7 @@ struct HiveTabView: View {
                 weeklyDelta: 1.2
             )
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.pressable)
     }
 
     private func sparkline(for stat: StatType, base: Double, jitter: Double, trend: Double = 0) -> [Double] {
