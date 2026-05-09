@@ -2,11 +2,16 @@ import SwiftUI
 
 /// NOTE: Free Apple Developer accounts (Personal Team) cannot enable
 /// the Sign in with Apple capability. We render a button styled to
-/// match Apple's official one and wire it to the same code path that
-/// would handle a real `ASAuthorizationAppleIDCredential` — when this
-/// repo gets onto a paid Developer team, swap `AppleLookalikeButton`
-/// for SwiftUI's `SignInWithAppleButton` and the auth flow continues
-/// to work without changes.
+/// match Apple's official one and present a custom sheet that mimics
+/// Apple's sign-in modal — name row, share/hide email choice, big
+/// Continue button. The Face ID prompt invoked from that sheet IS
+/// real (LocalAuthentication works without entitlement), so the
+/// moment of authentication feels authentic.
+///
+/// Day this project moves to a paid Developer team, swap
+/// `AppleLookalikeButton` + sheet for SwiftUI's `SignInWithAppleButton`
+/// and the `MockAuthService.signInWithApple` call already takes a
+/// matching credential signature — downstream code doesn't change.
 struct AuthPickerView: View {
     @Environment(ServiceContainer.self) private var services
     @Environment(\.colorScheme) private var colorScheme
@@ -102,22 +107,7 @@ struct AuthPickerView: View {
         }
     }
 
-    // MARK: - Sign-in handlers
-
-    private func mockAppleSignIn() async {
-        isLoading = true
-        // Brief artificial delay so the loading indicator reads as a
-        // real auth round-trip rather than instant.
-        try? await Task.sleep(for: .milliseconds(700))
-        await MainActor.run {
-            services.authService.signInWithApple(
-                userID: "MOCK-APPLE-USER-\(UUID().uuidString.prefix(8))",
-                name: "Nick",
-                email: "nick@privaterelay.appleid.com"
-            )
-            isLoading = false
-        }
-    }
+    // MARK: - Mock providers
 
     private func mockSignIn(provider: AuthProvider) async {
         isLoading = true
@@ -149,11 +139,4 @@ private struct AppleLookalikeButton: View {
         }
         .buttonStyle(.plain)
     }
-}
-
-#Preview {
-    NavigationStack {
-        AuthPickerView(title: "Get started", onEmail: { _ in })
-    }
-    .environment(ServiceContainer.freshLaunch())
 }
