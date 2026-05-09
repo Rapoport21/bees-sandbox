@@ -1,7 +1,15 @@
 import SwiftUI
 
+/// NOTE: Free Apple Developer accounts (Personal Team) cannot enable
+/// the Sign in with Apple capability. We render a button styled to
+/// match Apple's official one and wire it to the same code path that
+/// would handle a real `ASAuthorizationAppleIDCredential` — when this
+/// repo gets onto a paid Developer team, swap `AppleLookalikeButton`
+/// for SwiftUI's `SignInWithAppleButton` and the auth flow continues
+/// to work without changes.
 struct AuthPickerView: View {
     @Environment(ServiceContainer.self) private var services
+    @Environment(\.colorScheme) private var colorScheme
     let title: String
     var onEmail: (_ isSignup: Bool) -> Void
     @State private var isLoading = false
@@ -22,15 +30,11 @@ struct AuthPickerView: View {
                     .foregroundStyle(BeesColors.charcoal600)
 
                 VStack(spacing: BeesSpacing.s) {
-                    Button {
-                        Task { await mockSignIn(provider: .apple) }
-                    } label: {
-                        HStack {
-                            Image(systemName: "apple.logo")
-                            Text("Continue with Apple")
-                        }
-                    }
-                    .buttonStyle(BeesPrimaryButtonStyle())
+                    AppleLookalikeButton(
+                        colorScheme: colorScheme,
+                        action: { Task { await mockAppleSignIn() } }
+                    )
+                    .frame(height: 50)
 
                     Button {
                         Task { await mockSignIn(provider: .google) }
@@ -79,10 +83,52 @@ struct AuthPickerView: View {
         }
     }
 
+    // MARK: - Sign-in handlers
+
+    private func mockAppleSignIn() async {
+        isLoading = true
+        // Brief artificial delay so the loading indicator reads as a
+        // real auth round-trip rather than instant.
+        try? await Task.sleep(for: .milliseconds(700))
+        await MainActor.run {
+            services.authService.signInWithApple(
+                userID: "MOCK-APPLE-USER-\(UUID().uuidString.prefix(8))",
+                name: "Nick",
+                email: "nick@privaterelay.appleid.com"
+            )
+            isLoading = false
+        }
+    }
+
     private func mockSignIn(provider: AuthProvider) async {
         isLoading = true
         await services.authService.signIn(provider: provider, name: "Nick", email: "nick@example.com")
         isLoading = false
+    }
+}
+
+// MARK: - Apple-styled lookalike button
+
+private struct AppleLookalikeButton: View {
+    let colorScheme: ColorScheme
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: "applelogo")
+                    .font(.system(size: 18, weight: .medium))
+                Text("Continue with Apple")
+                    .font(.system(size: 17, weight: .medium))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundStyle(colorScheme == .dark ? .black : .white)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(colorScheme == .dark ? Color.white : Color.black)
+            )
+        }
+        .buttonStyle(.plain)
     }
 }
 

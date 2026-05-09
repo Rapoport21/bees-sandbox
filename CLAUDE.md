@@ -82,6 +82,23 @@ tiers — not free vs paid. Use the actual tier names ("Pollinator",
 
 ## Lessons (don't repeat these)
 
+### 2026-05: tried to ship Sign in with Apple on a free Apple Dev account
+**What happened:** I added the `Sign in with Apple` entitlement and used
+SwiftUI's `SignInWithAppleButton`. Build failed with: *"Personal
+development teams… do not support the Sign In with Apple capability."*
+The capability requires the **paid** Apple Developer Program ($99/yr).
+**Workaround in place:** `AuthPickerView` now uses a custom
+`AppleLookalikeButton` (black bg, apple.logo, "Continue with Apple")
+that calls `authService.signInWithApple(userID:name:email:)` with a
+mocked credential. Visually identical in a demo. The auth-service
+method signature already matches a real `ASAuthorizationAppleIDCredential`,
+so swapping to `SignInWithAppleButton` is a one-file change once a paid
+team is in place.
+**Rule going forward:** Capabilities that require Apple-issued
+provisioning profile entries (Sign in with Apple, Push, Background
+Modes beyond defaults, Associated Domains, etc.) all need a paid team.
+Always confirm before promising "real" Apple-system flows.
+
 ### 2026-05: assumed a free tier existed
 **What happened:** When designing the new sticker customizer, I asked
 the user how to gate features for "free users." There are no free

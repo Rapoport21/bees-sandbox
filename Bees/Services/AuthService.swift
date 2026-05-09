@@ -11,8 +11,10 @@ protocol AuthService: AnyObject {
     var displayName: String { get }
     var email: String? { get }
     var provider: AuthProvider? { get }
+    var appleUserID: String? { get }
 
     func signIn(provider: AuthProvider, name: String?, email: String?) async
+    func signInWithApple(userID: String, name: String?, email: String?)
     func signOut()
 }
 
@@ -22,6 +24,7 @@ final class MockAuthService: AuthService {
     private(set) var displayName: String
     private(set) var email: String?
     private(set) var provider: AuthProvider?
+    private(set) var appleUserID: String?
 
     init(isAuthenticated: Bool, displayName: String = "Nick", email: String? = nil, provider: AuthProvider? = nil) {
         self.isAuthenticated = isAuthenticated
@@ -42,9 +45,26 @@ final class MockAuthService: AuthService {
         }
     }
 
+    /// Synchronous Apple sign-in: the AuthenticationServices completion
+    /// already returned the credential, so there's no async to wait on.
+    /// We accept the userIdentifier as our stable user key (no
+    /// server-side verification — prototype only).
+    func signInWithApple(userID: String, name: String?, email: String?) {
+        self.isAuthenticated = true
+        self.provider = .apple
+        self.appleUserID = userID
+        if let email, !email.isEmpty {
+            self.email = email
+        }
+        if let name, !name.isEmpty {
+            self.displayName = name
+        }
+    }
+
     func signOut() {
         isAuthenticated = false
         provider = nil
         email = nil
+        appleUserID = nil
     }
 }
