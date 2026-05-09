@@ -33,18 +33,24 @@ final class HapticManager {
     }
 
     /// Plays once on the first ContentView render after a cold launch.
-    /// Four-phase ~2s bee-swarm sequence:
+    /// All-transient (no continuous bed) percussive pattern — punchy
+    /// staccato instead of a swelling buzz. ~1.85s, 19 taps:
     ///
-    /// 1. **Approach (0.0 – 0.4s)** — sparse light taps over a low
-    ///    distant buzz; first bee.
-    /// 2. **Build (0.4 – 1.0s)** — taps cluster, buzz climbs in
-    ///    intensity and sharpness; the swarm gathers.
-    /// 3. **Climax (1.0 – 1.55s)** — dense rapid taps with peak
-    ///    intensity and bright sharpness; full swarm.
-    /// 4. **Settle (1.55 – 1.95s)** — a single hard low-sharpness
-    ///    thud (the hive landing) followed by two soft echoes.
+    /// - **Intro (0.00 – 0.15s)** — dot-dot-TAP, three crisp clicks
+    ///   ending on an accent
+    /// - **Build (0.32 – 0.53s)** — quick four-step roll climbing in
+    ///   intensity, accent on beat 4
+    /// - **Climax (0.70 – 1.00s)** — six rapid sharp taps, ending on
+    ///   the first BIG HIT (intensity 1.0, sharpness 0.85)
+    /// - **Aftermath (1.18 – 1.34s)** — three-tap follow-up to a
+    ///   second big hit
+    /// - **Fade (1.54 – 1.78s)** — three sharp echoes tapering
     ///
-    /// Idempotent — subsequent calls in the same session no-op.
+    /// All taps run at high sharpness (0.85–1.0) for clicky, crisp
+    /// feel; only the two big hits drop to ~0.85 so they read as
+    /// impact rather than ping. Intensity ranges 0.2 – 1.0 for
+    /// dynamics. Idempotent — subsequent calls in the same session
+    /// no-op.
     func playLaunchSequence() {
         guard !hasFiredLaunchSequence else { return }
         hasFiredLaunchSequence = true
@@ -56,83 +62,47 @@ final class HapticManager {
             return
         }
 
-        var events: [CHHapticEvent] = []
-
-        // Continuous buzz bed — runs almost the whole pattern. The
-        // intensity and sharpness CONTROL curves sculpt it over time
-        // so the same continuous event reads as approaching → building
-        // → climaxing → tapering.
-        events.append(CHHapticEvent(eventType: .hapticContinuous, parameters: [
-            CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0),
-            CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
-        ], relativeTime: 0.0, duration: 1.85))
-
-        // Transient taps over the bed. (time, intensity, sharpness)
-        // Times are absolute relative to the pattern start.
+        // (time, intensity, sharpness)
         let taps: [(TimeInterval, Float, Float)] = [
-            // Phase 1 — Approach (sparse, light, fairly sharp)
-            (0.05, 0.35, 0.75),
-            (0.22, 0.45, 0.78),
-            (0.35, 0.40, 0.80),
-            // Phase 2 — Build (clustering, mid intensity, sharper)
-            (0.48, 0.55, 0.82),
-            (0.58, 0.65, 0.85),
-            (0.70, 0.55, 0.88),
-            (0.80, 0.70, 0.85),
-            (0.92, 0.75, 0.80),
-            // Phase 3 — Climax (dense, peak, brightest)
-            (1.05, 0.85, 0.78),
-            (1.13, 0.90, 0.72),
-            (1.22, 0.95, 0.62),
-            (1.30, 0.95, 0.48),
-            (1.38, 0.90, 0.38),
-            // Phase 4 — Settle (heavy thud + soft echoes)
-            (1.52, 1.00, 0.18),  // hard hive-lands thud, low sharpness = bass
-            (1.72, 0.45, 0.55),  // first echo
-            (1.86, 0.30, 0.65),  // second echo
+            // Intro — dot dot TAP
+            (0.00, 0.55, 1.0),
+            (0.07, 0.55, 1.0),
+            (0.15, 0.80, 1.0),
+
+            // Build — four-step roll, accent on beat 4
+            (0.32, 0.45, 0.95),
+            (0.39, 0.55, 0.95),
+            (0.46, 0.65, 0.95),
+            (0.54, 0.85, 1.0),
+
+            // Climax — rapid burst into a BIG HIT
+            (0.70, 0.55, 1.0),
+            (0.76, 0.65, 1.0),
+            (0.82, 0.75, 1.0),
+            (0.88, 0.85, 1.0),
+            (0.94, 0.95, 1.0),
+            (1.00, 1.00, 0.85),  // BIG HIT — slight bass for impact
+
+            // Aftermath — three taps into second big hit
+            (1.20, 0.60, 1.0),
+            (1.27, 0.80, 1.0),
+            (1.34, 1.00, 0.90),  // SECOND BIG HIT
+
+            // Fade — three crisp echoes
+            (1.54, 0.50, 1.0),
+            (1.66, 0.35, 1.0),
+            (1.78, 0.25, 1.0),
         ]
-        for (time, intensity, sharpness) in taps {
-            events.append(CHHapticEvent(eventType: .hapticTransient, parameters: [
+
+        let events = taps.map { (time, intensity, sharpness) in
+            CHHapticEvent(eventType: .hapticTransient, parameters: [
                 CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
                 CHHapticEventParameter(parameterID: .hapticSharpness, value: sharpness)
-            ], relativeTime: time))
+            ], relativeTime: time)
         }
 
-        // Intensity curve for the continuous bed: starts at 0 (silent
-        // bed), builds, peaks during climax, then drops sharply to
-        // give the settle phase room to breathe.
-        let intensityCurve = CHHapticParameterCurve(
-            parameterID: .hapticIntensityControl,
-            controlPoints: [
-                .init(relativeTime: 0.00, value: 0.00),
-                .init(relativeTime: 0.30, value: 0.40),
-                .init(relativeTime: 0.65, value: 0.65),
-                .init(relativeTime: 1.05, value: 0.90),
-                .init(relativeTime: 1.40, value: 1.00),
-                .init(relativeTime: 1.55, value: 0.20),  // hard drop after thud
-                .init(relativeTime: 1.85, value: 0.00),
-            ],
-            relativeTime: 0
-        )
-
-        // Sharpness curve: starts round/muddy (distant buzz), gets
-        // bright at the climax (alarming swarm), drops to bass at the
-        // settle (low rumble landing).
-        let sharpnessCurve = CHHapticParameterCurve(
-            parameterID: .hapticSharpnessControl,
-            controlPoints: [
-                .init(relativeTime: 0.00, value: 0.30),
-                .init(relativeTime: 0.60, value: 0.55),
-                .init(relativeTime: 1.10, value: 0.80),
-                .init(relativeTime: 1.40, value: 0.65),
-                .init(relativeTime: 1.55, value: 0.20),
-                .init(relativeTime: 1.85, value: 0.30),
-            ],
-            relativeTime: 0
-        )
-
         do {
-            let pattern = try CHHapticPattern(events: events, parameterCurves: [intensityCurve, sharpnessCurve])
+            let pattern = try CHHapticPattern(events: events, parameters: [])
             let player = try engine.makePlayer(with: pattern)
             try engine.start()
             try player.start(atTime: 0)
