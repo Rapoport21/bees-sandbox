@@ -37,40 +37,42 @@ struct LaunchAnimationView: View {
 
             VStack(spacing: 28) {
                 ZStack {
-                    // Very subtle warm wash behind the mark — much
-                    // quieter than the previous honey glow. Hints at
-                    // brand warmth without screaming.
+                    // Glow halo behind the mark
                     Image(systemName: "hexagon.fill")
-                        .font(.system(size: 160, weight: .ultraLight))
+                        .font(.system(size: 160, weight: .bold))
                         .foregroundStyle(
                             RadialGradient(
                                 colors: [
-                                    Color(red: 1.00, green: 0.86, blue: 0.55).opacity(0.4),
+                                    Color(red: 1.00, green: 0.82, blue: 0.40),
+                                    Color(red: 1.00, green: 0.65, blue: 0.13).opacity(0.5),
                                     .clear
                                 ],
                                 center: .center,
-                                startRadius: 12,
-                                endRadius: 140
+                                startRadius: 8,
+                                endRadius: 110
                             )
                         )
-                        .blur(radius: 40)
+                        .blur(radius: 32)
                         .scaleEffect(glowScale)
-                        .opacity(glowOpacity * 0.6)
+                        .opacity(glowOpacity)
 
-                    // The mark — thin charcoal hex outline. No fill,
-                    // no monogram, no honey shadow. Pure form.
-                    BeesLogo(variant: .mark, size: 140, color: wordmarkColor)
+                    // Brand mark — letterpress hex stamp with serif "B"
+                    BeesLogo(variant: .mark, size: 140)
                         .scaleEffect(hexScale * hexBoost)
                         .rotationEffect(.degrees(hexRotation))
                         .opacity(hexOpacity)
+                        .shadow(
+                            color: Color(red: 1.00, green: 0.65, blue: 0.13).opacity(0.5),
+                            radius: 28, y: 10
+                        )
                 }
                 .frame(width: 200, height: 200)
 
                 Text("Bees")
-                    .font(.system(size: 48, weight: .light, design: .serif))
+                    .font(.system(size: 52, weight: .heavy, design: .serif))
                     .italic()
                     .foregroundStyle(wordmarkColor)
-                    .tracking(0.5)
+                    .tracking(-0.5)
                     .opacity(wordmarkOpacity)
                     .offset(y: wordmarkOffset)
             }

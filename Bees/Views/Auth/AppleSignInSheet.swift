@@ -63,15 +63,21 @@ struct AppleSignInSheet: View {
     }
 
     private var appIcon: some View {
-        // App-icon mockup. Matches the real home-screen icon — warm
-        // cream squircle, thin charcoal hex outline centered.
+        // App-icon mockup. Squircle background (matches iOS app icon
+        // shape) with the BeesLogo monogram centered on it.
         ZStack {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color(red: 0.98, green: 0.95, blue: 0.87))
-            BeesLogo(variant: .mark, size: 56)
+                .fill(LinearGradient(
+                    colors: [
+                        Color(red: 1.00, green: 0.93, blue: 0.78),
+                        Color(red: 1.00, green: 0.82, blue: 0.40)
+                    ],
+                    startPoint: .top, endPoint: .bottom))
+
+            BeesLogo(variant: .mark, size: 64)
         }
         .frame(width: 100, height: 100)
-        .shadow(color: .black.opacity(0.08), radius: 8, y: 4)
+        .shadow(color: .black.opacity(0.10), radius: 8, y: 4)
         .padding(.top, 8)
     }
 
