@@ -1,50 +1,59 @@
 import SwiftUI
 
-/// Bees brand mark — a single thin hex outline, no fill, no monogram.
-/// Minimal / elegant / sophisticated. Generous negative space. The
-/// form is the brand. Matches the home-screen app icon (cream
-/// background, charcoal hex outline) so the same mark shows up
-/// consistently from the icon to the in-app surfaces.
+/// Bees brand mark — a nested hex. Thin charcoal outer outline
+/// (geometric, sophisticated) with a smaller filled honey hex
+/// centered inside (brand warmth, hints at "honey at the center
+/// of the comb"). Matches the home-screen app icon so the same
+/// composition shows up consistently from icon to in-app surfaces.
 struct BeesLogo: View {
     enum Variant { case mark, wordmark }
 
     var variant: Variant = .mark
     var size: CGFloat = 48
-    var color: Color = BeesColors.charcoal900
+    /// Outline color for the outer hex.
+    var outlineColor: Color = BeesColors.charcoal900
+    /// Fill color for the inner hex.
+    var fillColor: Color = BeesColors.honey500
 
     var body: some View {
         switch variant {
         case .mark:
             mark
         case .wordmark:
-            HStack(spacing: size * 0.30) {
+            HStack(spacing: size * 0.28) {
                 mark
                 Text("Bees")
-                    .font(.system(size: size * 0.62,
-                                  weight: .light,
+                    .font(.system(size: size * 0.60,
+                                  weight: .regular,
                                   design: .serif))
                     .italic()
-                    .foregroundStyle(color)
-                    .tracking(0.5)
+                    .foregroundStyle(outlineColor)
+                    .tracking(0.3)
             }
         }
     }
 
-    /// SF Symbol `hexagon` (outline) at ultra-light weight. The
-    /// hairline stroke is what makes the mark feel refined rather
-    /// than chunky. Scales correctly with the `size` parameter.
+    /// Outer hex outline + inner filled hex, centered. Uses two SF
+    /// Symbol "hexagon"/"hexagon.fill" glyphs stacked — outer at
+    /// ultra-light weight for a hairline stroke, inner at ~43% of
+    /// the outer size for an inset honey accent.
     private var mark: some View {
-        Image(systemName: "hexagon")
-            .font(.system(size: size, weight: .ultraLight))
-            .foregroundStyle(color)
+        ZStack {
+            Image(systemName: "hexagon")
+                .font(.system(size: size, weight: .ultraLight))
+                .foregroundStyle(outlineColor)
+            Image(systemName: "hexagon.fill")
+                .font(.system(size: size * 0.43))
+                .foregroundStyle(fillColor)
+        }
     }
 }
 
 #Preview {
     VStack(spacing: 36) {
-        BeesLogo(variant: .mark, size: 96)
-        BeesLogo(variant: .mark, size: 56)
-        BeesLogo(variant: .mark, size: 32)
+        BeesLogo(variant: .mark, size: 120)
+        BeesLogo(variant: .mark, size: 64)
+        BeesLogo(variant: .mark, size: 36)
         BeesLogo(variant: .wordmark, size: 56)
         BeesLogo(variant: .wordmark, size: 36)
     }
