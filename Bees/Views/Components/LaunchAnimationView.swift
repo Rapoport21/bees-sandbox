@@ -37,7 +37,7 @@ struct LaunchAnimationView: View {
 
             VStack(spacing: 28) {
                 ZStack {
-                    // Glow halo behind the mark
+                    // Glow halo behind hexagon
                     Image(systemName: "hexagon.fill")
                         .font(.system(size: 160, weight: .bold))
                         .foregroundStyle(
@@ -56,8 +56,24 @@ struct LaunchAnimationView: View {
                         .scaleEffect(glowScale)
                         .opacity(glowOpacity)
 
-                    // Brand mark — letterpress hex stamp with serif "B"
-                    BeesLogo(variant: .mark, size: 140)
+                    // Hex itself
+                    Image(systemName: "hexagon.fill")
+                        .font(.system(size: 140, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [
+                                    Color(red: 1.00, green: 0.82, blue: 0.40),
+                                    Color(red: 0.96, green: 0.55, blue: 0.10)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .overlay(
+                            Image(systemName: "hexagon")
+                                .font(.system(size: 140, weight: .bold))
+                                .foregroundStyle(.white.opacity(0.18))
+                        )
                         .scaleEffect(hexScale * hexBoost)
                         .rotationEffect(.degrees(hexRotation))
                         .opacity(hexOpacity)
@@ -69,10 +85,9 @@ struct LaunchAnimationView: View {
                 .frame(width: 200, height: 200)
 
                 Text("Bees")
-                    .font(.system(size: 52, weight: .heavy, design: .serif))
-                    .italic()
+                    .font(.system(size: 48, weight: .bold, design: .serif))
                     .foregroundStyle(wordmarkColor)
-                    .tracking(-0.5)
+                    .tracking(1.5)
                     .opacity(wordmarkOpacity)
                     .offset(y: wordmarkOffset)
             }

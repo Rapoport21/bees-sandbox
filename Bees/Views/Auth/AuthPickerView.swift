@@ -27,7 +27,9 @@ struct AuthPickerView: View {
         VStack(spacing: 0) {
             // Top: brand + title
             VStack(spacing: BeesSpacing.s) {
-                BeesLogo(variant: .mark, size: 56)
+                Image(systemName: "hexagon.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(BeesColors.honey500)
                     .padding(.top, BeesSpacing.xl)
 
                 Text(title)
