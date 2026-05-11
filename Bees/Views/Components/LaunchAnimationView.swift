@@ -57,9 +57,9 @@ struct LaunchAnimationView: View {
                         .scaleEffect(glowScale)
                         .opacity(glowOpacity * 0.6)
 
-                    // The mark — nested hex (charcoal outline, honey-
-                    // filled inner). Matches the home-screen app icon.
-                    BeesLogo(variant: .mark, size: 140, outlineColor: wordmarkColor)
+                    // The mark — thin charcoal hex outline. No fill,
+                    // no monogram, no honey shadow. Pure form.
+                    BeesLogo(variant: .mark, size: 140, color: wordmarkColor)
                         .scaleEffect(hexScale * hexBoost)
                         .rotationEffect(.degrees(hexRotation))
                         .opacity(hexOpacity)
