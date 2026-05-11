@@ -63,17 +63,25 @@ struct AppleSignInSheet: View {
     }
 
     private var appIcon: some View {
+        // Mirrors AppIcon.png: warm cream tile with a honey-gradient hexagon
+        // and the same ~18% white inset outline as the launch animation hex.
         ZStack {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(LinearGradient(
-                    colors: [
-                        Color(red: 1.00, green: 0.82, blue: 0.40),
-                        Color(red: 0.96, green: 0.55, blue: 0.10)
-                    ],
-                    startPoint: .top, endPoint: .bottom))
+                .fill(Color(red: 250/255, green: 243/255, blue: 221/255))
             Image(systemName: "hexagon.fill")
-                .font(.system(size: 56, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.95))
+                .font(.system(size: 64, weight: .bold))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [
+                            Color(red: 1.00, green: 0.82, blue: 0.40),
+                            Color(red: 0.96, green: 0.55, blue: 0.10)
+                        ],
+                        startPoint: .top, endPoint: .bottom))
+                .overlay(
+                    Image(systemName: "hexagon")
+                        .font(.system(size: 64, weight: .bold))
+                        .foregroundStyle(.white.opacity(0.18))
+                )
         }
         .frame(width: 100, height: 100)
         .shadow(color: .black.opacity(0.08), radius: 8, y: 4)
