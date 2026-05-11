@@ -1,25 +1,35 @@
 import SwiftUI
 
-/// Editorial-style stat card. Quieter than the previous version —
-/// no icon chip, no sparkline (was decorative fake data), no delta
-/// capsule. Title in small caps + big serif value in Calistoga + small
-/// unit caption. The serif value is the hero of the card, breathing
-/// room around it.
+/// Editorial-style stat card. A narrative context line below the
+/// value gives each tile a beekeeper voice instead of dashboard
+/// silence — "Warm and steady" / "Holding strong" rather than just
+/// "92°F" / "58k". A small chevron at the top-right signals the
+/// card is tappable (leads to StatDetailView).
 struct HiveStatCard: View {
     let title: String
     let value: String
     let unit: String
+    /// One-line beekeeper voice context, e.g. "Warm and steady".
+    /// Optional — passing nil hides the line.
+    var context: String? = nil
 
     var body: some View {
-        VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            Text(title)
-                .font(BeesType.captionS)
-                .tracking(1.0)
-                .foregroundStyle(BeesColors.charcoal600)
+        VStack(alignment: .leading, spacing: BeesSpacing.xxs) {
+            HStack(alignment: .top, spacing: BeesSpacing.xs) {
+                Text(title)
+                    .font(BeesType.captionS)
+                    .tracking(1.0)
+                    .foregroundStyle(BeesColors.charcoal600)
+                Spacer(minLength: 0)
+                // Subtle tappability affordance — chevron at top-right.
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(BeesColors.charcoal300)
+            }
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(value)
-                    .font(BeesType.displayM)  // Calistoga 26pt serif
+                    .font(BeesType.displayM)
                     .foregroundStyle(BeesColors.charcoal900)
                     .contentTransition(.numericText())
                     .lineLimit(1)
@@ -28,6 +38,16 @@ struct HiveStatCard: View {
                     .font(BeesType.captionM)
                     .foregroundStyle(BeesColors.charcoal600)
                 Spacer(minLength: 0)
+            }
+            .padding(.top, BeesSpacing.xxs)
+
+            if let context {
+                Text(context)
+                    .font(BeesType.captionM)
+                    .foregroundStyle(BeesColors.charcoal600)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 2)
             }
         }
         .padding(.horizontal, BeesSpacing.m)

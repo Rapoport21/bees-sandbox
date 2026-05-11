@@ -10,10 +10,13 @@ import SwiftUI
 /// reliability and Apple HIG conformance — never use a serif for app
 /// chrome (controls, lists, forms).
 enum BeesType {
-    // Display — system serif (SF / New York). Reverted from Calistoga.
-    static let displayXL = Font.system(size: 40, weight: .bold,     design: .serif)
-    static let displayL  = Font.system(size: 32, weight: .semibold, design: .serif)
-    static let displayM  = Font.system(size: 24, weight: .semibold, design: .serif)
+    // Display — system serif (New York). Bumped sizes compensate for
+    // losing Calistoga's character — bigger system serif at heavier
+    // weights reads as more intentional than the original 40/32/24.
+    // Bold for the hero tier, semibold for L and M.
+    static let displayXL = Font.system(size: 44, weight: .bold,     design: .serif)
+    static let displayL  = Font.system(size: 36, weight: .semibold, design: .serif)
+    static let displayM  = Font.system(size: 28, weight: .semibold, design: .serif)
 
     // Headings — system sans (SF Pro), bold weight for hierarchy.
     static let headingL  = Font.system(size: 24, weight: .semibold)

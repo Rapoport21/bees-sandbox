@@ -15,6 +15,7 @@ struct HiveTabView: View {
                     videoPlaceholder
                     hiveIdentityHeader
                     todaysReading
+                    shipmentNudge
                     statGrid
                     honeyProductionTile
                     activityCard
@@ -28,6 +29,40 @@ struct HiveTabView: View {
             .navigationDestination(for: StatType.self) { stat in
                 StatDetailView(stat: stat)
             }
+        }
+    }
+
+    // MARK: - Contextual nudge (quiet) — surfaces when a shipment
+    // is open for customizing or approaching lock. Otherwise hidden.
+
+    @ViewBuilder
+    private var shipmentNudge: some View {
+        if let active = services.shipmentService.activeShipment,
+           active.status == .customizing || active.status == .approachingLock {
+            let jarNumber = (services.shipmentService.history.count) + 1
+            let daysToLock = max(0, Calendar.current.dateComponents([.day], from: Date(), to: active.lockInDate).day ?? 0)
+            let nudgeText = active.status == .approachingLock
+                ? "Jar #\(jarNumber) locks in \(daysToLock) day\(daysToLock == 1 ? "" : "s") — last chance to customize"
+                : "Jar #\(jarNumber) is open for customizing"
+
+            HStack(spacing: BeesSpacing.xs) {
+                Image(systemName: "scribble.variable")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(BeesColors.honey500)
+                Text(nudgeText)
+                    .font(BeesType.captionM)
+                    .foregroundStyle(BeesColors.charcoal900)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(BeesColors.charcoal300)
+            }
+            .padding(.horizontal, BeesSpacing.m)
+            .padding(.vertical, BeesSpacing.s)
+            .background(
+                BeesColors.honey500.opacity(0.08),
+                in: RoundedRectangle(cornerRadius: BeesRadius.md)
+            )
         }
     }
 
@@ -151,7 +186,7 @@ struct HiveTabView: View {
         }
     }
 
-    // MARK: - Stat grid (quieter, no decoration)
+    // MARK: - Stat grid (each tile narrates its reading)
 
     private var statGrid: some View {
         let snapshot = services.hiveService.current
@@ -164,32 +199,72 @@ struct HiveTabView: View {
                 HiveStatCard(
                     title: "TEMPERATURE",
                     value: String(format: "%.0f", snapshot.temperatureF),
-                    unit: "°F"
+                    unit: "°F",
+                    context: temperatureContext(snapshot.temperatureF)
                 )
             }
             NavigationLink(value: StatType.humidity) {
                 HiveStatCard(
                     title: "HUMIDITY",
                     value: String(format: "%.0f", snapshot.humidityPct),
-                    unit: "%"
+                    unit: "%",
+                    context: humidityContext(snapshot.humidityPct)
                 )
             }
             NavigationLink(value: StatType.weight) {
                 HiveStatCard(
                     title: "WEIGHT",
                     value: String(format: "%.1f", snapshot.weightLb),
-                    unit: "lb"
+                    unit: "lb",
+                    context: weightContext(snapshot.weightLb)
                 )
             }
             NavigationLink(value: StatType.population) {
                 HiveStatCard(
                     title: "POPULATION",
                     value: "\(snapshot.populationEstimate / 1000)k",
-                    unit: "bees"
+                    unit: "bees",
+                    context: populationContext(snapshot.populationEstimate)
                 )
             }
         }
         .buttonStyle(.pressable)
+    }
+
+    // MARK: - Beekeeper-voice context for stat tiles
+
+    private func temperatureContext(_ temp: Double) -> String {
+        switch temp {
+        case ..<85:    return "Cool at the entrance"
+        case 85..<90:  return "Warming up"
+        case 90..<95:  return "Warm and steady"
+        default:       return "Hot today — bees fanning"
+        }
+    }
+
+    private func humidityContext(_ humidity: Double) -> String {
+        switch humidity {
+        case ..<55:    return "On the dry side"
+        case 55..<70:  return "Comfortable range"
+        default:       return "Humid in there"
+        }
+    }
+
+    private func weightContext(_ weight: Double) -> String {
+        switch weight {
+        case ..<40:    return "Light hive"
+        case 40..<55:  return "Gaining slowly"
+        default:       return "Heavy with honey"
+        }
+    }
+
+    private func populationContext(_ pop: Int) -> String {
+        switch pop {
+        case ..<30_000:     return "Smaller colony"
+        case 30_000..<55_000: return "Holding steady"
+        case 55_000..<75_000: return "Holding strong"
+        default:            return "Big and thriving"
+        }
     }
 
     // MARK: - Honey production tile (kept rich — it's the hero stat)

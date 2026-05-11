@@ -11,6 +11,7 @@ struct HoneyHomeView: View {
         NavigationStack(path: $path) {
             ScrollView {
                 VStack(spacing: BeesSpacing.l) {
+                    // Primary focus: the active shipment.
                     if let active = services.shipmentService.activeShipment {
                         heroCard(for: active)
                         timeline(for: active)
@@ -18,16 +19,20 @@ struct HoneyHomeView: View {
                         emptyHero
                     }
 
+                    // Secondary: saved stickers (only for tiers that support it).
                     if services.currentTier.canSaveFavorites {
                         savedStickersShortcut
                     }
 
-                    extrasCard
+                    // Tertiary: gift is its own row when available.
                     if services.currentTier.canSendGifts {
                         giftCard
                     }
-                    historyRow
-                    manageRow
+
+                    // Footer: collapsed "More" — extras, history, manage
+                    // become a single thin section instead of three stacked
+                    // cards each demanding equal attention.
+                    moreFooter
                 }
                 .padding(.horizontal, BeesSpacing.m)
                 .padding(.bottom, BeesSpacing.xl)
@@ -54,6 +59,57 @@ struct HoneyHomeView: View {
                     .environment(services)
             }
         }
+    }
+
+    /// Footer "More" section — three quiet list rows instead of three
+    /// cards each commanding card-level attention. Extras + History +
+    /// Manage all live here.
+    private var moreFooter: some View {
+        VStack(spacing: 0) {
+            footerRow(icon: "plus.circle.fill",
+                      title: "Buy extra jars",
+                      subtitle: "Add to this shipment or send anytime",
+                      isFirst: true)
+            Divider().padding(.leading, BeesSpacing.l + 12)
+            footerRow(icon: "clock.fill",
+                      title: "Past jars",
+                      subtitle: "\(services.shipmentService.history.count) delivered")
+            Divider().padding(.leading, BeesSpacing.l + 12)
+            footerRow(icon: "gearshape.fill",
+                      title: "Manage subscription",
+                      subtitle: nil,
+                      isLast: true)
+        }
+        .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
+    }
+
+    private func footerRow(icon: String, title: String, subtitle: String?,
+                           isFirst: Bool = false, isLast: Bool = false) -> some View {
+        Button { } label: {
+            HStack(spacing: BeesSpacing.m) {
+                Image(systemName: icon)
+                    .font(.system(size: 16))
+                    .foregroundStyle(BeesColors.honey500)
+                    .frame(width: 22)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(BeesType.bodyL)
+                        .foregroundStyle(BeesColors.charcoal900)
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(BeesType.captionM)
+                            .foregroundStyle(BeesColors.charcoal600)
+                    }
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(BeesColors.charcoal300)
+            }
+            .padding(.horizontal, BeesSpacing.m)
+            .padding(.vertical, BeesSpacing.s + 2)
+        }
+        .buttonStyle(.pressable)
     }
 
     private func heroCard(for shipment: Shipment) -> some View {
@@ -154,14 +210,6 @@ struct HoneyHomeView: View {
         }
     }
 
-    private var extrasCard: some View {
-        sideCard(
-            icon: "plus.circle.fill",
-            title: "Buy extra jars",
-            subtitle: "Add a jar to this shipment or send anytime"
-        )
-    }
-
     private var giftCard: some View {
         Button {
             giftFlowOpen = true
@@ -189,44 +237,6 @@ struct HoneyHomeView: View {
         .buttonStyle(.pressable)
     }
 
-    private var historyRow: some View {
-        VStack(alignment: .leading, spacing: BeesSpacing.s) {
-            SectionHeader(title: "Recent shipments", trailing: "View all →")
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: BeesSpacing.s) {
-                    ForEach(services.shipmentService.history) { ship in
-                        VStack(spacing: BeesSpacing.xxs) {
-                            JarPreview(design: ship.design, size: 80)
-                                .frame(width: 80, height: 110)
-                            Text(monthYear(ship.scheduledShipDate))
-                                .font(BeesType.captionS)
-                                .foregroundStyle(BeesColors.charcoal600)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private var manageRow: some View {
-        Button {
-        } label: {
-            HStack {
-                Image(systemName: "gearshape.fill")
-                    .foregroundStyle(BeesColors.charcoal600)
-                Text("Manage shipments (skip / pause)")
-                    .font(BeesType.bodyM)
-                    .foregroundStyle(BeesColors.charcoal600)
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(BeesColors.charcoal300)
-            }
-            .padding(BeesSpacing.m)
-            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
-        }
-        .buttonStyle(.pressable)
-    }
-
     private var emptyHero: some View {
         VStack(spacing: BeesSpacing.m) {
             Image(systemName: "drop.fill")
@@ -242,31 +252,6 @@ struct HoneyHomeView: View {
         .padding(BeesSpacing.l)
         .frame(maxWidth: .infinity)
         .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.lg))
-    }
-
-    private func sideCard(icon: String, title: String, subtitle: String) -> some View {
-        Button { } label: {
-            HStack(spacing: BeesSpacing.m) {
-                Image(systemName: icon)
-                    .font(.system(size: 22))
-                    .foregroundStyle(BeesColors.honey500)
-                    .frame(width: 32)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                        .font(BeesType.headingM)
-                        .foregroundStyle(BeesColors.charcoal900)
-                    Text(subtitle)
-                        .font(BeesType.captionM)
-                        .foregroundStyle(BeesColors.charcoal600)
-                }
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(BeesColors.charcoal300)
-            }
-            .padding(BeesSpacing.m)
-            .background(BeesColors.surfaceCard, in: RoundedRectangle(cornerRadius: BeesRadius.md))
-        }
-        .buttonStyle(.pressable)
     }
 
     private func statusBadge(_ status: Shipment.Status) -> some View {
@@ -344,11 +329,6 @@ struct HoneyHomeView: View {
         }
     }
 
-    private func monthYear(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM"
-        return formatter.string(from: date)
-    }
 }
 
 #Preview {
