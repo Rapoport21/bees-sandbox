@@ -72,20 +72,15 @@ struct ApplePaymentSheet: View {
     }
 
     private var appIcon: some View {
-        // App-icon mockup. Squircle background + BeesLogo monogram.
+        // App-icon mockup. Matches real home-screen icon — warm
+        // cream squircle, thin charcoal hex outline centered.
         ZStack {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(LinearGradient(
-                    colors: [
-                        Color(red: 1.00, green: 0.93, blue: 0.78),
-                        Color(red: 1.00, green: 0.82, blue: 0.40)
-                    ],
-                    startPoint: .top, endPoint: .bottom))
-
-            BeesLogo(variant: .mark, size: 64)
+                .fill(Color(red: 0.98, green: 0.95, blue: 0.87))
+            BeesLogo(variant: .mark, size: 56)
         }
         .frame(width: 100, height: 100)
-        .shadow(color: .black.opacity(0.10), radius: 8, y: 4)
+        .shadow(color: .black.opacity(0.08), radius: 8, y: 4)
         .padding(.top, 8)
     }
 
